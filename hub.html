@@ -9,9 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --water:#E4F0EE; --ink:#0D2B3A; --ink-soft:#3C5866; --ink-mute:#6B8590;
-    --buoy:#E8452C; --buoy-soft:#FCE3DD; --lagoon:#127C86; --lagoon-soft:#D2ECEE;
-    --paper:#FAFDFC; --line:rgba(13,43,58,.14); --ok:#1D7A4C; --ok-soft:#DDF1E6;
+    --water:#EEF5F3; --ink:#0A3D44; --ink-soft:#3F6168; --ink-mute:#6E8A8F;
+    --buoy:#E0A526; --buoy-soft:#FBEBC1; --lagoon:#1B8A8C; --lagoon-soft:#D6EEEC;
+    --paper:#FCFEFD; --line:rgba(10,61,68,.15); --ok:#1D7A4C; --ok-soft:#DDF1E6;
     --head:'Archivo','Helvetica Neue',Arial,sans-serif; --body:'Public Sans',system-ui,sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -34,8 +34,8 @@
 
   .hero{position:relative;color:#fff;padding:34px 16px 30px;background:
     repeating-radial-gradient(circle at 85% 120%, rgba(255,255,255,.07) 0 2px, transparent 2px 26px),
-    linear-gradient(160deg,#0D2B3A 0%,#115B6B 100%);overflow:hidden}
-  .hero h1{font-weight:900;font-stretch:118%;font-size:clamp(34px,9vw,52px);max-width:11ch}
+    linear-gradient(160deg,#0A3D44 0%,#14565F 100%);overflow:hidden}
+  .hero h1{font-weight:900;font-stretch:118%;font-size:clamp(34px,9vw,52px);max-width:13ch}
   .hero p.sub{margin-top:10px;color:#BFDDE3;max-width:34ch}
   .count{display:flex;gap:10px;margin-top:26px}
   .count div{flex:1;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:12px 4px;text-align:center}
@@ -62,6 +62,12 @@
   .seg{display:flex;gap:6px;margin-bottom:16px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:4px}
   .seg button{flex:1;border:0;background:none;border-radius:9px;padding:8px 4px;font-weight:600;color:var(--ink-soft)}
   .seg button.sel{background:var(--ink);color:#fff}
+  .seg2{display:flex;gap:6px;margin:12px 0 14px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:4px}
+  .seg2 button{flex:1;border:0;background:none;border-radius:9px;padding:9px 4px;font-weight:600;color:var(--ink-soft)}
+  .seg2 button.sel{background:var(--ink);color:#fff}
+  .tag.must{background:#FBEBC1;color:#7A5600}
+  .deadline{font-size:13.5px;font-weight:600;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 12px;margin:0 0 10px}
+  .orgbar{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 
   .namebar{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .namebar label{font-weight:600;font-size:14px}
@@ -79,9 +85,9 @@
   .who span{background:var(--lagoon-soft);color:#0B5159;border-radius:99px;padding:2px 10px;font-size:13px}
   .who span.me{background:var(--ink);color:#fff}
   .slots{font-size:12.5px;font-weight:600;margin-top:6px}
-  .slots.open{color:var(--buoy)}.slots.done{color:var(--ok)}
-  .btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:9px;padding:8px 13px;font-size:14px;font-weight:600;white-space:nowrap}
-  .btn.ghost{background:transparent;color:var(--ink)}
+  .slots.open{color:#8A6100}.slots.done{color:var(--ok)}
+  .btn{border:1px solid var(--buoy);background:var(--buoy);color:#2A1D00;border-radius:9px;padding:8px 13px;font-size:14px;font-weight:600;white-space:nowrap}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
   .btn.buoy{background:var(--buoy);border-color:var(--buoy)}
   .btn[disabled]{opacity:.45;cursor:not-allowed}
   .x{background:none;border:0;color:var(--ink-mute);font-size:13px;text-decoration:underline;padding:2px 0;margin-top:6px}
@@ -89,7 +95,7 @@
   .form .two{display:grid;grid-template-columns:1fr 90px;gap:10px}
   .form .two2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .msg{font-size:13.5px;color:var(--ink-soft);min-height:20px}
-  .warn{background:var(--buoy-soft);border:1px solid #F3B8AA;border-radius:10px;padding:10px 12px;font-size:14px;margin-bottom:12px}
+  .warn{background:var(--buoy-soft);border:1px solid #E6CD85;border-radius:10px;padding:10px 12px;font-size:14px;margin-bottom:12px}
   .empty{background:var(--paper);border:1px dashed var(--line);border-radius:12px;padding:18px;text-align:center}
   details.panel{padding:0}
   details summary{padding:14px 16px;font-weight:600;cursor:pointer}
@@ -104,7 +110,7 @@
   .dayc,.pollc{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
   .dh{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px}
   .lock{font-size:12px;font-weight:600;background:var(--ok-soft);color:var(--ok);border-radius:99px;padding:2px 10px}
-  .lock.openc{background:var(--buoy-soft);color:#A82E19}
+  .lock.openc{background:var(--buoy-soft);color:#7A5600}
   .f2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
   .route{font-weight:600;margin:4px 0}
   .rankgrid{display:grid;gap:8px;margin:10px 0}
@@ -135,12 +141,12 @@
   .tabbar button .ic{font-size:18px;line-height:1}
   .tabbar button.sel{color:#fff;box-shadow:inset 0 3px 0 var(--buoy)}
   /* PIN gate */
-  #gate{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;background:#0D2B3A;overflow:hidden}
+  #gate{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;background:#0A3D44;overflow:hidden}
   .unlocked #gate{display:none}
   html:not(.unlocked) body{overflow:hidden}
   #gate .scene,#gate .photo{position:absolute;inset:0;width:100%;height:100%}
   #gate .photo{object-fit:cover}
-  #gate .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,43,58,.28) 0%,rgba(13,43,58,.72) 100%)}
+  #gate .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,61,68,.28) 0%,rgba(10,61,68,.74) 100%)}
   .gatecard{position:relative;width:min(92vw,360px);background:rgba(250,253,252,.95);border-radius:18px;padding:26px 22px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.35)}
   .gatecard h1{font-weight:900;font-stretch:112%;font-size:30px}
   .gatecard .sub{color:var(--ink-soft);margin:6px 0 16px}
@@ -193,7 +199,7 @@
   <div class="scrim"></div>
   <form class="gatecard" id="pinForm" autocomplete="off">
     <h1>BVI 2027</h1>
-    <p class="sub">Crude Escape · Feb 12–19</p>
+    <p class="sub">BVI Yacht Charter · Feb 12–19</p>
     <label for="pin" class="small" style="display:block;margin-bottom:8px">Enter the crew PIN</label>
     <input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="Crew PIN">
     <div class="msg" id="pinMsg" role="alert"></div>
@@ -218,7 +224,7 @@
 <!-- HOME -->
 <section class="tab active" id="tab-home">
   <div class="hero">
-    <h1>Crude Escape sails Feb 12</h1>
+    <h1>BVI Yacht Charter · Feb 12–19</h1>
     <p class="sub">One catamaran, six cabins, a week in the British Virgin Islands.</p>
     <div class="count" aria-live="off">
       <div><b id="cd-d">--</b><span>days</span></div>
@@ -226,11 +232,10 @@
       <div><b id="cd-m">--</b><span>min</span></div>
       <div><b id="cd-s">--</b><span>sec</span></div>
     </div>
-    <button class="go" data-tab="gear">Claim your gear</button>
   </div>
   <div class="pad">
     <div class="stat">
-      <div><b id="st-covered">–</b><span>shared items covered</span></div>
+      <div><b id="st-covered">–</b><span>must-haves still open</span></div>
       <div><b id="st-polls">–</b><span>open polls</span></div>
       <div><b id="st-bal">–</b><span>trip fund balance</span></div>
     </div>
@@ -271,36 +276,59 @@
 
 <!-- GEAR -->
 <section class="tab" id="tab-gear"><div class="pad">
-  <h2>Gear board</h2>
-  <p class="lead">Space on the boat is limited, so each shared item only needs to come once. Claim what you're bringing so we don't double up. Add anything missing at the bottom.</p>
+  <h2>Gear</h2>
+  <div class="seg2" id="gearSeg"><button data-gs="boat" class="sel">Boat gear</button><button data-gs="own">Every couple brings</button></div>
 
-  <div id="seedBox"></div>
-  <div class="chips" id="chips">
-    <button class="chip sel" data-filter="all">All</button>
-    <button class="chip" data-filter="open">Needs someone</button>
-    <button class="chip" data-filter="done">Covered</button>
-    <button class="chip" data-filter="mine">Mine</button>
-  </div>
-  <div id="gearList"></div>
+  <div id="gs-boat">
+    <p class="lead">Shared items for the whole boat. Tap "We've got it" on anything your couple will bring. Items marked must-have need an owner before we leave.</p>
+    <div class="deadline" id="gearDeadline"></div>
+    <div id="cabinHint" class="small" style="margin-bottom:8px"></div>
+    <div id="seedBox"></div>
+    <div class="chips" id="chips">
+      <button class="chip sel" data-filter="all">All</button>
+      <button class="chip" data-filter="must">Must-haves</button>
+      <button class="chip" data-filter="open">Needs someone</button>
+      <button class="chip" data-filter="done">Covered</button>
+      <button class="chip" data-filter="mine">Mine</button>
+    </div>
+    <div id="gearList"></div>
 
-  <div class="block">
-    <h2>Add something we're missing</h2>
-    <p class="lead">We'll warn you if something similar is already on the board.</p>
-    <div class="form panel pad2" id="addForm">
-      <input type="text" id="addName" placeholder="Item (e.g. Floating cooler)" maxlength="60" aria-label="Item name">
-      <div class="two">
-        <select id="addCat" aria-label="Category"></select>
-        <input type="number" id="addNeed" min="1" max="12" value="1" aria-label="How many we need in total">
+    <div class="block" id="suggestBlock" style="display:none">
+      <h2>Suggestions waiting</h2>
+      <div id="suggestList"></div>
+    </div>
+
+    <div class="block">
+      <h2 id="addTitle">Suggest something we're missing</h2>
+      <p class="lead" id="addLead">The organizers approve suggestions before they join the list, so it stays short.</p>
+      <div class="form panel pad2" id="addForm">
+        <input type="text" id="addName" placeholder="Item (e.g. Floating cooler)" maxlength="60" aria-label="Item name">
+        <div class="two">
+          <select id="addCat" aria-label="Category"></select>
+          <input type="number" id="addNeed" min="1" max="12" value="1" aria-label="How many we need in total">
+        </div>
+        <input type="text" id="addNote" placeholder="Note (optional)" maxlength="140" aria-label="Note">
+        <button class="btn buoy" id="addBtn" type="button">Suggest this item</button>
+        <div class="msg" id="addMsg"></div>
       </div>
-      <input type="text" id="addNote" placeholder="Note (optional)" maxlength="140" aria-label="Note">
-      <button class="btn buoy" id="addBtn" type="button">Add to the board</button>
-      <div class="msg" id="addMsg"></div>
+    </div>
+
+    <div class="block">
+      <details class="panel" id="orgPanel"><summary id="orgSummary">Organizer tools</summary><div class="inner">
+        <div id="orgLocked">
+          <p class="small" style="margin-bottom:8px">For the people managing the list. Enter the organizer code.</p>
+          <div class="form"><input type="password" id="orgCode" inputmode="numeric" maxlength="4" placeholder="Code" aria-label="Organizer code"><button class="btn" type="button" data-act="orgOn">Unlock</button><div class="msg" id="orgMsg"></div></div>
+        </div>
+        <div id="orgOpen" style="display:none">
+          <p class="small" style="margin-bottom:8px">Organizer mode is on. Items below now show Must-have and Remove buttons, and suggestions show Approve and Dismiss.</p>
+          <button class="btn ghost" type="button" data-act="orgOff">Turn off organizer mode</button>
+        </div>
+      </div></details>
     </div>
   </div>
 
-  <div class="block">
-    <h2>Everyone brings their own</h2>
-    <p class="lead">These aren't shared. Your check marks are saved on this device only.</p>
+  <div id="gs-own" style="display:none">
+    <p class="lead">Everyone packs these, one set per person or couple. Nothing here is shared, and your check marks are saved on this device only.</p>
     <div id="personalList"></div>
   </div>
 </div></section>
@@ -486,7 +514,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, doc, onSnapshot, setDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, doc, onSnapshot, setDoc as _setDoc, updateDoc as _updateDoc, deleteDoc as _deleteDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC7MdsFVLEWUSN5hfR0axQNlgEAF8rmGBU",
@@ -501,16 +529,16 @@ const CATS = ["Safety & comms","Power & tech","Medical","Fishing","Sun & comfort
 const LCATS = [["Moorings","⚓"],["Fuel","⛽"],["Groceries","🛒"],["Dining","🍽️"],["Marina & fees","🧾"],["Activities","🤿"],["Other","💬"]];
 
 const SEEDS = [
-  {id:"seed-inreach",name:"Garmin inReach Mini 2",cat:"Safety & comms",need:1,note:"Satellite texting and SOS with no cell signal. The captain carries it. About $350 plus a monthly plan."},
-  {id:"seed-vhf",name:"Handheld VHF radio",cat:"Safety & comms",need:2,note:"Dinghy-to-boat contact. Waterproof, floating model such as the Standard Horizon HX210."},
-  {id:"seed-spot",name:"Waterproof spotlight",cat:"Safety & comms",need:1,note:"For night anchoring and reading mooring numbers."},
-  {id:"seed-ipad",name:"iPad with offline Navionics charts",cat:"Safety & comms",need:1,note:"Backup to the boat's chartplotter. Download the BVI charts at home."},
+  {id:"seed-inreach",must:true,name:"Garmin inReach Mini 2",cat:"Safety & comms",need:1,note:"Satellite texting and SOS with no cell signal. The captain carries it. About $350 plus a monthly plan."},
+  {id:"seed-vhf",must:true,name:"Handheld VHF radio",cat:"Safety & comms",need:2,note:"Dinghy-to-boat contact. Waterproof, floating model such as the Standard Horizon HX210."},
+  {id:"seed-spot",must:true,name:"Waterproof spotlight",cat:"Safety & comms",need:1,note:"For night anchoring and reading mooring numbers."},
+  {id:"seed-ipad",must:true,name:"iPad with offline Navionics charts",cat:"Safety & comms",need:1,note:"Backup to the boat's chartplotter. Download the BVI charts at home."},
   {id:"seed-bank",name:"Large power bank (24,000 mAh)",cat:"Power & tech",need:2,note:"Anker 737 class. Shared charging for the group."},
   {id:"seed-12v",name:"12V USB charging hub",cat:"Power & tech",need:1,note:"Plugs into the boat's DC outlet. About $25."},
   {id:"seed-gopro",name:"GoPro with floating grip",cat:"Power & tech",need:1,note:"Bring spare batteries and a memory card."},
-  {id:"seed-firstaid",name:"Marine first aid kit",cat:"Medical",need:1,note:"Adventure Medical Kits Marine 1500 is the one we looked at. Split the cost."},
+  {id:"seed-firstaid",must:true,name:"Marine first aid kit",cat:"Medical",need:1,note:"Adventure Medical Kits Marine 1500 is the one we looked at. Split the cost."},
   {id:"seed-glue",name:"Medical superglue and Leukotape",cat:"Medical",need:1,note:"For coral cuts and waterproof taping."},
-  {id:"seed-seasick",name:"Bonine or Dramamine (bulk)",cat:"Medical",need:1,note:"Backup for anyone who skips patches."},
+  {id:"seed-seasick",must:true,name:"Bonine or Dramamine (bulk)",cat:"Medical",need:1,note:"Backup for anyone who skips patches."},
   {id:"seed-antidiar",name:"Imodium",cat:"Medical",need:1,note:""},
   {id:"seed-blister",name:"Blister pads (Compeed)",cat:"Medical",need:1,note:""},
   {id:"seed-aloe",name:"Aloe or after-sun gel",cat:"Medical",need:2,note:"Someone will burn."},
@@ -575,28 +603,42 @@ let curTab="home";
 const configured = !Object.values(firebaseConfig).some(v=>String(v).startsWith("PASTE"));
 function setBadge(state,text){ const b=$("#badge"); b.className="badge "+state; $("#badgeText").textContent=text; }
 
+/* Writes apply to the saved copy instantly and sync when a connection returns, so we never wait on the network. */
+function nowait(fn){ return (...a)=>{ try{ const p=fn(...a); if(p&&p.catch) p.catch((e)=>{ console.error("Write:",e); setBadge("off","Couldn't save – check connection or rules"); }); }catch(e){ console.error(e); } return Promise.resolve(); }; }
+const setDoc=nowait(_setDoc), updateDoc=nowait(_updateDoc), deleteDoc=nowait(_deleteDoc);
+
+function statusFromSnap(snap){
+  const m=snap.metadata||{};
+  if(m.hasPendingWrites) setBadge("loc", navigator.onLine?"Saving…":"Saved here · will sync");
+  else if(m.fromCache) setBadge("loc", navigator.onLine?"Connecting…":"Offline · saved copy");
+  else setBadge("on","Synced");
+}
 function listen(c,cb){
-  onSnapshot(c,(snap)=>{ cb(snap.docs.map(d=>({id:d.id,...d.data()}))); setBadge("on","Synced"); },
+  onSnapshot(c,{includeMetadataChanges:true},(snap)=>{ cb(snap.docs.map(d=>({id:d.id,...d.data()}))); statusFromSnap(snap); },
     (err)=>{ console.error("Firestore:",err); setBadge("off","Offline – check rules"); });
 }
+window.addEventListener("offline",()=>setBadge("loc","Offline · saved copy"));
+window.addEventListener("online",()=>setBadge("loc","Reconnecting…"));
 
 if (configured) {
   try {
     const app = initializeApp(firebaseConfig);
-    db = getFirestore(app);
+    try{ db = initializeFirestore(app,{localCache:persistentLocalCache({tabManager:persistentMultipleTabManager()})}); }
+    catch(e){ console.warn("No offline cache:",e); db = getFirestore(app); }
     col = collection(db,"hubGear");
     mode = "cloud";
     listen(col,(a)=>{items=a; renderGear();});
     listen(collection(db,"hubPassage"),(a)=>{days=a; renderPlan();});
     listen(collection(db,"hubPulse"),(a)=>{polls=a; renderPolls(); renderHomeStats();});
     listen(collection(db,"hubLedger"),(a)=>{ledger=a; renderMoney(); renderHomeStats();});
-    listen(collection(db,"hubCrew"),(a)=>{crew=a; renderCrew();});
+    listen(collection(db,"hubCrew"),(a)=>{crew=a; renderCrew(); renderGear();});
   } catch(e){ console.error(e); setBadge("off","Offline"); mode="local"; items=lsGet("bviHubGearLocal",[]); }
 } else {
   items = lsGet("bviHubGearLocal",[]);
   setBadge("loc","Local only – not synced");
 }
 const saveLocal=()=>lsSet("bviHubGearLocal",items);
+if("serviceWorker" in navigator && location.protocol.startsWith("http")){ window.addEventListener("load",()=>{ navigator.serviceWorker.register("sw.js").catch((e)=>console.warn("SW:",e)); }); }
 
 /* ───── gear data layer ───── */
 async function addItem(obj){
@@ -607,9 +649,15 @@ async function claim(id,name){
   if(mode==="cloud"){ await updateDoc(doc(db,"hubGear",id),{claims:arrayUnion(name)}); }
   else { const it=items.find(i=>i.id===id); it.claims=[...(it.claims||[]).filter(n=>n!==name),name]; saveLocal(); renderGear(); }
 }
-async function release(id,name){
-  if(mode==="cloud"){ await updateDoc(doc(db,"hubGear",id),{claims:arrayRemove(name)}); }
-  else { const it=items.find(i=>i.id===id); it.claims=(it.claims||[]).filter(n=>n!==name); saveLocal(); renderGear(); }
+async function releaseMine(id){
+  const it=items.find(i=>i.id===id); if(!it) return;
+  const mine=claimsOf(it).filter(isMineClaim); if(!mine.length) return;
+  if(mode==="cloud"){ await updateDoc(doc(db,"hubGear",id),{claims:arrayRemove(...mine)}); }
+  else { it.claims=claimsOf(it).filter(n=>!mine.includes(n)); saveLocal(); renderGear(); }
+}
+async function patchItem(id,fields){
+  if(mode==="cloud"){ await updateDoc(doc(db,"hubGear",id),fields); }
+  else { const it=items.find(i=>i.id===id); if(it) Object.assign(it,fields); saveLocal(); renderGear(); }
 }
 async function removeItem(id){
   if(mode==="cloud"){ await deleteDoc(doc(db,"hubGear",id)); }
@@ -630,10 +678,26 @@ async function loadStarter(){
 const claimsOf=(i)=>Array.isArray(i.claims)?i.claims:[];
 const needOf=(i)=>Math.max(1,parseInt(i.need)||1);
 const isDone=(i)=>claimsOf(i).length>=needOf(i);
+const mustOf=(i)=>typeof i.must==="boolean" ? i.must : !!(SEEDS.find(s=>s.id===i.id)||{}).must;
+const approved=(i)=>i.status!=="suggested";
+const GEAR_DEADLINE=Date.UTC(2027,1,1,6,0,0);   // Feb 1, 2027 midnight Central
+const ORG_CODE="7727";                          // organizer code. Change it here if you like.
+let isOrg=false; try{ isOrg=localStorage.getItem("bviHubOrg")==="1"; }catch(e){}
+let gearView="boat";
+
+/* who am I, as a couple? Looks the person up in the Crew roster and uses their cabin. */
+function myCrew(){ if(!myName) return null; const k=keyOf(myName.toLowerCase()); return crew.find(c=>c.id===k || String(c.name||"").toLowerCase()===myName.toLowerCase()) || null; }
+function myCabin(){ const c=myCrew(); return c && c.cabin && c.cabin!=="Not assigned" ? c.cabin : ""; }
+function myLabel(){
+  const cab=myCabin(); if(!cab) return myName;
+  const mates=crew.filter(c=>c.cabin===cab).map(c=>String(c.name||"").split(" ")[0]).filter(Boolean).sort();
+  return `Cabin ${cab} · ${mates.join(" & ")||myName}`;
+}
+function isMineClaim(n){ const cab=myCabin(); return !!myName && (n===myName || (cab && String(n).startsWith(`Cabin ${cab} ·`))); }
 
 function renderHomeStats(){
-  const total=items.length, done=items.filter(isDone).length;
-  $("#st-covered").textContent = total ? `${done}/${total}` : "–";
+  const must=items.filter(i=>approved(i)&&mustOf(i)), open=must.filter(i=>!isDone(i)).length;
+  $("#st-covered").textContent = must.length ? (open===0?"All set":String(open)) : "–";
   $("#st-polls").textContent = mode==="cloud" ? String(polls.filter(p=>p.status!=="decided").length) : "–";
   const f=fundCalc();
   $("#st-bal").textContent = f ? usd(f.bal) : "–";
@@ -641,38 +705,58 @@ function renderHomeStats(){
 
 function renderGear(){
   renderHomeStats();
+  document.querySelectorAll("#gearSeg button").forEach(b=>b.classList.toggle("sel",b.dataset.gs===gearView));
+  $("#gs-boat").style.display = gearView==="boat"?"block":"none";
+  $("#gs-own").style.display  = gearView==="own"?"block":"none";
+
+  const days=Math.ceil((GEAR_DEADLINE-Date.now())/86400000), past=days<=0;
+  $("#gearDeadline").textContent = past ? "Claims are closed. Anything unclaimed goes to the organizers to assign." : `Claim by Feb 1 · ${days} day${days===1?"":"s"} left`;
+  $("#cabinHint").textContent = (myName && !myCabin()) ? "Tip: add yourself under Info, then Crew, with your cabin. Then your claims show as your couple." : "";
+  $("#orgLocked").style.display = isOrg?"none":"block";
+  $("#orgOpen").style.display   = isOrg?"block":"none";
+  $("#orgSummary").textContent  = isOrg?"Organizer tools (on)":"Organizer tools";
+  $("#addTitle").textContent = isOrg?"Add an item":"Suggest something we're missing";
+  $("#addLead").textContent  = isOrg?"Organizer mode: this goes straight onto the list.":"The organizers approve suggestions before they join the list, so it stays short.";
+  $("#addBtn").textContent   = isOrg?"Add to the list":"Suggest this item";
+
+  const live=items.filter(approved), sugg=items.filter(i=>!approved(i));
   $("#seedBox").innerHTML = items.length===0
-    ? `<div class="empty"><p style="margin-bottom:10px">The board is empty. Load the starter list from our trip planning, then adjust it.</p><button class="btn buoy" data-act="seed">Load starter list</button></div>`
+    ? `<div class="empty"><p style="margin-bottom:10px">The list is empty. Load the starter list from our trip planning, then adjust it.</p><button class="btn buoy" data-act="seed">Load starter list</button></div>`
     : "";
   document.querySelectorAll("#chips .chip").forEach(c=>c.classList.toggle("sel",c.dataset.filter===filter));
-  let list=items.filter(i=>{
+  let list=live.filter(i=>{
+    if(filter==="must") return mustOf(i);
     if(filter==="open") return !isDone(i);
     if(filter==="done") return isDone(i);
-    if(filter==="mine") return myName && claimsOf(i).includes(myName);
+    if(filter==="mine") return claimsOf(i).some(isMineClaim);
     return true;
   });
   const out=[];
   const cats=[...CATS,...new Set(list.map(i=>i.cat).filter(c=>c&&!CATS.includes(c)))];
   for(const c of cats){
-    const group=list.filter(i=>(i.cat||"Other")===c).sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+    const group=list.filter(i=>(i.cat||"Other")===c).sort((a,b)=>(mustOf(b)-mustOf(a))||String(a.name).localeCompare(String(b.name)));
     if(!group.length) continue;
     out.push(`<h3 class="cat">${esc(c)}</h3>`);
     for(const i of group){
-      const cl=claimsOf(i), need=needOf(i), mine=myName && cl.includes(myName), full=cl.length>=need, left=need-cl.length;
+      const cl=claimsOf(i), need=needOf(i), mine=cl.some(isMineClaim), full=cl.length>=need, left=need-cl.length, must=mustOf(i);
       out.push(`<div class="item">
         <div class="body">
-          <div class="nm">${esc(i.name)}</div>
+          <div class="nm">${esc(i.name)}${must?`<span class="tag must">Must-have</span>`:""}</div>
           ${i.note?`<div class="nt">${esc(i.note)}</div>`:""}
-          <div class="slots ${full?"done":"open"}">${full?"Covered":`Needs ${left} more`} (${cl.length} of ${need})</div>
-          ${cl.length?`<div class="who">${cl.map(n=>`<span class="${n===myName?"me":""}">${esc(n)}</span>`).join("")}</div>`:""}
-          ${i.id&&!String(i.id).startsWith("seed-")?`<button class="x" data-act="remove" data-id="${esc(i.id)}">Remove item</button>`:""}
+          <div class="slots ${full?"done":"open"}">${full?"Covered":(past?"Unclaimed. Organizers will assign.":`Needs ${left} more`)} (${cl.length} of ${need})</div>
+          ${cl.length?`<div class="who">${cl.map(n=>`<span class="${isMineClaim(n)?"me":""}">${esc(n)}</span>`).join("")}</div>`:""}
+          ${isOrg?`<div class="orgbar"><button class="x" data-act="toggleMust" data-id="${esc(i.id)}">${must?"Remove must-have":"Make must-have"}</button><button class="x" data-act="remove" data-id="${esc(i.id)}">Remove item</button></div>`:""}
         </div>
         ${mine?`<button class="btn ghost" data-act="release" data-id="${esc(i.id)}">Release</button>`
-              :`<button class="btn" data-act="claim" data-id="${esc(i.id)}" ${full?"disabled":""}>${full?"Covered":"I've got it"}</button>`}
+              :`<button class="btn" data-act="claim" data-id="${esc(i.id)}" ${full?"disabled":""}>${full?"Covered":"We've got it"}</button>`}
       </div>`);
     }
   }
-  $("#gearList").innerHTML = out.length?out.join(""):(items.length?`<div class="empty">Nothing matches this filter.</div>`:"");
+  $("#gearList").innerHTML = out.length?out.join(""):(live.length?`<div class="empty">Nothing matches this filter.</div>`:"");
+
+  $("#suggestBlock").style.display = sugg.length?"block":"none";
+  $("#suggestList").innerHTML = sugg.map(i=>`<div class="item"><div class="body"><div class="nm">${esc(i.name)}</div>${i.note?`<div class="nt">${esc(i.note)}</div>`:""}<div class="small">${esc(i.cat||"Other")} · suggested by ${esc(i.addedBy||"someone")}</div></div>${isOrg?`<div style="display:flex;flex-direction:column;gap:6px"><button class="btn" data-act="approve" data-id="${esc(i.id)}">Approve</button><button class="btn ghost" data-act="remove" data-id="${esc(i.id)}">Dismiss</button></div>`:`<span class="small">Waiting</span>`}</div>`).join("");
+
   $("#personalList").innerHTML = `<div class="panel">`+PERSONAL.map(p=>`
     <label class="chk ${checks[p.id]?"done":""}">
       <input type="checkbox" data-chk="${p.id}" ${checks[p.id]?"checked":""}>
@@ -829,6 +913,7 @@ function renderAll(){ renderGear(); renderPlan(); renderPolls(); renderMoney(); 
 
 /* ───── events ───── */
 document.addEventListener("click", async (e)=>{
+  const gs=e.target.closest("[data-gs]"); if(gs){ gearView=gs.dataset.gs; renderGear(); return; }
   const t=e.target.closest("[data-tab],[data-act],[data-filter]"); if(!t) return;
   if(t.dataset.tab){ showTab(t.dataset.tab); return; }
   if(t.dataset.filter){ filter=t.dataset.filter; renderGear(); return; }
@@ -836,9 +921,16 @@ document.addEventListener("click", async (e)=>{
   const needName=()=>{ if(!myName){ $("#nameMsg").textContent="Enter your name first."; $("#myName").focus(); return true;} return false; };
   try{
     if(act==="seed"){ await loadStarter(); }
-    else if(act==="claim"){ if(needName()) return; await claim(id,myName); }
-    else if(act==="release"){ await release(id,myName); }
-    else if(act==="remove"){ if(confirm("Remove this item from the board for everyone?")) await removeItem(id); }
+    else if(act==="claim"){ if(needName()) return; await claim(id,myLabel()); }
+    else if(act==="release"){ await releaseMine(id); }
+    else if(act==="remove"){ if(confirm("Remove this item for everyone?")) await removeItem(id); }
+    else if(act==="toggleMust"){ const it=items.find(i=>i.id===id); if(it) await patchItem(id,{must:!mustOf(it)}); }
+    else if(act==="approve"){ await patchItem(id,{status:"ok"}); }
+    else if(act==="orgOn"){
+      if($("#orgCode").value.trim()===ORG_CODE){ isOrg=true; try{localStorage.setItem("bviHubOrg","1")}catch(e){} $("#orgCode").value=""; $("#orgMsg").textContent=""; renderGear(); }
+      else { $("#orgMsg").textContent="That code isn't right."; }
+    }
+    else if(act==="orgOff"){ isOrg=false; try{localStorage.removeItem("bviHubOrg")}catch(e){} renderGear(); }
 
     else if(act==="seedPlan"){
       for(const s of PLAN_SEEDS){ const {id:did,...rest}=s; await setDoc(doc(db,"hubPassage",did),rest,{merge:true}); }
@@ -934,12 +1026,14 @@ $("#addBtn").addEventListener("click", async ()=>{
   if(!name){ msg.textContent="Give the item a name."; return; }
   const tk=tokens(name);
   const similar=items.find(i=>tokens(i.name).some(w=>tk.includes(w)));
-  if(similar && !confirm(`Something similar is already on the board: "${similar.name}". Add yours anyway?`)) return;
+  if(similar && !confirm(`Something similar is already on the list: "${similar.name}". Add yours anyway?`)) return;
   const need=Math.min(12,Math.max(1,parseInt($("#addNeed").value)||1));
   try{
-    await addItem({name,cat:$("#addCat").value,need,note:$("#addNote").value.trim(),claims:[],addedBy:myName||""});
+    const obj={name,cat:$("#addCat").value,need,note:$("#addNote").value.trim(),claims:[],addedBy:myName||"",must:false};
+    if(!isOrg) obj.status="suggested";
+    await addItem(obj);
     $("#addName").value="";$("#addNote").value="";$("#addNeed").value="1";
-    msg.textContent="Added. Claim it if you're bringing it.";
+    msg.textContent=isOrg?"Added to the list.":"Thanks. The organizers will review it.";
   }catch(err){ console.error(err); msg.textContent="That didn't save. Check your connection and try again."; }
 });
 
