@@ -32,10 +32,12 @@
   .tab{display:none}.tab.active{display:block}
   .pad{padding:20px 16px}
 
-  .hero{position:relative;color:#fff;padding:34px 16px 30px;background:
-    repeating-radial-gradient(circle at 85% 120%, rgba(255,255,255,.07) 0 2px, transparent 2px 26px),
-    linear-gradient(160deg,#0A3D44 0%,#14565F 100%);overflow:hidden}
-  .hero h1{font-weight:900;font-stretch:118%;font-size:clamp(34px,9vw,52px);max-width:13ch}
+  html,body{overflow-x:hidden}
+  .hero{position:relative;isolation:isolate;color:#fff;padding:34px 16px 30px;clip-path:inset(0 -100vw)}
+  .hero::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:-100vw;right:-100vw;background:
+    repeating-radial-gradient(circle at 70% 120%, rgba(255,255,255,.07) 0 2px, transparent 2px 26px),
+    linear-gradient(160deg,#0A3D44 0%,#14565F 100%)}
+  .hero h1{font-weight:900;font-stretch:118%;font-size:clamp(32px,8.5vw,48px);max-width:none;text-wrap:balance}
   .hero p.sub{margin-top:10px;color:#BFDDE3;max-width:34ch}
   .count{display:flex;gap:10px;margin-top:26px}
   .count div{flex:1;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:12px 4px;text-align:center}
@@ -57,6 +59,9 @@
   .stat{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
   .stat div{flex:1 1 90px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
   .stat b{font-family:var(--head);font-weight:800;font-size:22px;display:block}
+  .statgo{flex:1 1 90px;text-align:left;background:var(--buoy-soft);border:1.5px solid var(--buoy);border-radius:12px;padding:10px 12px;color:var(--ink);font:inherit;cursor:pointer}
+  .statgo b{font-family:var(--head);font-weight:800;font-size:22px;display:block}
+  .statgo span{font-size:12.5px;color:#6B4A00;font-weight:600}
   .stat span{font-size:12.5px;color:var(--ink-soft)}
 
   .seg{display:flex;gap:6px;margin-bottom:16px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:4px}
@@ -235,7 +240,7 @@
   </div>
   <div class="pad">
     <div class="stat">
-      <div><b id="st-covered">–</b><span>must-haves still open</span></div>
+      <button class="statgo" type="button" data-act="mustGo"><b id="st-covered">–</b><span id="st-lbl">Gear list. Tap to open →</span></button>
       <div><b id="st-polls">–</b><span>open polls</span></div>
       <div><b id="st-bal">–</b><span>trip fund balance</span></div>
     </div>
@@ -607,18 +612,19 @@ function setBadge(state,text){ const b=$("#badge"); b.className="badge "+state; 
 function nowait(fn){ return (...a)=>{ try{ const p=fn(...a); if(p&&p.catch) p.catch((e)=>{ console.error("Write:",e); setBadge("off","Couldn't save – check connection or rules"); }); }catch(e){ console.error(e); } return Promise.resolve(); }; }
 const setDoc=nowait(_setDoc), updateDoc=nowait(_updateDoc), deleteDoc=nowait(_deleteDoc);
 
-function statusFromSnap(snap){
-  const m=snap.metadata||{};
-  if(m.hasPendingWrites) setBadge("loc", navigator.onLine?"Saving…":"Saved here · will sync");
-  else if(m.fromCache) setBadge("loc", navigator.onLine?"Connecting…":"Offline · saved copy");
-  else setBadge("on","Synced");
+const snapState={};
+function refreshBadge(){
+  const s=Object.values(snapState); if(!s.length) return;
+  if(s.some(x=>x.pending)) setBadge("loc", navigator.onLine?"Saving…":"Saved here · will sync");
+  else if(s.every(x=>!x.cache)) setBadge("on","Synced");
+  else setBadge("loc", navigator.onLine?"Connecting…":"Offline · saved copy");
 }
 function listen(c,cb){
-  onSnapshot(c,{includeMetadataChanges:true},(snap)=>{ cb(snap.docs.map(d=>({id:d.id,...d.data()}))); statusFromSnap(snap); },
+  onSnapshot(c,{includeMetadataChanges:true},(snap)=>{ cb(snap.docs.map(d=>({id:d.id,...d.data()}))); const m=snap.metadata||{}; snapState[c.path||c.id||Math.random()]={cache:!!m.fromCache,pending:!!m.hasPendingWrites}; refreshBadge(); },
     (err)=>{ console.error("Firestore:",err); setBadge("off","Offline – check rules"); });
 }
-window.addEventListener("offline",()=>setBadge("loc","Offline · saved copy"));
-window.addEventListener("online",()=>setBadge("loc","Reconnecting…"));
+window.addEventListener("offline",refreshBadge);
+window.addEventListener("online",refreshBadge);
 
 if (configured) {
   try {
@@ -698,6 +704,7 @@ function isMineClaim(n){ const cab=myCabin(); return !!myName && (n===myName || 
 function renderHomeStats(){
   const must=items.filter(i=>approved(i)&&mustOf(i)), open=must.filter(i=>!isDone(i)).length;
   $("#st-covered").textContent = must.length ? (open===0?"All set":String(open)) : "–";
+  $("#st-lbl").textContent = !must.length ? "Gear list. Tap to open →" : (open===0 ? "All must-haves covered. See gear →" : `must-have${open===1?"":"s"} still open. Tap to see gear →`);
   $("#st-polls").textContent = mode==="cloud" ? String(polls.filter(p=>p.status!=="decided").length) : "–";
   const f=fundCalc();
   $("#st-bal").textContent = f ? usd(f.bal) : "–";
@@ -920,7 +927,8 @@ document.addEventListener("click", async (e)=>{
   const act=t.dataset.act, id=t.dataset.id;
   const needName=()=>{ if(!myName){ $("#nameMsg").textContent="Enter your name first."; $("#myName").focus(); return true;} return false; };
   try{
-    if(act==="seed"){ await loadStarter(); }
+    if(act==="mustGo"){ gearView="boat"; filter=items.some(i=>approved(i)&&mustOf(i)&&!isDone(i))?"must":"all"; showTab("gear"); renderGear(); if(window.scrollTo) window.scrollTo({top:0}); }
+    else if(act==="seed"){ await loadStarter(); }
     else if(act==="claim"){ if(needName()) return; await claim(id,myLabel()); }
     else if(act==="release"){ await releaseMine(id); }
     else if(act==="remove"){ if(confirm("Remove this item for everyone?")) await removeItem(id); }
