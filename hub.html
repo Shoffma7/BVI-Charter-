@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>BVI 2027 Crew Hub</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0A3D44">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="BVI 2027">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -23,7 +30,8 @@
   :focus-visible{outline:3px solid var(--buoy);outline-offset:2px}
 
   .top{position:sticky;top:0;z-index:50;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top))}
-  .brand{font-family:var(--head);font-weight:800;font-stretch:110%;font-size:17px}
+  .brand{font-family:var(--head);font-weight:800;font-stretch:110%;font-size:17px;background:none;border:0;color:#fff;padding:6px 4px;cursor:pointer}
+  .brand:focus-visible{outline-color:var(--buoy)}
   .badge{font-size:12px;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.12);display:flex;align-items:center;gap:6px}
   .badge i{width:8px;height:8px;border-radius:50%;background:#9aa;display:block}
   .badge.on i{background:#4ADE80}.badge.off i{background:var(--buoy)}.badge.loc i{background:#F5C451}
@@ -76,7 +84,7 @@
 
   .namebar{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .namebar label{font-weight:600;font-size:14px}
-  input[type=text],input[type=number],input[type=date],input[type=tel],select,textarea{font:inherit;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;color:var(--ink);width:100%}
+  input[type=text],input[type=number],input[type=date],input[type=tel],input[type=password],input[type=url],select,textarea{font:inherit;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;color:var(--ink);width:100%}
   .namebar input{flex:1 1 160px;width:auto}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
   .chip{border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:6px 13px;font-size:13.5px;color:var(--ink)}
@@ -145,6 +153,37 @@
   .tabbar button{flex:1;background:none;border:0;color:#9FB8C0;padding:10px 0 9px;font-size:11.5px;display:flex;flex-direction:column;align-items:center;gap:2px}
   .tabbar button .ic{font-size:18px;line-height:1}
   .tabbar button.sel{color:#fff;box-shadow:inset 0 3px 0 var(--buoy)}
+  /* tap targets */
+  .x{min-height:44px;min-width:44px;padding:10px 8px;display:inline-flex;align-items:center;justify-content:center;margin-top:0}
+  .btn{min-height:44px}
+  .seg button,.seg2 button{min-height:44px}
+  .chip{min-height:40px}
+  .row a,.nt a,.n a,.resp a{display:inline-block;padding:11px 2px}
+  .mini{display:flex;gap:2px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+  /* sheets, name chip, banners */
+  .overlay{position:fixed;inset:0;z-index:150;background:rgba(10,61,68,.72);display:none;align-items:flex-end;justify-content:center}
+  .overlay.show{display:flex}
+  .sheet{background:var(--paper);width:min(100%,520px);max-height:90vh;overflow:auto;border-radius:18px 18px 0 0;padding:22px 18px calc(22px + env(safe-area-inset-bottom))}
+  @media(min-width:600px){.overlay{align-items:center}.sheet{border-radius:18px}}
+  .pick{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+  .pick button{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-height:48px;font-weight:600;color:var(--ink)}
+  .pick button small{font-weight:500;color:var(--ink-soft)}
+  .hr{display:flex;align-items:center;gap:8px;min-width:0}
+  .whobtn{background:rgba(255,255,255,.14);border:0;color:#fff;border-radius:99px;padding:8px 13px;font-size:13px;font-weight:600;max-width:34vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:36px}
+  .updbar{position:fixed;left:12px;right:12px;bottom:calc(68px + env(safe-area-inset-bottom));z-index:70;background:var(--ink);color:#fff;border:1.5px solid var(--buoy);border-radius:12px;padding:10px 12px;display:none;align-items:center;justify-content:space-between;gap:10px;font-size:14px}
+  /* home cards */
+  .needs{background:var(--paper);border:1px solid var(--line);border-radius:14px;margin-top:14px;overflow:hidden}
+  .needs h3{font-family:var(--head);font-weight:800;font-size:16px;padding:12px 16px 4px}
+  .need{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--line);padding:12px 16px;min-height:48px;color:var(--ink);font-weight:600}
+  .need .tx{flex:1}
+  .need .go{color:#8A6100;font-size:20px}
+  .allset{padding:6px 16px 14px;color:var(--ok);font-weight:600}
+  .today{border:1.5px solid var(--buoy);background:var(--buoy-soft);border-radius:14px;padding:14px 16px;margin-top:14px}
+  .today b.d{font-family:var(--head);font-weight:800;font-size:19px;display:block}
+  .daytag{font-size:11.5px;font-weight:700;background:var(--buoy);color:#2A1D00;border-radius:99px;padding:2px 9px;margin-left:6px}
+  .dayc.istoday{border:1.5px solid var(--buoy)}
+  .paidrow{display:flex;justify-content:space-between;gap:10px;align-items:center}
+  .lock.ok2{background:var(--ok-soft);color:var(--ok)}
   /* PIN gate */
   #gate{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;background:#0A3D44;overflow:hidden}
   .unlocked #gate{display:none}
@@ -213,23 +252,41 @@
   </form>
 </div>
 <header class="top">
-  <div class="brand">BVI 2027</div>
-  <div class="badge loc" id="badge"><i></i><span id="badgeText">Starting…</span></div>
+  <button class="brand" type="button" data-tab="home" aria-label="Go to Home">⚓ BVI 2027</button>
+  <div class="hr"><button class="whobtn" id="whoBtn" type="button" data-act="whoOpen">Who are you?</button><div class="badge loc" id="badge"><i></i><span id="badgeText">Starting…</span></div></div>
 </header>
 
-<main>
-<div id="nameWrap" style="display:none;padding:16px 16px 0">
-  <div class="namebar">
-    <label for="myName">Your name</label>
-    <input type="text" id="myName" placeholder="e.g. Sam" autocomplete="given-name" maxlength="30">
+<div class="overlay" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welTitle"><div class="sheet">
+  <h2 id="welTitle">Who are you?</h2>
+  <p class="lead" id="welLead">Tap your name so claims, votes and expenses show up as you. You only do this once on this device.</p>
+  <div class="pick" id="welPick"></div>
+  <div class="form">
+    <input type="text" id="myName" placeholder="Not on the list? Type your full name" autocomplete="name" maxlength="40" aria-label="Your name">
+    <button class="btn buoy" type="button" data-act="nameSave">Continue</button>
+    <div class="msg" id="nameMsg"></div>
   </div>
-  <div class="msg" id="nameMsg"></div>
-</div>
+  <button class="x" type="button" data-act="nameCancel" id="welCancel" style="display:none">Cancel</button>
+</div></div>
+
+<div class="overlay" id="orgModal" role="dialog" aria-modal="true" aria-labelledby="orgTitle"><div class="sheet">
+  <h2 id="orgTitle">Organizer sign-in</h2>
+  <p class="lead">For the people managing the plan, the gear list and the fund. Enter the organizer code.</p>
+  <div class="form">
+    <input type="password" id="orgCode2" inputmode="numeric" maxlength="4" placeholder="Code" aria-label="Organizer code">
+    <button class="btn buoy" type="button" data-act="orgOn2">Unlock</button>
+    <div class="msg" id="orgMsg2"></div>
+  </div>
+  <button class="x" type="button" data-act="orgClose">Cancel</button>
+</div></div>
+
+<div class="updbar" id="updBar" role="status"><span>A new version is ready.</span><button class="btn" type="button" data-act="reload">Refresh</button></div>
+
+<main>
 
 <!-- HOME -->
 <section class="tab active" id="tab-home">
   <div class="hero">
-    <h1>BVI Yacht Charter · Feb 12–19</h1>
+    <h1>BVI Yacht Charter&nbsp;· <span style="white-space:nowrap">Feb 12–19</span></h1>
     <p class="sub">One catamaran, six cabins, a week in the British Virgin Islands.</p>
     <div class="count" aria-live="off">
       <div><b id="cd-d">--</b><span>days</span></div>
@@ -244,6 +301,8 @@
       <div><b id="st-polls">–</b><span>open polls</span></div>
       <div><b id="st-bal">–</b><span>trip fund balance</span></div>
     </div>
+    <div id="todayCard"></div>
+    <div id="needsCard"></div>
 
     <div class="block">
       <h2>What we're looking forward to</h2>
@@ -265,8 +324,17 @@
     <div class="block">
       <h2>Everything in one place</h2>
       <p class="lead">Plan has the day-by-day route. Gear stops us bringing duplicates. Polls settle group decisions. Money is the trip fund and daily expenses.</p>
-      <button class="btn" data-tab="plan">See the plan</button>
-      <div style="margin-top:18px"><button class="x" data-act="lock">Lock this device</button></div>
+      <div class="two2" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button class="btn" data-tab="plan">See the plan</button>
+        <button class="btn ghost" data-act="invite">Invite the crew</button>
+      </div>
+      <div class="msg" id="inviteMsg" role="status"></div>
+      <details class="panel" style="margin-top:10px"><summary>Put it on your phone's home screen</summary><div class="inner small">
+        <p style="margin-bottom:6px"><b>iPhone:</b> open the link in Safari, tap the Share button, then Add to Home Screen.</p>
+        <p style="margin-bottom:6px"><b>Android:</b> in Chrome, tap the menu, then Add to Home screen or Install app.</p>
+        <p>Open the icon once with internet. It asks for the PIN and your name again, because an installed icon keeps its own saved data. After that it opens without a signal.</p>
+      </div></details>
+      <div style="margin-top:10px"><button class="x" data-act="lock">Lock this device</button></div>
     </div>
   </div>
 </section>
@@ -274,8 +342,10 @@
 <!-- PLAN -->
 <section class="tab" id="tab-plan"><div class="pad">
   <h2>Week plan</h2>
-  <p class="lead">The skipper fills this in as weather and the crew's votes settle the route. Days lock when saved, so nobody changes them by accident.</p>
+  <p class="lead">The day-by-day route. Organizers fill it in as weather and the crew's votes settle the plan. During the trip, today's card also shows on Home.</p>
   <div class="panel pad2" style="margin-bottom:14px"><b>Already on the list:</b> The Baths, Saba Rock and Virgin Gorda North Sound (two days on Virgin Gorda). Anegada is still open.</div>
+  <div class="panel pad2" style="margin-bottom:14px;border-color:var(--buoy)"><b>Mooring reminder:</b> reservable moorings in the BoatyBall app typically open around 7 a.m. Set up the account and payment the night before. <a href="https://www.boatyball.com" target="_blank" rel="noopener">boatyball.com</a></div>
+  <div id="planOrg"></div>
   <div id="planList"></div>
 </div></section>
 
@@ -326,7 +396,10 @@
         </div>
         <div id="orgOpen" style="display:none">
           <p class="small" style="margin-bottom:8px">Organizer mode is on. Items below now show Must-have and Remove buttons, and suggestions show Approve and Dismiss.</p>
-          <button class="btn ghost" type="button" data-act="orgOff">Turn off organizer mode</button>
+          <div style="display:grid;gap:8px">
+            <button class="btn" type="button" data-act="exportAll">Export everything (backup file)</button>
+            <button class="btn ghost" type="button" data-act="orgOff">Turn off organizer mode</button>
+          </div>
         </div>
       </div></details>
     </div>
@@ -360,7 +433,7 @@
 
   <div id="fundSetup" style="display:none" class="panel pad2">
     <div style="font-weight:600">Set up the fund</div>
-    <p class="small" style="margin:4px 0 8px">Enter your name above first. You'll be the fund holder and the only person who can log entries.</p>
+    <p class="small" style="margin:4px 0 8px">Tap your name at the top first. You'll be the fund holder and the only person who can log entries.</p>
     <div class="form">
       <input type="number" id="fundStart" min="1" step="0.01" placeholder="Starting amount in dollars" aria-label="Starting amount in dollars">
       <button class="btn buoy" type="button" data-act="setupFund">Create the fund</button>
@@ -370,6 +443,8 @@
 
   <div id="fundSummary"></div>
   <div class="msg" id="holderNote"></div>
+  <div id="requests"></div>
+  <div id="paidIn"></div>
 
   <div id="entryWrap" style="display:none" class="panel pad2">
     <div style="font-weight:600;margin-bottom:6px">Log an entry</div>
@@ -388,7 +463,18 @@
     </div>
   </div>
 
+  <details class="panel" id="reqWrap" style="display:none;margin-top:14px"><summary>Paid for something? Ask to be reimbursed</summary><div class="inner">
+    <p class="small" style="margin-bottom:8px">The fund holder will approve it. Once approved, it's logged against the fund.</p>
+    <div class="form" style="margin-top:0">
+      <div class="two2"><input type="number" id="rqAmt" min="0.01" step="0.01" placeholder="Amount ($)" aria-label="Amount you paid"><select id="rqCat" aria-label="Category"></select></div>
+      <input type="text" id="rqNote" placeholder="What was it?" maxlength="100" aria-label="What you paid for">
+      <button class="btn buoy" type="button" data-act="sendReq">Send to the fund holder</button>
+      <div class="msg" id="rqMsg"></div>
+    </div>
+  </div></details>
+
   <div id="fundLog"></div>
+  <div class="block"><button class="btn ghost" type="button" data-act="csv">Download the ledger (CSV)</button></div>
 </div></section>
 
 <!-- CREW -->
@@ -397,6 +483,10 @@
   <h2>The crew</h2>
   <p class="lead">Add yourself so we can find each other on the boat and ashore. Saving a name that's already listed updates that entry.</p>
   <div id="cabinMap"></div>
+  <h3 class="cat" style="margin-top:6px">Arrivals</h3>
+  <p class="small" style="margin-bottom:8px">How everyone is getting to Tortola, so we can meet up on Feb 11.</p>
+  <div id="arrivals"></div>
+  <h3 class="cat">Everyone</h3>
   <div id="crewList"></div>
   <div class="block">
     <h2>Add or update</h2>
@@ -407,6 +497,8 @@
         <select id="cwCabin" aria-label="Cabin"></select>
       </div>
       <input type="tel" id="cwPhone" placeholder="Phone number" maxlength="20" aria-label="Phone number">
+      <input type="text" id="cwArrive" placeholder="Getting there (e.g. AA from MIA, lands Thu Feb 11, 1:48pm)" maxlength="90" aria-label="How you are getting to Tortola">
+      <input type="text" id="cwStay" placeholder="Where you're sleeping the night of Feb 11" maxlength="70" aria-label="Where you are sleeping Feb 11">
       <button class="btn buoy" type="button" data-act="saveCrew">Save</button>
       <div class="msg" id="cwMsg"></div>
     </div>
@@ -463,6 +555,19 @@
     <div class="row"><div><div class="t">Boat page</div><div class="n"><a href="https://www.bviyachtcharters.com/yachts/crude-escape-aura-51/" target="_blank" rel="noopener">Crude Escape on BVI Yacht Charters</a></div></div></div>
   </div>
 
+  <div class="block"><h2>Key dates</h2>
+    <div class="panel">
+      <div class="row"><div><div class="t">Thu, Feb 11</div><div class="n">Travel day. Get to Tortola the day before, close to Road Town.</div></div></div>
+      <div class="row"><div><div class="t">Fri, Feb 12</div><div class="n">Charter starts. Confirm the check-in time with BVI Yacht Charters.</div></div></div>
+      <div class="row"><div><div class="t">Fri, Feb 19</div><div class="n">Off the boat. Confirm the checkout time with the charter company.</div></div></div>
+      <div class="row"><div><div class="t">Sat, Feb 20</div><div class="n">Fly home.</div></div></div>
+    </div>
+  </div>
+
+  <div class="block"><h2>Emergency</h2>
+    <div id="emerg"></div>
+  </div>
+
   <div class="block"><h2>Boat rules</h2>
     <p class="lead">The captain will go over these at the briefing. Reading them first saves the first day.</p>
     <div class="panel">
@@ -478,7 +583,9 @@
 
   <div class="block"><h2>Moorings</h2>
     <div class="panel">
-      <div class="row"><div><div class="t">How they work</div><div class="n">First come, first served, roughly $30–40 a night, paid to the mooring host who comes by dinghy. Popular spots fill by early afternoon.</div></div></div>
+      <div class="row"><div><div class="t">Reservable balls</div><div class="n">Booked ahead in the BoatyBall app for one night, about $55. They typically open around 7 a.m., and you have roughly 4 minutes to pay. Stops it covers include Cooper Island, Saba Rock, Jost Van Dyke, Cane Garden Bay, Soper's Hole, Scrub Island, Marina Cay and Anegada. Check boatyball.com for the current list.</div></div></div>
+      <div class="row"><div><div class="t">First come, first served</div><div class="n">Roughly $30–40 a night. Tie up, then pay in the app or to the mooring host. Some balls belong to local bars. Popular spots fill by early afternoon.</div></div></div>
+      <div class="row"><div><div class="t">Day-use balls</div><div class="n">Near dive and snorkel sites, short stays only.</div></div></div>
       <div class="row"><div><div class="t">Our routine</div><div class="n">Leave the anchorage by about 9am. Pick tomorrow's stop the night before.</div></div></div>
       <div class="row"><div><div class="t">The Baths</div><div class="n">Be there before 9am if we can.</div></div></div>
       <div class="row"><div><div class="t">Anegada</div><div class="n">Call ahead on VHF to the mooring host before arriving, and stay in the marked channel.</div></div></div>
@@ -492,7 +599,9 @@
   <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
   <h2>Links</h2>
   <p class="lead">These open in your browser. Some need their own account, noted below. Download offline charts before we leave home.</p>
+  <div id="sharedLinks"></div>
   <div class="grid2">
+    <a class="link" href="https://www.boatyball.com" target="_blank" rel="noopener"><b>BoatyBall</b><span>Reserve and pay for moorings. Free account.</span></a>
     <a class="link" href="https://www.navionics.com" target="_blank" rel="noopener"><b>Navionics</b><span>Charts. Paid subscription. Download BVI offline.</span></a>
     <a class="link" href="https://activecaptain.garmin.com" target="_blank" rel="noopener"><b>ActiveCaptain</b><span>Anchorage and hazard notes. Free Garmin account.</span></a>
     <a class="link" href="https://www.predictwind.com" target="_blank" rel="noopener"><b>PredictWind</b><span>Forecasts and routing. Free account for basics.</span></a>
@@ -503,8 +612,9 @@
     <a class="link" href="https://www.google.com/search?q=Riteway+Food+Markets+BVI+provisioning" target="_blank" rel="noopener"><b>Provisioning</b><span>Riteway Food Markets in Road Town.</span></a>
     <a class="link" href="https://www.google.com/search?q=Cooper+Island+Beach+Club" target="_blank" rel="noopener"><b>Cooper Island Beach Club</b><span>Possible stop.</span></a>
     <a class="link" href="https://www.google.com/search?q=BVI+tide+chart" target="_blank" rel="noopener"><b>BVI tides</b><span>Tide tables.</span></a>
+    <a class="link" href="https://www.splitwise.com" target="_blank" rel="noopener"><b>Splitwise</b><span>For dinners and costs one person pays outside the fund.</span></a>
+    <a class="link" href="https://www.tripit.com" target="_blank" rel="noopener"><b>TripIt</b><span>Forward flight and hotel emails to keep your own itinerary.</span></a>
   </div>
-  <div class="panel pad2" style="margin-top:16px"><div style="font-weight:600">VHF Channel 16</div><div class="small">Distress and hailing channel monitored by the Coast Guard and other boats. Use another working channel for routine chatter.</div></div>
 </div></section>
 </main>
 
@@ -708,6 +818,7 @@ function renderHomeStats(){
   $("#st-polls").textContent = mode==="cloud" ? String(polls.filter(p=>p.status!=="decided").length) : "–";
   const f=fundCalc();
   $("#st-bal").textContent = f ? usd(f.bal) : "–";
+  renderToday(); renderNeeds();
 }
 
 function renderGear(){
@@ -771,40 +882,99 @@ function renderGear(){
     </label>`).join("")+`</div>`;
 }
 
-/* ───── typing guard so live updates don't wipe what someone is typing ───── */
-const dirty={plan:false,polls:false};
-function guardTyping(box,key){
-  const a=document.activeElement;
-  if(a && box.contains(a) && a.matches("input,textarea,select")){ dirty[key]=true; return true; }
-  dirty[key]=false; return false;
+/* ───── keep what someone is typing when live updates redraw a card ───── */
+function fkey(e){
+  const sc=(e.closest("[data-poll]")||e.closest("[data-day]")||{dataset:{}}).dataset, d=e.dataset;
+  return (sc.poll||sc.day||"")+"|"+(d.f||(d.rk!==undefined?"rk"+d.rk:"")||(d.rs!==undefined?"rs":"")||(d.dc!==undefined?"dc":"")||(d.dr!==undefined?"dr":"")||e.id||"");
 }
-document.addEventListener("focusout",()=>{ setTimeout(()=>{ if(dirty.plan) renderPlan(); if(dirty.polls) renderPolls(); },0); });
+function isEdited(e){
+  if(e.tagName==="SELECT"){ const def=[...e.options].findIndex(o=>o.defaultSelected); return e.selectedIndex!==(def<0?0:def); }
+  return e.value!==e.defaultValue;
+}
+function keepInputs(box,fn){
+  const els=[...box.querySelectorAll("input,textarea,select")];
+  const saved=els.filter(isEdited).map(e=>({k:fkey(e),v:e.value}));
+  const a=document.activeElement, fk=(a&&box.contains(a)&&a.matches("input,textarea,select"))?fkey(a):null;
+  fn();
+  if(!saved.length&&!fk) return;
+  const now=[...box.querySelectorAll("input,textarea,select")];
+  saved.forEach(s=>{ const e=now.find(x=>fkey(x)===s.k); if(e) e.value=s.v; });
+  if(fk){ const e=now.find(x=>fkey(x)===fk); if(e&&e.focus) e.focus(); }
+}
 
 /* ───── plan ───── */
+let editingDay=null;
+const settings=()=>days.find(d=>d.id==="settings")||{};
 function renderPlan(){
   const box=$("#planList");
   if(mode!=="cloud"){ box.innerHTML='<div class="empty">The plan needs sync. Add the Firebase config to hub.html.</div>'; return; }
-  if(guardTyping(box,"plan")) return;
-  if(!days.length){
-    box.innerHTML='<div class="empty"><p style="margin-bottom:10px">No plan yet. Create the eight day cards (Feb 12–19), then the skipper fills them in.</p><button class="btn buoy" data-act="seedPlan">Create the week</button></div>';
+  renderHomeStats(); renderSettings();
+  $("#planOrg").innerHTML = isOrg ? "" : `<div class="small" style="margin-bottom:6px">Only organizers can edit days. <button class="x" type="button" data-act="orgModal">Organizer sign-in</button></div>`;
+  const list=days.filter(d=>String(d.id).startsWith("day-"));
+  if(!list.length){
+    box.innerHTML=`<div class="empty"><p style="margin-bottom:10px">No plan yet.</p>${isOrg?'<button class="btn buoy" data-act="seedPlan">Create the week</button>':'<p class="small">An organizer will set up the eight days.</p>'}</div>`;
     return;
   }
-  const sorted=[...days].sort((a,b)=>(a.order||0)-(b.order||0));
-  box.innerHTML=sorted.map(d=>{
-    if(d.locked===true){
-      const route=(d.from||d.to)?`${esc(d.from||"?")} → ${esc(d.to||"?")}`:"Route not set yet";
+  const ti=tripToday();
+  keepInputs(box,()=>{
+    box.innerHTML=[...list].sort((a,b)=>(a.order||0)-(b.order||0)).map(d=>{
+      const istoday=(d.order||0)-1===ti;
+      if(isOrg && editingDay===d.id){
+        return `<div class="dayc" data-day="${esc(d.id)}"><div class="dh"><b>${esc(d.label)}</b><span class="lock openc">Editing</span></div>
+          <div class="f2"><input type="text" data-f="from" placeholder="From" value="${esc(d.from)}" maxlength="40" aria-label="From"><input type="text" data-f="to" placeholder="To" value="${esc(d.to)}" maxlength="40" aria-label="To"></div>
+          <div class="f2"><input type="text" data-f="depart" placeholder="Depart (e.g. 9:00am)" value="${esc(d.depart)}" maxlength="20" aria-label="Depart"><input type="text" data-f="arrive" placeholder="Arrive (e.g. 1:00pm)" value="${esc(d.arrive)}" maxlength="20" aria-label="Arrive"></div>
+          <input type="text" data-f="moor" placeholder="Mooring (e.g. BoatyBall reserved, or first come)" value="${esc(d.moor)}" maxlength="60" aria-label="Mooring" style="margin-bottom:8px">
+          <textarea data-f="notes" rows="2" placeholder="Notes" maxlength="300" aria-label="Notes">${esc(d.notes)}</textarea>
+          <div style="display:flex;gap:8px;margin-top:10px"><button class="btn" data-act="saveDay" data-id="${esc(d.id)}">Save</button><button class="btn ghost" data-act="cancelDay">Cancel</button></div></div>`;
+      }
+      const has=(d.from||d.to);
+      const route=has?`${esc(d.from||"?")} → ${esc(d.to||"?")}`:"Route not set yet";
       const times=(d.depart||d.arrive)?`<div class="small">${d.depart?"Depart "+esc(d.depart):""}${d.depart&&d.arrive?" · ":""}${d.arrive?"Arrive "+esc(d.arrive):""}</div>`:"";
-      return `<div class="dayc"><div class="dh"><b>${esc(d.label)}</b><span class="lock">Locked</span></div>
-        <div class="route">${route}</div>${times}
+      return `<div class="dayc ${istoday?"istoday":""}"><div class="dh"><b>${esc(d.label)}${istoday?'<span class="daytag">Today</span>':""}</b></div>
+        <div class="route"${has?"":' style="color:var(--ink-mute);font-weight:500"'}>${route}</div>${times}
+        ${d.moor?`<div class="small">Mooring: ${esc(d.moor)}</div>`:""}
         ${d.notes?`<div class="small" style="margin-top:4px">${esc(d.notes)}</div>`:""}
-        <button class="btn ghost" style="margin-top:10px" data-act="unlockDay" data-id="${esc(d.id)}">Unlock to edit</button></div>`;
+        ${isOrg?`<button class="btn ghost" style="margin-top:10px" data-act="editDay" data-id="${esc(d.id)}">Edit</button>`:""}</div>`;
+    }).join("");
+  });
+}
+
+/* ───── trip day, Today card, Needs-you card ───── */
+function tripToday(){
+  const q=new URLSearchParams(location.search).get("today");
+  const iso=(q&&/^\d{4}-\d{2}-\d{2}$/.test(q))?q:new Date(Date.now()-4*3600e3).toISOString().slice(0,10);
+  const i=Math.round((Date.parse(iso+"T00:00:00Z")-Date.UTC(2027,1,12))/864e5);
+  return (i>=0&&i<8)?i:-1;
+}
+function renderToday(){
+  const box=$("#todayCard"), i=tripToday();
+  if(i<0){ box.innerHTML=""; return; }
+  const d=days.find(x=>x.id==="day-"+(i+1))||{label:(i<7?"Day "+(i+1):"Return day")+" · "+fmtDay(i)};
+  const route=(d.from||d.to)?`${esc(d.from||"?")} → ${esc(d.to||"?")}`:"Route not set yet. Ask the skipper.";
+  const times=(d.depart||d.arrive)?`<div class="small">${d.depart?"Depart "+esc(d.depart):""}${d.depart&&d.arrive?" · ":""}${d.arrive?"Arrive "+esc(d.arrive):""}</div>`:"";
+  box.innerHTML=`<div class="today"><div class="small" style="font-weight:700">TODAY</div><b class="d">${esc(d.label)}</b><div class="route">${route}</div>${times}${d.moor?`<div class="small">Mooring: ${esc(d.moor)}</div>`:""}${d.notes?`<div class="small" style="margin-top:4px">${esc(d.notes)}</div>`:""}<button class="btn" style="margin-top:10px" data-tab="plan">Open the plan</button></div>`;
+}
+function renderNeeds(){
+  const box=$("#needsCard"); if(!box) return;
+  const rows=[], add=(i,t,attr)=>rows.push(`<button class="need" type="button" ${attr}><span aria-hidden="true">${i}</span><span class="tx">${esc(t)}</span><span class="go" aria-hidden="true">›</span></button>`);
+  if(!myName) add("👋","Tell us who you are",'data-act="whoOpen"');
+  else if(mode==="cloud"){
+    const mc=myCrew();
+    if(!mc) add("👥","Add yourself to the crew list",'data-act="meEdit"');
+    else {
+      if(!mc.cabin||mc.cabin==="Not assigned") add("🛏️","Pick your cabin",'data-act="meEdit"');
+      if(!mc.phone) add("📱","Add your phone number",'data-act="meEdit"');
+      if(!mc.arrive) add("✈️","Add how you're getting to Tortola",'data-act="meEdit"');
     }
-    return `<div class="dayc" data-day="${esc(d.id)}"><div class="dh"><b>${esc(d.label)}</b><span class="lock openc">Editing</span></div>
-      <div class="f2"><input type="text" data-f="from" placeholder="From" value="${esc(d.from)}" maxlength="40" aria-label="From"><input type="text" data-f="to" placeholder="To" value="${esc(d.to)}" maxlength="40" aria-label="To"></div>
-      <div class="f2"><input type="text" data-f="depart" placeholder="Depart (e.g. 9:00am)" value="${esc(d.depart)}" maxlength="20" aria-label="Depart"><input type="text" data-f="arrive" placeholder="Arrive (e.g. 1:00pm)" value="${esc(d.arrive)}" maxlength="20" aria-label="Arrive"></div>
-      <textarea data-f="notes" rows="2" placeholder="Notes" maxlength="300" aria-label="Notes">${esc(d.notes)}</textarea>
-      <button class="btn" style="margin-top:10px" data-act="saveDay" data-id="${esc(d.id)}">Save and lock</button></div>`;
-  }).join("");
+    polls.filter(p=>p.status!=="decided" && !(p.responses&&p.responses[keyOf(myName)])).forEach(p=>add("🗳️","Vote: "+p.q,'data-tab="polls"'));
+    const cfg=ledger.find(e=>e.id==="config");
+    if(cfg && String(cfg.holder).toLowerCase()===myName.toLowerCase()){
+      const n=ledger.filter(e=>e.kind==="request"&&!e.voided).length;
+      if(n) add("💵",`${n} expense${n===1?"":"s"} waiting for your OK`,'data-tab="money"');
+    }
+    if(isOrg){ const n=items.filter(i=>!approved(i)).length; if(n) add("🎒",`${n} gear suggestion${n===1?"":"s"} to review`,'data-tab="gear"'); }
+  }
+  box.innerHTML=`<div class="needs"><h3>Needs you</h3>${rows.length?rows.join(""):'<div class="allset">You\'re all caught up. ✓</div>'}</div>`;
 }
 
 /* ───── polls ───── */
@@ -840,9 +1010,8 @@ function pollHtml(p){
 function renderPolls(){
   const box=$("#pollList");
   if(mode!=="cloud"){ box.innerHTML='<div class="empty">Polls need sync. Add the Firebase config to hub.html.</div>'; return; }
-  if(guardTyping(box,"polls")) return;
   if(!polls.length){ box.innerHTML='<div class="empty">No polls yet. Start one above.</div>'; return; }
-  box.innerHTML=[...polls].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).map(pollHtml).join("");
+  keepInputs(box,()=>{ box.innerHTML=[...polls].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).map(pollHtml).join(""); });
 }
 
 /* ───── money ───── */
@@ -855,8 +1024,12 @@ function fundCalc(){
   const total=(cfg.start||0)+top;
   return {cfg,spent,top,total,bal:total-spent,pct:total?(total-spent)/total:0};
 }
+function cabinCouples(){
+  return [1,2,3,4,5,6].map(n=>{ const w=crew.filter(c=>String(c.cabin)===String(n)); return {n,names:w.map(c=>String(c.name||"").split(" ")[0]).filter(Boolean).sort()}; }).filter(x=>x.names.length);
+}
 function renderMoney(){
   const cfg=ledger.find(e=>e.id==="config");
+  $("#requests").innerHTML=""; $("#paidIn").innerHTML=""; $("#reqWrap").style.display="none";
   if(mode!=="cloud"){
     $("#fundSetup").style.display="none"; $("#entryWrap").style.display="none"; $("#fundLog").innerHTML="";
     $("#fundSummary").innerHTML='<div class="empty">The fund needs sync. Add the Firebase config to hub.html.</div>'; return;
@@ -866,14 +1039,41 @@ function renderMoney(){
   const f=fundCalc();
   const holderOk = !!myName && String(cfg.holder).toLowerCase()===myName.toLowerCase();
   $("#entryWrap").style.display = holderOk?"block":"none";
-  $("#holderNote").textContent = holderOk?"":`Only ${cfg.holder}, the fund holder, can log entries. Enter your name above if that's you.`;
+  $("#holderNote").textContent = holderOk?"":`Only ${cfg.holder}, the fund holder, can log entries. Tap your name at the top if that's you.`;
+  $("#reqWrap").style.display = (!holderOk && myName) ? "block" : "none";
+  // waiting for approval
+  const reqs=ledger.filter(e=>e.kind==="request"&&!e.voided).filter(e=>holderOk||e.by===myName).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+  if(reqs.length){
+    $("#requests").innerHTML=`<h3 class="cat">Waiting for approval</h3><div class="panel">`+reqs.map(e=>`<div class="row"><div style="flex:1"><div class="t">${esc(e.note||e.cat)}</div><div class="n">${esc(e.cat)} · asked by ${esc(e.by)}</div></div><div style="text-align:right"><div class="amt">${usd(e.amount||0)}</div>${holderOk?`<div class="mini"><button class="btn" data-act="approveReq" data-id="${esc(e.id)}">Approve</button><button class="x" data-act="declineReq" data-id="${esc(e.id)}">Decline</button></div>`:`<div class="small">Waiting</div>`}</div></div>`).join("")+`</div>`;
+  }
+  // paid in
+  const couples=cabinCouples(), pbox=$("#paidIn");
+  const paidEntries=ledger.filter(e=>e.kind==="paid"&&!e.voided);
+  keepInputs(pbox,()=>{
+    if(!couples.length){ pbox.innerHTML=`<h3 class="cat">Paid in</h3><div class="empty">Assign cabins under Info, then Crew, to track who has paid into the fund.</div>`; return; }
+    const share=cfg.share||0;
+    const rowsHtml=couples.map(c=>{
+      const paid=paidEntries.filter(e=>String(e.who)===String(c.n)).reduce((a,e)=>a+(e.amount||0),0);
+      const ok=share>0 && paid>=share;
+      const status=share>0?(ok?`<span class="lock ok2">Paid</span>`:`<span class="lock openc">Owes ${usd(share-paid)}</span>`):`<span class="small">${usd(paid)} paid</span>`;
+      return `<div class="row paidrow"><div><div class="t">Cabin ${c.n} · ${esc(c.names.join(" & "))}</div><div class="n">${share>0?`${usd(paid)} of ${usd(share)}`:`${usd(paid)} paid in`}</div></div>${status}</div>`;
+    }).join("");
+    const recent=paidEntries.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,6).map(e=>`<div class="row paidrow"><div class="small">${esc(e.date||"")} · ${esc(e.note||"Cabin "+e.who)} · ${usd(e.amount||0)}</div>${holderOk?`<button class="x" data-act="void" data-id="${esc(e.id)}">Void</button>`:""}</div>`).join("");
+    pbox.innerHTML=`<h3 class="cat">Paid in</h3><div class="panel">${rowsHtml}</div>`+
+      (holderOk?`<div class="panel pad2" style="margin-top:10px"><div style="font-weight:600;margin-bottom:6px">Record a payment</div><div class="form" style="margin-top:0">
+        <div class="two2"><select id="pdCabin" aria-label="Which cabin paid">${couples.map(c=>`<option value="${c.n}">Cabin ${c.n} · ${esc(c.names.join(" & "))}</option>`).join("")}</select><input type="number" id="pdAmt" min="0.01" step="0.01" placeholder="Amount ($)" aria-label="Amount paid in"></div>
+        <button class="btn buoy" type="button" data-act="recordPaid">Record payment</button>
+        <div class="two2" style="margin-top:6px"><input type="number" id="pdShare" min="0" step="0.01" placeholder="Each couple's share ($)" value="${share?(share/100):""}" aria-label="Each couple's share in dollars"><button class="btn ghost" type="button" data-act="setShare">Set share</button></div>
+        <div class="msg" id="pdMsg"></div></div></div>`:"")+
+      (recent?`<div style="margin-top:8px">${recent}</div>`:"");
+  });
   const low=f.pct<=(cfg.alertPct||20)/100;
   $("#fundSummary").innerHTML=`<div class="panel pad2" style="margin-bottom:12px">
     <div class="small">Balance</div><div class="big">${usd(f.bal)}</div>
     <div class="bar ${low?"low":""}"><i style="width:${Math.max(0,Math.min(100,Math.round(f.pct*100)))}%"></i></div>
     <div class="small">${usd(f.spent)} spent of ${usd(f.total)}${f.top?` (includes ${usd(f.top)} in top-ups)`:""} · held by ${esc(cfg.holder)}</div>
     ${low?`<div class="warn" style="margin:10px 0 0">The balance is under ${cfg.alertPct||20}% of the fund. Time to pass the hat.</div>`:""}</div>`;
-  const entries=ledger.filter(e=>e.id!=="config"&&e.kind).sort((a,b)=>String(b.date).localeCompare(String(a.date))||(b.createdAt||0)-(a.createdAt||0));
+  const entries=ledger.filter(e=>e.id!=="config"&&e.kind&&e.kind!=="paid"&&e.kind!=="request").sort((a,b)=>String(b.date).localeCompare(String(a.date))||(b.createdAt||0)-(a.createdAt||0));
   if(!entries.length){ $("#fundLog").innerHTML='<div class="empty">No entries yet.</div>'; return; }
   const groups={}; entries.forEach(e=>{(groups[e.date]=groups[e.date]||[]).push(e)});
   const emoji=(c)=>(LCATS.find(x=>x[0]===c)||["","💬"])[1];
@@ -897,6 +1097,8 @@ function renderCrew(){
   const box=$("#crewList"), map=$("#cabinMap");
   if(mode!=="cloud"){ box.innerHTML='<div class="empty">The crew list needs sync. Add the Firebase config to hub.html.</div>'; map.innerHTML=""; return; }
   const sorted=[...crew].sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+  renderHomeStats();
+  $("#arrivals").innerHTML = sorted.length ? '<div class="panel" style="margin-bottom:6px">'+sorted.map(c=>`<div class="row"><div><div class="t">${esc(c.name)}</div><div class="n">${c.arrive?esc(c.arrive):'<span style="color:var(--ink-mute)">Not entered yet</span>'}${c.stay?` · Night before: ${esc(c.stay)}`:""}</div></div></div>`).join("")+'</div>' : '<div class="empty">Nobody yet.</div>';
   map.innerHTML='<div class="panel" style="margin-bottom:14px">'+[1,2,3,4,5,6].map(n=>{
     const who=sorted.filter(c=>String(c.cabin)===String(n)).map(c=>esc(c.name));
     return `<div class="row"><div><div class="t">Cabin ${n}</div><div class="n">${who.length?who.join(", "):"Open"}</div></div></div>`;
@@ -910,13 +1112,72 @@ function renderCrew(){
       <div class="body"><div class="nm">${esc(c.name)}</div>
       <div class="nt">${esc(c.role||"Crew")}${cab}</div>
       ${c.phone?`<div class="nt"><a href="tel:${esc(tel)}">${esc(c.phone)}</a></div>`:""}</div>
-      <div style="text-align:right"><button class="x" data-act="editCrew" data-id="${esc(c.id)}">Edit</button><br><button class="x" data-act="delCrew" data-id="${esc(c.id)}">Remove</button></div></div>`;
+      <div class="mini"><button class="x" data-act="editCrew" data-id="${esc(c.id)}">Edit</button><button class="x" data-act="delCrew" data-id="${esc(c.id)}">Remove</button></div></div>`;
   }).join("")+'</div>';
 }
 
+function fillCrewForm(c){
+  $("#cwName").value=c.name||""; $("#cwRole").value=c.role||"Crew"; $("#cwCabin").value=c.cabin||"Not assigned"; $("#cwPhone").value=c.phone||"";
+  $("#cwArrive").value=c.arrive||""; $("#cwStay").value=c.stay||"";
+  $("#cwMsg").textContent="Editing "+c.name+". Change what you need and tap Save.";
+}
 const todayStr=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");};
 
-function renderAll(){ renderGear(); renderPlan(); renderPolls(); renderMoney(); renderCrew(); }
+function renderAll(){ renderWho(); renderGear(); renderPlan(); renderPolls(); renderMoney(); renderCrew(); renderSettings(); }
+
+/* ───── settings: emergency card and shared links ───── */
+const safeUrl=(u)=>/^https:\/\//i.test(String(u||""))?String(u):"";
+function renderSettings(){
+  const s=settings(), box=$("#emerg"), sl=$("#sharedLinks");
+  const typing=(el)=>el&&el.matches&&el.matches("input,textarea");
+  if(box && !(box.contains(document.activeElement)&&typing(document.activeElement))){
+    box.innerHTML=`<div class="panel pad2">
+      <div class="row" style="padding-top:0"><div><div class="t">VHF Channel 16</div><div class="n">Distress and hailing channel monitored by the Coast Guard and other boats. Use another working channel for routine chatter.</div></div></div>
+      <div class="row"><div><div class="t">Charter base</div><div class="n"><a href="tel:+12844944289">+1 284-494-4289</a> · from the US <a href="tel:+18886154006">888-615-4006</a></div></div></div>
+      <div class="row" style="border-bottom:0"><div><div class="t">Captain, hospital and local numbers</div><div class="n">${s.emergency?esc(s.emergency).replace(/\n/g,"<br>"):'<span style="color:var(--ink-mute)">Not filled in yet. The organizers will add the captain\'s inReach number, the nearest hospital and local emergency numbers before the trip.</span>'}</div></div></div>
+      ${isOrg?`<textarea id="emText" rows="4" maxlength="600" placeholder="One per line" aria-label="Emergency numbers">${esc(s.emergency||"")}</textarea><button class="btn" style="margin-top:8px" data-act="saveEmerg">Save</button><div class="msg" id="emMsg"></div>`:`<button class="x" type="button" data-act="orgModal">Organizer sign-in to edit</button>`}
+    </div>`;
+  }
+  if(sl && !(sl.contains(document.activeElement)&&typing(document.activeElement))){
+    const a=safeUrl(s.album), pl=safeUrl(s.playlist);
+    sl.innerHTML=((a||pl)?`<div class="grid2" style="margin-bottom:10px">${a?`<a class="link" href="${esc(a)}" target="_blank" rel="noopener"><b>📷 Photo album</b><span>Add your photos here.</span></a>`:""}${pl?`<a class="link" href="${esc(pl)}" target="_blank" rel="noopener"><b>🎵 Playlist</b><span>Add songs for the boat.</span></a>`:""}</div>`:`<div class="empty" style="margin-bottom:10px">The shared photo album and playlist links will show up here.</div>`)+
+      (isOrg?`<details class="panel" style="margin-bottom:10px"><summary>Set the album and playlist links</summary><div class="inner"><div class="form"><input type="url" id="slAlbum" placeholder="Shared photo album link (https://…)" value="${esc(s.album||"")}" aria-label="Photo album link"><input type="url" id="slPlaylist" placeholder="Shared playlist link (https://…)" value="${esc(s.playlist||"")}" aria-label="Playlist link"><button class="btn" data-act="saveLinks">Save links</button><div class="msg" id="slMsg"></div></div></div></details>`:"");
+  }
+}
+
+/* ───── who are you ───── */
+const firstName=(n)=>String(n||"").trim().split(/\s+/)[0]||"";
+function renderWho(){ $("#whoBtn").textContent = myName ? firstName(myName) : "Who are you?"; }
+function renderWelcomeList(){
+  const sorted=[...crew].sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+  $("#welPick").innerHTML = sorted.map(c=>`<button type="button" data-act="namePick" data-id="${esc(c.id)}"><span>${esc(c.name)}</span><small>${(c.cabin&&c.cabin!=="Not assigned")?"Cabin "+esc(c.cabin):""}</small></button>`).join("");
+}
+function openWelcome(canCancel){
+  renderWelcomeList(); $("#welCancel").style.display=canCancel?"inline-flex":"none"; $("#nameMsg").textContent="";
+  $("#welcome").classList.add("show");
+}
+function setName(v){
+  myName=v; lsSet("bviHubName",myName); $("#welcome").classList.remove("show"); $("#myName").value="";
+  renderAll();
+}
+function tryOrg(codeSel,msgSel){
+  if($(codeSel).value.trim()===ORG_CODE){ isOrg=true; try{localStorage.setItem("bviHubOrg","1")}catch(e){} $(codeSel).value=""; $(msgSel).textContent=""; $("#orgModal").classList.remove("show"); renderAll(); return true; }
+  $(msgSel).textContent="That code isn't right."; return false;
+}
+
+/* ───── downloads ───── */
+function download(name,text,type){
+  const b=new Blob([text],{type}), u=URL.createObjectURL(b), a=document.createElement("a");
+  a.href=u; a.download=name; document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(u); a.remove(); },1500);
+}
+const csvCell=(v)=>{ const s=String(v??""); return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s; };
+function ledgerCsv(){
+  const rows=[["Date","Type","Category","Note","Amount","By","Status"]];
+  ledger.filter(e=>e.id!=="config"&&e.kind).sort((a,b)=>String(a.date).localeCompare(String(b.date))||(a.createdAt||0)-(b.createdAt||0))
+    .forEach(e=>rows.push([e.date||"",e.kind,e.cat||"",e.note||"",((e.amount||0)/100).toFixed(2),e.by||"",e.voided?"voided":(e.kind==="request"?"waiting":"ok")]));
+  return rows.map(r=>r.map(csvCell).join(",")).join("\n");
+}
 
 /* ───── events ───── */
 document.addEventListener("click", async (e)=>{
@@ -925,9 +1186,60 @@ document.addEventListener("click", async (e)=>{
   if(t.dataset.tab){ showTab(t.dataset.tab); return; }
   if(t.dataset.filter){ filter=t.dataset.filter; renderGear(); return; }
   const act=t.dataset.act, id=t.dataset.id;
-  const needName=()=>{ if(!myName){ $("#nameMsg").textContent="Enter your name first."; $("#myName").focus(); return true;} return false; };
+  const needName=()=>{ if(!myName){ openWelcome(true); return true;} return false; };
   try{
-    if(act==="mustGo"){ gearView="boat"; filter=items.some(i=>approved(i)&&mustOf(i)&&!isDone(i))?"must":"all"; showTab("gear"); renderGear(); if(window.scrollTo) window.scrollTo({top:0}); }
+    if(act==="whoOpen"){ openWelcome(!!myName); }
+    else if(act==="nameCancel"){ $("#welcome").classList.remove("show"); }
+    else if(act==="nameSave"){ const v=$("#myName").value.trim(); if(!v){ $("#nameMsg").textContent="Type your name, or tap it in the list above."; return; } setName(v); }
+    else if(act==="namePick"){ const c=crew.find(x=>x.id===id); if(c) setName(c.name); }
+    else if(act==="orgModal"){ $("#orgModal").classList.add("show"); $("#orgMsg2").textContent=""; setTimeout(()=>{ try{$("#orgCode2").focus()}catch(e){} },30); }
+    else if(act==="orgClose"){ $("#orgModal").classList.remove("show"); }
+    else if(act==="orgOn2"){ tryOrg("#orgCode2","#orgMsg2"); }
+    else if(act==="reload"){ location.reload(); }
+    else if(act==="invite"){
+      const url=location.origin+location.pathname, text=`Join our BVI crew hub: ${url}\nPIN: ${PIN}\nOpen it once with internet so it works offline on the boat. On iPhone: Share, then Add to Home Screen.`;
+      let done=false;
+      if(navigator.share){ try{ await navigator.share({title:"BVI 2027 crew hub",text}); done=true; }catch(err){ if(err&&err.name==="AbortError") return; } }
+      if(!done){ try{ await navigator.clipboard.writeText(text); done=true; $("#inviteMsg").textContent="Copied. Paste it into your group text."; }catch(err){} }
+      if(!done) $("#inviteMsg").textContent="Couldn't copy. Send this by hand: "+url+" PIN "+PIN;
+    }
+    else if(act==="csv"){ download("bvi-fund-"+todayStr()+".csv",ledgerCsv(),"text/csv"); }
+    else if(act==="exportAll"){ download("bvi-hub-backup-"+todayStr()+".json",JSON.stringify({exportedAt:new Date().toISOString(),gear:items,plan:days,polls,ledger,crew},null,2),"application/json"); }
+    else if(act==="editDay"){ editingDay=id; renderPlan(); }
+    else if(act==="cancelDay"){ editingDay=null; renderPlan(); }
+    else if(act==="meEdit"){
+      showTab("crew"); const c=myCrew();
+      if(c) fillCrewForm(c); else { $("#cwName").value=myName; $("#cwMsg").textContent="Pick your cabin, add your phone and how you're arriving, then tap Save."; }
+      { const f=$("#crewForm"); if(f.scrollIntoView) f.scrollIntoView({behavior:"smooth",block:"center"}); }
+    }
+    else if(act==="sendReq"){
+      if(needName()) return;
+      const dollars=parseFloat($("#rqAmt").value);
+      if(!(dollars>0)){ $("#rqMsg").textContent="Enter the amount you paid."; return; }
+      await setDoc(doc(collection(db,"hubLedger")),{kind:"request",amount:Math.round(dollars*100),cat:$("#rqCat").value,note:$("#rqNote").value.trim(),date:todayStr(),by:myName,createdAt:Date.now(),voided:false});
+      $("#rqAmt").value=""; $("#rqNote").value=""; $("#rqMsg").textContent="Sent. The fund holder will see it.";
+    }
+    else if(act==="approveReq"){ const e2=ledger.find(x=>x.id===id); if(e2) await updateDoc(doc(db,"hubLedger",id),{kind:"expense",note:(e2.note?e2.note+" ":"")+"(paid by "+e2.by+")",approvedBy:myName}); }
+    else if(act==="declineReq"){ if(confirm("Decline this request?")) await updateDoc(doc(db,"hubLedger",id),{voided:true,voidedBy:myName}); }
+    else if(act==="recordPaid"){
+      const dollars=parseFloat($("#pdAmt").value), n=$("#pdCabin").value;
+      if(!(dollars>0)){ $("#pdMsg").textContent="Enter the amount."; return; }
+      const c=cabinCouples().find(x=>String(x.n)===String(n));
+      await setDoc(doc(collection(db,"hubLedger")),{kind:"paid",who:String(n),amount:Math.round(dollars*100),cat:"Paid in",note:"Cabin "+n+" · "+(c?c.names.join(" & "):""),date:todayStr(),by:myName,createdAt:Date.now(),voided:false});
+      $("#pdAmt").value=""; $("#pdMsg").textContent="Recorded.";
+    }
+    else if(act==="setShare"){
+      const dollars=parseFloat($("#pdShare").value);
+      if(!(dollars>=0)){ $("#pdMsg").textContent="Enter each couple's share."; return; }
+      await updateDoc(doc(db,"hubLedger","config"),{share:Math.round(dollars*100)}); $("#pdMsg").textContent="Share set.";
+    }
+    else if(act==="saveEmerg"){ await setDoc(doc(db,"hubPassage","settings"),{emergency:$("#emText").value.trim()},{merge:true}); $("#emMsg").textContent="Saved."; }
+    else if(act==="saveLinks"){
+      const a=$("#slAlbum").value.trim(), pl=$("#slPlaylist").value.trim();
+      if((a&&!safeUrl(a))||(pl&&!safeUrl(pl))){ $("#slMsg").textContent="Links must start with https://"; return; }
+      await setDoc(doc(db,"hubPassage","settings"),{album:a,playlist:pl},{merge:true}); $("#slMsg").textContent="Saved.";
+    }
+    else if(act==="mustGo"){ gearView="boat"; filter=items.some(i=>approved(i)&&mustOf(i)&&!isDone(i))?"must":"all"; showTab("gear"); renderGear(); if(window.scrollTo) window.scrollTo({top:0}); }
     else if(act==="seed"){ await loadStarter(); }
     else if(act==="claim"){ if(needName()) return; await claim(id,myLabel()); }
     else if(act==="release"){ await releaseMine(id); }
@@ -935,10 +1247,9 @@ document.addEventListener("click", async (e)=>{
     else if(act==="toggleMust"){ const it=items.find(i=>i.id===id); if(it) await patchItem(id,{must:!mustOf(it)}); }
     else if(act==="approve"){ await patchItem(id,{status:"ok"}); }
     else if(act==="orgOn"){
-      if($("#orgCode").value.trim()===ORG_CODE){ isOrg=true; try{localStorage.setItem("bviHubOrg","1")}catch(e){} $("#orgCode").value=""; $("#orgMsg").textContent=""; renderGear(); }
-      else { $("#orgMsg").textContent="That code isn't right."; }
+      tryOrg("#orgCode","#orgMsg");
     }
-    else if(act==="orgOff"){ isOrg=false; try{localStorage.removeItem("bviHubOrg")}catch(e){} renderGear(); }
+    else if(act==="orgOff"){ isOrg=false; editingDay=null; try{localStorage.removeItem("bviHubOrg")}catch(e){} renderAll(); }
 
     else if(act==="seedPlan"){
       for(const s of PLAN_SEEDS){ const {id:did,...rest}=s; await setDoc(doc(db,"hubPassage",did),rest,{merge:true}); }
@@ -947,7 +1258,9 @@ document.addEventListener("click", async (e)=>{
     else if(act==="saveDay"){
       const card=document.querySelector(`[data-day="${CSS.escape(id)}"]`);
       const v=(f)=>card.querySelector(`[data-f="${f}"]`).value.trim();
-      await updateDoc(doc(db,"hubPassage",id),{from:v("from"),to:v("to"),depart:v("depart"),arrive:v("arrive"),notes:v("notes"),locked:true});
+      const fields={from:v("from"),to:v("to"),depart:v("depart"),arrive:v("arrive"),moor:v("moor"),notes:v("notes"),locked:true};
+      editingDay=null;
+      await updateDoc(doc(db,"hubPassage",id),fields);
     }
 
     else if(act==="postPoll"){
@@ -990,14 +1303,13 @@ document.addEventListener("click", async (e)=>{
     else if(act==="saveCrew"){
       const name=$("#cwName").value.trim();
       if(!name){ $("#cwMsg").textContent="Enter a name."; return; }
-      await setDoc(doc(db,"hubCrew",keyOf(name.toLowerCase())),{name,role:$("#cwRole").value,cabin:$("#cwCabin").value,phone:$("#cwPhone").value.trim(),by:myName||"",updatedAt:Date.now()});
-      ["#cwName","#cwPhone"].forEach(s=>$(s).value=""); $("#cwCabin").value="Not assigned"; $("#cwRole").value="Crew";
+      await setDoc(doc(db,"hubCrew",keyOf(name.toLowerCase())),{name,role:$("#cwRole").value,cabin:$("#cwCabin").value,phone:$("#cwPhone").value.trim(),arrive:$("#cwArrive").value.trim(),stay:$("#cwStay").value.trim(),by:myName||"",updatedAt:Date.now()});
+      ["#cwName","#cwPhone","#cwArrive","#cwStay"].forEach(s=>$(s).value=""); $("#cwCabin").value="Not assigned"; $("#cwRole").value="Crew";
       $("#cwMsg").textContent="Saved.";
     }
     else if(act==="editCrew"){
       const c=crew.find(x=>x.id===id); if(!c) return;
-      $("#cwName").value=c.name||""; $("#cwRole").value=c.role||"Crew"; $("#cwCabin").value=c.cabin||"Not assigned"; $("#cwPhone").value=c.phone||"";
-      $("#cwMsg").textContent="Editing "+c.name+". Change what you need and tap Save.";
+      fillCrewForm(c);
       { const f=$("#crewForm"); if(f.scrollIntoView) f.scrollIntoView({behavior:"smooth",block:"center"}); }
     }
     else if(act==="delCrew"){
@@ -1019,11 +1331,11 @@ document.addEventListener("change",(e)=>{
   checks[c.dataset.chk]=c.checked; lsSet("bviHubChecks",checks); renderGear();
 });
 
-const nameInput=$("#myName"); nameInput.value=myName;
-nameInput.addEventListener("input",()=>{ myName=nameInput.value.trim(); lsSet("bviHubName",myName); $("#nameMsg").textContent=""; renderAll(); });
+$("#myName").addEventListener("keydown",(e)=>{ if(e.key==="Enter"){ e.preventDefault(); $("#myName").blur(); const v=$("#myName").value.trim(); if(v) setName(v); } });
 
 $("#addCat").innerHTML = CATS.map(c=>`<option>${esc(c)}</option>`).join("");
 $("#exCat").innerHTML = LCATS.map(c=>`<option>${esc(c[0])}</option>`).join("");
+$("#rqCat").innerHTML = LCATS.map(c=>`<option>${esc(c[0])}</option>`).join("");
 $("#cwRole").innerHTML = ROLES.map(r=>`<option>${esc(r)}</option>`).join("");
 $("#cwCabin").innerHTML = ["Not assigned","1","2","3","4","5","6"].map(c=>`<option value="${c}">${c==="Not assigned"?c:"Cabin "+c}</option>`).join("");
 $("#exDate").value = todayStr();
@@ -1051,9 +1363,12 @@ function showTab(name){
   const bar=["boat","links","crew"].includes(name)?"info":name;
   document.querySelectorAll(".tabbar button").forEach(b=>b.classList.toggle("sel",b.dataset.tab===bar));
   document.querySelectorAll(".seg button").forEach(b=>b.classList.toggle("sel",b.dataset.tab===name));
-  $("#nameWrap").style.display=["gear","polls","money"].includes(name)?"block":"none";
+  try{ history.replaceState(null,"","#"+name); }catch(e){}
   window.scrollTo({top:0});
 }
+const TABS=["home","plan","gear","polls","money","info","crew","boat","links"];
+function routeFromHash(){ const t=(location.hash||"").replace("#",""); if(TABS.includes(t)) showTab(t); }
+window.addEventListener("hashchange",routeFromHash);
 
 /* ───── countdown to Feb 12 2027, 8:00 AM Atlantic Standard Time (12:00 UTC) ───── */
 const TARGET=Date.UTC(2027,1,12,12,0,0);
@@ -1067,11 +1382,14 @@ function tick(){
   $("#cd-s").textContent=String(s%60).padStart(2,"0");
 }
 tick(); setInterval(tick,1000);
+const initialTab=(location.hash||"").replace("#","");
 showTab("home");
 renderAll();
+if(TABS.includes(initialTab)) showTab(initialTab);
 
 /* ───── PIN gate (a courtesy lock for the crew, not security) ───── */
 const PIN="0212";
+const BUILD="r1";   // bumped on every release so open copies know a newer one exists
 function tryPin(){
   const v=$("#pin").value.replace(/\D/g,"");
   if(v.length<4) return;
@@ -1079,12 +1397,26 @@ function tryPin(){
     try{localStorage.setItem("bviHubPin","ok")}catch(e){}
     document.documentElement.classList.add("unlocked");
     $("#pinMsg").textContent="";
+    if(!myName) openWelcome(false);
   } else { $("#pinMsg").textContent="That PIN isn't right. Try again."; $("#pin").value=""; }
 }
 $("#pinForm").addEventListener("submit",(e)=>{ e.preventDefault(); tryPin(); });
 $("#pin").addEventListener("input",()=>{ $("#pinMsg").textContent=""; if($("#pin").value.length>=4) tryPin(); });
 if(!document.documentElement.classList.contains("unlocked")) $("#pin").focus();
+else if(!myName) openWelcome(false);
+
+/* new version banner: ask the service worker to look for a newer hub.html now and whenever the app comes back to the screen */
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.addEventListener("message",(e)=>{ if(e.data&&e.data.type==="updated") $("#updBar").style.display="flex"; });
+  const askCheck=()=>{ navigator.serviceWorker.ready.then(r=>{ if(r.active) r.active.postMessage({type:"check",build:BUILD}); }).catch(()=>{}); };
+  setTimeout(askCheck,2500);
+  document.addEventListener("visibilitychange",()=>{ if(document.visibilityState==="visible") askCheck(); });
+}
 
 </script>
 </body>
 </html>
+
+<!-- v-next -->
+
+<!-- v-next -->
