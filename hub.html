@@ -65,7 +65,7 @@
 
   .namebar{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .namebar label{font-weight:600;font-size:14px}
-  input[type=text],input[type=number],input[type=date],select,textarea{font:inherit;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;color:var(--ink);width:100%}
+  input[type=text],input[type=number],input[type=date],input[type=tel],select,textarea{font:inherit;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;color:var(--ink);width:100%}
   .namebar input{flex:1 1 160px;width:auto}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
   .chip{border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:6px 13px;font-size:13.5px;color:var(--ink)}
@@ -123,6 +123,7 @@
   .amt.topup{color:var(--ok)}
   .void .nm,.void .amt{text-decoration:line-through;color:var(--ink-mute)}
 
+  .av{width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
   .grid2{display:grid;gap:10px;grid-template-columns:1fr 1fr}
   @media(max-width:480px){.grid2{grid-template-columns:1fr}}
   .link{display:block;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:13px 14px}
@@ -133,10 +134,73 @@
   .tabbar button{flex:1;background:none;border:0;color:#9FB8C0;padding:10px 0 9px;font-size:11.5px;display:flex;flex-direction:column;align-items:center;gap:2px}
   .tabbar button .ic{font-size:18px;line-height:1}
   .tabbar button.sel{color:#fff;box-shadow:inset 0 3px 0 var(--buoy)}
+  /* PIN gate */
+  #gate{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;background:#0D2B3A;overflow:hidden}
+  .unlocked #gate{display:none}
+  html:not(.unlocked) body{overflow:hidden}
+  #gate .scene,#gate .photo{position:absolute;inset:0;width:100%;height:100%}
+  #gate .photo{object-fit:cover}
+  #gate .scrim{position:absolute;inset:0;background:linear-gradient(180deg,rgba(13,43,58,.28) 0%,rgba(13,43,58,.72) 100%)}
+  .gatecard{position:relative;width:min(92vw,360px);background:rgba(250,253,252,.95);border-radius:18px;padding:26px 22px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+  .gatecard h1{font-weight:900;font-stretch:112%;font-size:30px}
+  .gatecard .sub{color:var(--ink-soft);margin:6px 0 16px}
+  .gatecard input{text-align:center;text-indent:.5em;font-size:28px;letter-spacing:.5em;padding:12px 8px}
+  .gatecard .btn{width:100%;margin-top:12px;padding:12px}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
+<script>try{if(localStorage.getItem("bviHubPin")==="ok")document.documentElement.classList.add("unlocked")}catch(e){}</script>
+<div id="gate" role="dialog" aria-modal="true" aria-label="Enter crew PIN">
+  <svg class="scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="gSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FD3E6"/><stop offset="1" stop-color="#F7E7C6"/></linearGradient>
+      <linearGradient id="gSea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4FC1C9"/><stop offset=".55" stop-color="#18909A"/><stop offset="1" stop-color="#0E5F6E"/></linearGradient>
+      <radialGradient id="gRock" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#E3D6C1"/><stop offset=".6" stop-color="#B7A78F"/><stop offset="1" stop-color="#7C6F5D"/></radialGradient>
+      <radialGradient id="gRock2" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#D8CAB4"/><stop offset=".6" stop-color="#A89880"/><stop offset="1" stop-color="#6E6252"/></radialGradient>
+      <linearGradient id="gGlow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C9F3EE" stop-opacity=".9"/><stop offset="1" stop-color="#4FC1C9" stop-opacity="0"/></linearGradient>
+    </defs>
+    <rect width="1200" height="380" fill="url(#gSky)"/>
+    <circle cx="930" cy="190" r="70" fill="#FFF3CF" opacity=".85"/>
+    <path d="M0 372 C140 340 260 352 380 366 C470 352 560 360 640 372 L640 382 L0 382Z" fill="#5E8E86"/>
+    <path d="M700 374 C780 358 860 362 940 374 L940 382 L700 382Z" fill="#6F9C93"/>
+    <rect y="374" width="1200" height="426" fill="url(#gSea)"/>
+    <g fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="3" stroke-linecap="round">
+      <path d="M0 412 Q60 404 120 412 T240 412 T360 412 T480 412 T600 412 T720 412 T840 412 T960 412 T1080 412 T1200 412"/>
+      <path d="M0 452 Q70 443 140 452 T280 452 T420 452 T560 452 T700 452 T840 452 T980 452 T1120 452"/>
+      <path d="M40 500 Q110 491 180 500 T320 500 T460 500 T600 500"/>
+    </g>
+    <ellipse cx="620" cy="575" rx="300" ry="70" fill="url(#gGlow)"/>
+    <ellipse cx="270" cy="560" rx="230" ry="38" fill="#0E5F6E" opacity=".35"/>
+    <ellipse cx="960" cy="565" rx="250" ry="40" fill="#0E5F6E" opacity=".35"/>
+    <ellipse cx="330" cy="470" rx="135" ry="105" fill="url(#gRock2)"/>
+    <ellipse cx="180" cy="520" rx="190" ry="150" fill="url(#gRock2)"/>
+    <ellipse cx="1010" cy="500" rx="215" ry="170" fill="url(#gRock2)"/>
+    <ellipse cx="760" cy="520" rx="110" ry="80" fill="url(#gRock2)"/>
+    <ellipse cx="90" cy="660" rx="250" ry="190" fill="url(#gRock)"/>
+    <ellipse cx="1120" cy="650" rx="270" ry="200" fill="url(#gRock)"/>
+    <ellipse cx="400" cy="650" rx="150" ry="105" fill="url(#gRock2)"/>
+    <ellipse cx="860" cy="670" rx="160" ry="110" fill="url(#gRock2)"/>
+    <ellipse cx="560" cy="790" rx="340" ry="140" fill="url(#gRock)"/>
+    <g fill="#fff" opacity=".16">
+      <ellipse cx="140" cy="590" rx="90" ry="40"/><ellipse cx="1060" cy="580" rx="100" ry="42"/>
+      <ellipse cx="370" cy="610" rx="55" ry="22"/><ellipse cx="830" cy="635" rx="60" ry="22"/>
+      <ellipse cx="520" cy="735" rx="130" ry="30"/>
+    </g>
+    <path d="M0 800 L0 775 Q300 752 600 778 T1200 764 L1200 800Z" fill="#F0E2C0"/>
+  </svg>
+  <img class="photo" src="baths.jpg" alt="" onerror="this.remove()">
+  <div class="scrim"></div>
+  <form class="gatecard" id="pinForm" autocomplete="off">
+    <h1>BVI 2027</h1>
+    <p class="sub">Crude Escape · Feb 12–19</p>
+    <label for="pin" class="small" style="display:block;margin-bottom:8px">Enter the crew PIN</label>
+    <input id="pin" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" aria-label="Crew PIN">
+    <div class="msg" id="pinMsg" role="alert"></div>
+    <button class="btn buoy" type="submit">Enter</button>
+    <p class="small" style="margin-top:12px">Ask the organizer if you don't have it.</p>
+  </form>
+</div>
 <header class="top">
   <div class="brand">BVI 2027</div>
   <div class="badge loc" id="badge"><i></i><span id="badgeText">Starting…</span></div>
@@ -192,6 +256,7 @@
       <h2>Everything in one place</h2>
       <p class="lead">Plan has the day-by-day route. Gear stops us bringing duplicates. Polls settle group decisions. Money is the trip fund and daily expenses.</p>
       <button class="btn" data-tab="plan">See the plan</button>
+      <div style="margin-top:18px"><button class="x" data-act="lock">Lock this device</button></div>
     </div>
   </div>
 </section>
@@ -293,9 +358,31 @@
   <div id="fundLog"></div>
 </div></section>
 
+<!-- CREW -->
+<section class="tab" id="tab-crew"><div class="pad">
+  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
+  <h2>The crew</h2>
+  <p class="lead">Add yourself so we can find each other on the boat and ashore. Saving a name that's already listed updates that entry.</p>
+  <div id="cabinMap"></div>
+  <div id="crewList"></div>
+  <div class="block">
+    <h2>Add or update</h2>
+    <div class="form panel pad2" id="crewForm">
+      <input type="text" id="cwName" placeholder="Name" maxlength="40" aria-label="Name">
+      <div class="two2">
+        <select id="cwRole" aria-label="Role"></select>
+        <select id="cwCabin" aria-label="Cabin"></select>
+      </div>
+      <input type="tel" id="cwPhone" placeholder="Phone number" maxlength="20" aria-label="Phone number">
+      <button class="btn buoy" type="button" data-act="saveCrew">Save</button>
+      <div class="msg" id="cwMsg"></div>
+    </div>
+  </div>
+</div></section>
+
 <!-- BOAT -->
 <section class="tab" id="tab-boat"><div class="pad">
-  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
+  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
   <h2>Crude Escape</h2>
   <p class="lead">2026 Fountaine Pajot Aura 51, BVI Yacht Charters, Ritter House Marina, Road Town.</p>
   <div class="stat">
@@ -334,7 +421,7 @@
 
 <!-- INFO -->
 <section class="tab" id="tab-info"><div class="pad">
-  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
+  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
   <h2>Trip info</h2>
   <div class="panel">
     <div class="row"><div><div class="t">Charter dates</div><div class="n">Feb 12 – 19, 2027</div></div></div>
@@ -369,7 +456,7 @@
 
 <!-- LINKS -->
 <section class="tab" id="tab-links"><div class="pad">
-  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
+  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
   <h2>Links</h2>
   <p class="lead">These open in your browser. Some need their own account, noted below. Download offline charts before we leave home.</p>
   <div class="grid2">
@@ -478,7 +565,7 @@ const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 const usd=(c)=>(c/100).toLocaleString("en-US",{style:"currency",currency:"USD"});
 const keyOf=(n)=>"u_"+String(n).replace(/[^A-Za-z0-9_-]/g,"_");
 
-let items=[], days=[], polls=[], ledger=[];
+let items=[], days=[], polls=[], ledger=[], crew=[];
 let mode="local", db=null, col=null;
 let filter="all";
 let myName=lsGet("bviHubName","");
@@ -503,6 +590,7 @@ if (configured) {
     listen(collection(db,"hubPassage"),(a)=>{days=a; renderPlan();});
     listen(collection(db,"hubPulse"),(a)=>{polls=a; renderPolls(); renderHomeStats();});
     listen(collection(db,"hubLedger"),(a)=>{ledger=a; renderMoney(); renderHomeStats();});
+    listen(collection(db,"hubCrew"),(a)=>{crew=a; renderCrew();});
   } catch(e){ console.error(e); setBadge("off","Offline"); mode="local"; items=lsGet("bviHubGearLocal",[]); }
 } else {
   items = lsGet("bviHubGearLocal",[]);
@@ -711,9 +799,33 @@ function renderMoney(){
     }).join("");
   }).join("");
 }
+
+/* ───── crew ───── */
+const ROLES=["Crew","Skipper","First mate"];
+function renderCrew(){
+  const box=$("#crewList"), map=$("#cabinMap");
+  if(mode!=="cloud"){ box.innerHTML='<div class="empty">The crew list needs sync. Add the Firebase config to hub.html.</div>'; map.innerHTML=""; return; }
+  const sorted=[...crew].sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+  map.innerHTML='<div class="panel" style="margin-bottom:14px">'+[1,2,3,4,5,6].map(n=>{
+    const who=sorted.filter(c=>String(c.cabin)===String(n)).map(c=>esc(c.name));
+    return `<div class="row"><div><div class="t">Cabin ${n}</div><div class="n">${who.length?who.join(", "):"Open"}</div></div></div>`;
+  }).join("")+'</div>';
+  if(!sorted.length){ box.innerHTML='<div class="empty">Nobody has been added yet. Add yourself below.</div>'; return; }
+  box.innerHTML='<div class="panel" style="padding-top:0;padding-bottom:0">'+sorted.map(c=>{
+    const ini=String(c.name||"?").split(/\s+/).map(w=>w[0]||"").slice(0,2).join("").toUpperCase();
+    const tel=String(c.phone||"").replace(/[^0-9+]/g,"");
+    const cab=(c.cabin&&c.cabin!=="Not assigned")?" · Cabin "+esc(c.cabin):"";
+    return `<div class="item"><div class="av" aria-hidden="true">${esc(ini)}</div>
+      <div class="body"><div class="nm">${esc(c.name)}</div>
+      <div class="nt">${esc(c.role||"Crew")}${cab}</div>
+      ${c.phone?`<div class="nt"><a href="tel:${esc(tel)}">${esc(c.phone)}</a></div>`:""}</div>
+      <div style="text-align:right"><button class="x" data-act="editCrew" data-id="${esc(c.id)}">Edit</button><br><button class="x" data-act="delCrew" data-id="${esc(c.id)}">Remove</button></div></div>`;
+  }).join("")+'</div>';
+}
+
 const todayStr=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");};
 
-function renderAll(){ renderGear(); renderPlan(); renderPolls(); renderMoney(); }
+function renderAll(){ renderGear(); renderPlan(); renderPolls(); renderMoney(); renderCrew(); }
 
 /* ───── events ───── */
 document.addEventListener("click", async (e)=>{
@@ -774,6 +886,28 @@ document.addEventListener("click", async (e)=>{
       await setDoc(doc(collection(db,"hubLedger")),{kind,amount:Math.round(dollars*100),cat:kind==="topup"?"Top-up":$("#exCat").value,note:$("#exNote").value.trim(),date:$("#exDate").value||todayStr(),by:myName,createdAt:Date.now(),voided:false});
       $("#exAmt").value=""; $("#exNote").value=""; $("#exMsg").textContent=kind==="topup"?"Top-up added.":"Logged.";
     }
+
+    else if(act==="saveCrew"){
+      const name=$("#cwName").value.trim();
+      if(!name){ $("#cwMsg").textContent="Enter a name."; return; }
+      await setDoc(doc(db,"hubCrew",keyOf(name.toLowerCase())),{name,role:$("#cwRole").value,cabin:$("#cwCabin").value,phone:$("#cwPhone").value.trim(),by:myName||"",updatedAt:Date.now()});
+      ["#cwName","#cwPhone"].forEach(s=>$(s).value=""); $("#cwCabin").value="Not assigned"; $("#cwRole").value="Crew";
+      $("#cwMsg").textContent="Saved.";
+    }
+    else if(act==="editCrew"){
+      const c=crew.find(x=>x.id===id); if(!c) return;
+      $("#cwName").value=c.name||""; $("#cwRole").value=c.role||"Crew"; $("#cwCabin").value=c.cabin||"Not assigned"; $("#cwPhone").value=c.phone||"";
+      $("#cwMsg").textContent="Editing "+c.name+". Change what you need and tap Save.";
+      { const f=$("#crewForm"); if(f.scrollIntoView) f.scrollIntoView({behavior:"smooth",block:"center"}); }
+    }
+    else if(act==="delCrew"){
+      const c=crew.find(x=>x.id===id);
+      if(c && confirm("Remove "+c.name+" from the crew list?")) await deleteDoc(doc(db,"hubCrew",id));
+    }
+    else if(act==="lock"){
+      try{localStorage.removeItem("bviHubPin")}catch(e){}
+      document.documentElement.classList.remove("unlocked"); $("#pin").value=""; $("#pinMsg").textContent=""; $("#pin").focus(); window.scrollTo({top:0});
+    }
     else if(act==="void"){
       if(confirm("Void this entry? It stays in the log, struck through, and no longer counts.")) await updateDoc(doc(db,"hubLedger",id),{voided:true,voidedBy:myName});
     }
@@ -790,6 +924,8 @@ nameInput.addEventListener("input",()=>{ myName=nameInput.value.trim(); lsSet("b
 
 $("#addCat").innerHTML = CATS.map(c=>`<option>${esc(c)}</option>`).join("");
 $("#exCat").innerHTML = LCATS.map(c=>`<option>${esc(c[0])}</option>`).join("");
+$("#cwRole").innerHTML = ROLES.map(r=>`<option>${esc(r)}</option>`).join("");
+$("#cwCabin").innerHTML = ["Not assigned","1","2","3","4","5","6"].map(c=>`<option value="${c}">${c==="Not assigned"?c:"Cabin "+c}</option>`).join("");
 $("#exDate").value = todayStr();
 
 function tokens(s){ return String(s).toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>3); }
@@ -810,7 +946,7 @@ $("#addBtn").addEventListener("click", async ()=>{
 function showTab(name){
   curTab=name;
   document.querySelectorAll(".tab").forEach(s=>s.classList.toggle("active",s.id==="tab-"+name));
-  const bar=["boat","links"].includes(name)?"info":name;
+  const bar=["boat","links","crew"].includes(name)?"info":name;
   document.querySelectorAll(".tabbar button").forEach(b=>b.classList.toggle("sel",b.dataset.tab===bar));
   document.querySelectorAll(".seg button").forEach(b=>b.classList.toggle("sel",b.dataset.tab===name));
   $("#nameWrap").style.display=["gear","polls","money"].includes(name)?"block":"none";
@@ -831,6 +967,22 @@ function tick(){
 tick(); setInterval(tick,1000);
 showTab("home");
 renderAll();
+
+/* ───── PIN gate (a courtesy lock for the crew, not security) ───── */
+const PIN="0212";
+function tryPin(){
+  const v=$("#pin").value.replace(/\D/g,"");
+  if(v.length<4) return;
+  if(v===PIN){
+    try{localStorage.setItem("bviHubPin","ok")}catch(e){}
+    document.documentElement.classList.add("unlocked");
+    $("#pinMsg").textContent="";
+  } else { $("#pinMsg").textContent="That PIN isn't right. Try again."; $("#pin").value=""; }
+}
+$("#pinForm").addEventListener("submit",(e)=>{ e.preventDefault(); tryPin(); });
+$("#pin").addEventListener("input",()=>{ $("#pinMsg").textContent=""; if($("#pin").value.length>=4) tryPin(); });
+if(!document.documentElement.classList.contains("unlocked")) $("#pin").focus();
+
 </script>
 </body>
 </html>
