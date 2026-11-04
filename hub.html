@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --water:#E4F0EE; --water-deep:#C9E2DE; --ink:#0D2B3A; --ink-soft:#3C5866; --ink-mute:#6B8590;
+    --water:#E4F0EE; --ink:#0D2B3A; --ink-soft:#3C5866; --ink-mute:#6B8590;
     --buoy:#E8452C; --buoy-soft:#FCE3DD; --lagoon:#127C86; --lagoon-soft:#D2ECEE;
     --paper:#FAFDFC; --line:rgba(13,43,58,.14); --ok:#1D7A4C; --ok-soft:#DDF1E6;
     --head:'Archivo','Helvetica Neue',Arial,sans-serif; --body:'Public Sans',system-ui,sans-serif;
@@ -32,7 +32,6 @@
   .tab{display:none}.tab.active{display:block}
   .pad{padding:20px 16px}
 
-  /* hero */
   .hero{position:relative;color:#fff;padding:34px 16px 30px;background:
     repeating-radial-gradient(circle at 85% 120%, rgba(255,255,255,.07) 0 2px, transparent 2px 26px),
     linear-gradient(160deg,#0D2B3A 0%,#115B6B 100%);overflow:hidden}
@@ -40,7 +39,7 @@
   .hero p.sub{margin-top:10px;color:#BFDDE3;max-width:34ch}
   .count{display:flex;gap:10px;margin-top:26px}
   .count div{flex:1;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:12px 4px;text-align:center}
-  .count b{display:block;font-family:var(--head);font-weight:900;font-stretch:100%;font-size:clamp(30px,9vw,46px);line-height:1;font-variant-numeric:tabular-nums}
+  .count b{display:block;font-family:var(--head);font-weight:900;font-size:clamp(30px,9vw,46px);line-height:1;font-variant-numeric:tabular-nums}
   .count span{font-size:12px;color:#BFDDE3}
   .hero .go{margin-top:20px;display:inline-block;background:var(--buoy);color:#fff;border:0;border-radius:10px;padding:12px 18px;font-weight:600}
 
@@ -60,10 +59,13 @@
   .stat b{font-family:var(--head);font-weight:800;font-size:22px;display:block}
   .stat span{font-size:12.5px;color:var(--ink-soft)}
 
-  /* gear */
+  .seg{display:flex;gap:6px;margin-bottom:16px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:4px}
+  .seg button{flex:1;border:0;background:none;border-radius:9px;padding:8px 4px;font-weight:600;color:var(--ink-soft)}
+  .seg button.sel{background:var(--ink);color:#fff}
+
   .namebar{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .namebar label{font-weight:600;font-size:14px}
-  input[type=text],input[type=number],select,textarea{font:inherit;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;color:var(--ink);width:100%}
+  input[type=text],input[type=number],input[type=date],select,textarea{font:inherit;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;color:var(--ink);width:100%}
   .namebar input{flex:1 1 160px;width:auto}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
   .chip{border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:6px 13px;font-size:13.5px;color:var(--ink)}
@@ -85,20 +87,41 @@
   .x{background:none;border:0;color:var(--ink-mute);font-size:13px;text-decoration:underline;padding:2px 0;margin-top:6px}
   .form{display:grid;gap:10px;margin-top:10px}
   .form .two{display:grid;grid-template-columns:1fr 90px;gap:10px}
+  .form .two2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .msg{font-size:13.5px;color:var(--ink-soft);min-height:20px}
   .warn{background:var(--buoy-soft);border:1px solid #F3B8AA;border-radius:10px;padding:10px 12px;font-size:14px;margin-bottom:12px}
   .empty{background:var(--paper);border:1px dashed var(--line);border-radius:12px;padding:18px;text-align:center}
   details.panel{padding:0}
   details summary{padding:14px 16px;font-weight:600;cursor:pointer}
-  details .inner{padding:0 16px 8px}
+  details .inner{padding:0 16px 14px}
   .chk{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);align-items:flex-start}
   .chk:last-child{border:0}
   .chk input{width:20px;height:20px;margin-top:2px;flex:none}
   .chk.done .nm{text-decoration:line-through;color:var(--ink-mute)}
   .tag{font-size:11.5px;border-radius:6px;padding:1px 7px;margin-left:6px;font-weight:600;vertical-align:middle}
-  .tag.boat{background:var(--ok-soft);color:var(--ok)}
-  .tag.chk2{background:var(--buoy-soft);color:#A82E19}
   .tag.cpl{background:var(--lagoon-soft);color:#0B5159}
+
+  .dayc,.pollc{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+  .dh{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:6px}
+  .lock{font-size:12px;font-weight:600;background:var(--ok-soft);color:var(--ok);border-radius:99px;padding:2px 10px}
+  .lock.openc{background:var(--buoy-soft);color:#A82E19}
+  .f2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+  .route{font-weight:600;margin:4px 0}
+  .rankgrid{display:grid;gap:8px;margin:10px 0}
+  .rk{display:flex;gap:10px;align-items:center}
+  .rk select{width:64px;flex:none}
+  .decision{background:var(--ok-soft);border-radius:10px;padding:10px 12px;margin-top:8px}
+  .resp{font-size:13.5px;border-top:1px solid var(--line);padding:6px 0}
+  .small{font-size:13px;color:var(--ink-soft)}
+
+  .big{font-family:var(--head);font-weight:900;font-size:40px;line-height:1}
+  .bar{height:10px;border-radius:99px;background:var(--lagoon-soft);overflow:hidden;margin:10px 0}
+  .bar i{display:block;height:100%;background:var(--lagoon)}
+  .bar.low i{background:var(--buoy)}
+  .dayhead{display:flex;justify-content:space-between;font-family:var(--head);font-weight:800;font-size:16px;margin:20px 0 2px}
+  .amt{font-weight:700;font-variant-numeric:tabular-nums}
+  .amt.topup{color:var(--ok)}
+  .void .nm,.void .amt{text-decoration:line-through;color:var(--ink-mute)}
 
   .grid2{display:grid;gap:10px;grid-template-columns:1fr 1fr}
   @media(max-width:480px){.grid2{grid-template-columns:1fr}}
@@ -107,8 +130,8 @@
   .link span{font-size:13px;color:var(--ink-soft)}
 
   .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--ink);display:flex;padding-bottom:env(safe-area-inset-bottom)}
-  .tabbar button{flex:1;background:none;border:0;color:#9FB8C0;padding:10px 2px 9px;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:2px}
-  .tabbar button .ic{font-size:19px;line-height:1}
+  .tabbar button{flex:1;background:none;border:0;color:#9FB8C0;padding:10px 0 9px;font-size:11.5px;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .tabbar button .ic{font-size:18px;line-height:1}
   .tabbar button.sel{color:#fff;box-shadow:inset 0 3px 0 var(--buoy)}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -120,6 +143,14 @@
 </header>
 
 <main>
+<div id="nameWrap" style="display:none;padding:16px 16px 0">
+  <div class="namebar">
+    <label for="myName">Your name</label>
+    <input type="text" id="myName" placeholder="e.g. Sam" autocomplete="given-name" maxlength="30">
+  </div>
+  <div class="msg" id="nameMsg"></div>
+</div>
+
 <!-- HOME -->
 <section class="tab active" id="tab-home">
   <div class="hero">
@@ -136,13 +167,13 @@
   <div class="pad">
     <div class="stat">
       <div><b id="st-covered">–</b><span>shared items covered</span></div>
-      <div><b>6</b><span>queen cabins, 6 private heads</span></div>
-      <div><b>7</b><span>nights aboard</span></div>
+      <div><b id="st-polls">–</b><span>open polls</span></div>
+      <div><b id="st-bal">–</b><span>trip fund balance</span></div>
     </div>
 
     <div class="block">
       <h2>What we're looking forward to</h2>
-      <p class="lead">Locked-in stops are listed first. Skipper makes the final call on routing and weather.</p>
+      <p class="lead">Locked-in stops are listed first. The skipper makes the final call on routing and weather.</p>
       <div class="panel">
         <div class="row"><div><div class="t">The Baths, Virgin Gorda</div><div class="n">Granite boulders and tide pools. We need to be on a mooring early, before the day boats arrive.</div></div></div>
         <div class="row"><div><div class="t">Saba Rock, North Sound</div><div class="n">Tiny island, lunch and drinks. Check that it's open before we commit the day.</div></div></div>
@@ -154,27 +185,29 @@
 
     <div class="block">
       <h2>The boat</h2>
-      <p class="lead">A 2026 Fountaine Pajot Aura 51 with air conditioning, a hydraulic swim platform, Bose speakers on the deck, and a gas grill. See the Boat tab for what's already aboard.</p>
+      <p class="lead">A 2026 Fountaine Pajot Aura 51 with air conditioning, a hydraulic swim platform, Bose speakers on the deck, and a gas grill. See Info, then Boat, for what's already aboard.</p>
     </div>
 
     <div class="block">
-      <h2>Crew app</h2>
-      <p class="lead">Ledger, passage plan and preference polls live in the original crew app.</p>
-      <a class="btn" style="display:inline-block;text-decoration:none" href="index.html">Open ledger and passage plan</a>
+      <h2>Everything in one place</h2>
+      <p class="lead">Plan has the day-by-day route. Gear stops us bringing duplicates. Polls settle group decisions. Money is the trip fund and daily expenses.</p>
+      <button class="btn" data-tab="plan">See the plan</button>
     </div>
   </div>
 </section>
+
+<!-- PLAN -->
+<section class="tab" id="tab-plan"><div class="pad">
+  <h2>Week plan</h2>
+  <p class="lead">The skipper fills this in as weather and the crew's votes settle the route. Days lock when saved, so nobody changes them by accident.</p>
+  <div class="panel pad2" style="margin-bottom:14px"><b>Already on the list:</b> The Baths, Saba Rock and Virgin Gorda North Sound (two days on Virgin Gorda). Anegada is still open.</div>
+  <div id="planList"></div>
+</div></section>
 
 <!-- GEAR -->
 <section class="tab" id="tab-gear"><div class="pad">
   <h2>Gear board</h2>
   <p class="lead">Space on the boat is limited, so each shared item only needs to come once. Claim what you're bringing so we don't double up. Add anything missing at the bottom.</p>
-
-  <div class="namebar">
-    <label for="myName">Your name</label>
-    <input type="text" id="myName" placeholder="e.g. Sam" autocomplete="given-name" maxlength="30">
-  </div>
-  <div class="msg" id="nameMsg"></div>
 
   <div id="seedBox"></div>
   <div class="chips" id="chips">
@@ -207,8 +240,62 @@
   </div>
 </div></section>
 
+<!-- POLLS -->
+<section class="tab" id="tab-polls"><div class="pad">
+  <h2>Polls</h2>
+  <p class="lead">Anyone can ask the crew to weigh in. Rank the options, and whoever posted the poll makes the final call.</p>
+  <details class="panel" id="newPoll"><summary>Start a poll</summary><div class="inner"><div class="form">
+    <input type="text" id="pq" placeholder="Question (e.g. Anegada or skip it?)" maxlength="120" aria-label="Poll question">
+    <input type="text" id="po1" placeholder="Option 1" maxlength="60" aria-label="Option 1">
+    <input type="text" id="po2" placeholder="Option 2" maxlength="60" aria-label="Option 2">
+    <input type="text" id="po3" placeholder="Option 3 (optional)" maxlength="60" aria-label="Option 3">
+    <button class="btn buoy" type="button" data-act="postPoll">Post poll</button>
+    <div class="msg" id="pollMsg"></div>
+  </div></div></details>
+  <div id="pollList" style="margin-top:14px"></div>
+</div></section>
+
+<!-- MONEY -->
+<section class="tab" id="tab-money"><div class="pad">
+  <h2>Trip fund</h2>
+  <p class="lead">One pooled fund. The holder pays from the pot and logs every expense here, so everyone sees the balance and each day's spend.</p>
+
+  <div id="fundSetup" style="display:none" class="panel pad2">
+    <div style="font-weight:600">Set up the fund</div>
+    <p class="small" style="margin:4px 0 8px">Enter your name above first. You'll be the fund holder and the only person who can log entries.</p>
+    <div class="form">
+      <input type="number" id="fundStart" min="1" step="0.01" placeholder="Starting amount in dollars" aria-label="Starting amount in dollars">
+      <button class="btn buoy" type="button" data-act="setupFund">Create the fund</button>
+      <div class="msg" id="fundMsg"></div>
+    </div>
+  </div>
+
+  <div id="fundSummary"></div>
+  <div class="msg" id="holderNote"></div>
+
+  <div id="entryWrap" style="display:none" class="panel pad2">
+    <div style="font-weight:600;margin-bottom:6px">Log an entry</div>
+    <div class="form" style="margin-top:0">
+      <div class="two2">
+        <input type="number" id="exAmt" min="0.01" step="0.01" placeholder="Amount ($)" aria-label="Amount in dollars">
+        <input type="date" id="exDate" aria-label="Date">
+      </div>
+      <select id="exCat" aria-label="Category"></select>
+      <input type="text" id="exNote" placeholder="What was it? (e.g. Mooring at Cooper Island)" maxlength="100" aria-label="Description">
+      <div class="two2">
+        <button class="btn buoy" type="button" data-act="logExpense">Log expense</button>
+        <button class="btn ghost" type="button" data-act="logTopup">Add top-up</button>
+      </div>
+      <div class="msg" id="exMsg"></div>
+    </div>
+  </div>
+
+  <div id="fundLog"></div>
+</div></section>
+
 <!-- BOAT -->
 <section class="tab" id="tab-boat"><div class="pad">
+  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
   <h2>Crude Escape</h2>
   <p class="lead">2026 Fountaine Pajot Aura 51, BVI Yacht Charters, Ritter House Marina, Road Town.</p>
   <div class="stat">
@@ -247,6 +334,7 @@
 
 <!-- INFO -->
 <section class="tab" id="tab-info"><div class="pad">
+  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
   <h2>Trip info</h2>
   <div class="panel">
     <div class="row"><div><div class="t">Charter dates</div><div class="n">Feb 12 – 19, 2027</div></div></div>
@@ -281,6 +369,7 @@
 
 <!-- LINKS -->
 <section class="tab" id="tab-links"><div class="pad">
+  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
   <h2>Links</h2>
   <p class="lead">These open in your browser. Some need their own account, noted below. Download offline charts before we leave home.</p>
   <div class="grid2">
@@ -294,27 +383,24 @@
     <a class="link" href="https://www.google.com/search?q=Riteway+Food+Markets+BVI+provisioning" target="_blank" rel="noopener"><b>Provisioning</b><span>Riteway Food Markets in Road Town.</span></a>
     <a class="link" href="https://www.google.com/search?q=Cooper+Island+Beach+Club" target="_blank" rel="noopener"><b>Cooper Island Beach Club</b><span>Possible stop.</span></a>
     <a class="link" href="https://www.google.com/search?q=BVI+tide+chart" target="_blank" rel="noopener"><b>BVI tides</b><span>Tide tables.</span></a>
-    <a class="link" href="index.html"><b>Crew app</b><span>Ledger, passage plan, polls, mooring notes.</span></a>
   </div>
-  <div class="panel pad2" style="margin-top:16px"><div class="t" style="font-weight:600">VHF Channel 16</div><div class="n" style="font-size:13.5px;color:var(--ink-soft)">Distress and hailing channel monitored by the Coast Guard and other boats. Use another working channel for routine chatter.</div></div>
+  <div class="panel pad2" style="margin-top:16px"><div style="font-weight:600">VHF Channel 16</div><div class="small">Distress and hailing channel monitored by the Coast Guard and other boats. Use another working channel for routine chatter.</div></div>
 </div></section>
 </main>
 
 <nav class="tabbar" aria-label="Sections">
   <button class="sel" data-tab="home"><span class="ic">⚓</span>Home</button>
+  <button data-tab="plan"><span class="ic">🧭</span>Plan</button>
   <button data-tab="gear"><span class="ic">🎒</span>Gear</button>
-  <button data-tab="boat"><span class="ic">⛵</span>Boat</button>
+  <button data-tab="polls"><span class="ic">🗳️</span>Polls</button>
+  <button data-tab="money"><span class="ic">💵</span>Money</button>
   <button data-tab="info"><span class="ic">📋</span>Info</button>
-  <button data-tab="links"><span class="ic">🔗</span>Links</button>
 </nav>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, doc, onSnapshot, setDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* ╔════════════════════════════════════════════════════════════╗
-   ║  PASTE YOUR FIREBASE CONFIG HERE (same one as the crew app) ║
-   ╚════════════════════════════════════════════════════════════╝ */
 const firebaseConfig = {
   apiKey: "AIzaSyC7MdsFVLEWUSN5hfR0axQNlgEAF8rmGBU",
   authDomain: "bvi-bareboat-charter-2027.firebaseapp.com",
@@ -325,8 +411,8 @@ const firebaseConfig = {
 };
 
 const CATS = ["Safety & comms","Power & tech","Medical","Fishing","Sun & comfort","Fun","Other"];
+const LCATS = [["Moorings","⚓"],["Fuel","⛽"],["Groceries","🛒"],["Dining","🍽️"],["Marina & fees","🧾"],["Activities","🤿"],["Other","💬"]];
 
-/* Shared items: one of these covers the whole boat. need = how many in total. */
 const SEEDS = [
   {id:"seed-inreach",name:"Garmin inReach Mini 2",cat:"Safety & comms",need:1,note:"Satellite texting and SOS with no cell signal. The captain carries it. About $350 plus a monthly plan."},
   {id:"seed-vhf",name:"Handheld VHF radio",cat:"Safety & comms",need:2,note:"Dinghy-to-boat contact. Waterproof, floating model such as the Standard Horizon HX210."},
@@ -351,7 +437,6 @@ const SEEDS = [
   {id:"seed-float",name:"Snorkel vests or float belts",cat:"Fun",need:2,note:"For anyone less comfortable in open water."}
 ];
 
-/* Everyone brings. Not stored in the cloud; check marks stay on your device. */
 const PERSONAL = [
   {id:"p-duffel",name:"Soft duffel bag (no hard-shell luggage)",tag:"",note:"Lockers are narrow. A bag that squashes flat is best."},
   {id:"p-passport",name:"Passport",tag:"",note:""},
@@ -376,36 +461,48 @@ const PERSONAL = [
   {id:"p-dry",name:"Small dry bag (10–20 L) for dinghy runs",tag:"couple",note:"One per couple is enough."}
 ];
 
+const fmtDay=(i)=>new Date(Date.UTC(2027,1,12+i)).toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric",timeZone:"UTC"});
+const PLAN_SEEDS = Array.from({length:8},(_,i)=>({
+  id:"day-"+(i+1), order:i+1,
+  label:(i<7?"Day "+(i+1):"Return day")+" · "+fmtDay(i),
+  from:"",to:"",depart:"",arrive:"",
+  notes:i===0?"Check-in and briefing at Ritter House Marina. Test the watermaker, A/C, wifi and dinghy before leaving the dock.":(i===7?"Return the boat. Confirm the checkout time with BVI Yacht Charters.":""),
+  locked:false
+}));
+
 /* ───── helpers ───── */
 const $ = (s)=>document.querySelector(s);
 const esc = (s)=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const usd=(c)=>(c/100).toLocaleString("en-US",{style:"currency",currency:"USD"});
+const keyOf=(n)=>"u_"+String(n).replace(/[^A-Za-z0-9_-]/g,"_");
 
-let items = [];
-let mode = "local";            // "cloud" | "local"
-let db = null, col = null;
-let filter = "all";
-let myName = lsGet("bviHubName","");
-let checks = lsGet("bviHubChecks",{});
+let items=[], days=[], polls=[], ledger=[];
+let mode="local", db=null, col=null;
+let filter="all";
+let myName=lsGet("bviHubName","");
+let checks=lsGet("bviHubChecks",{});
+let curTab="home";
 
 const configured = !Object.values(firebaseConfig).some(v=>String(v).startsWith("PASTE"));
+function setBadge(state,text){ const b=$("#badge"); b.className="badge "+state; $("#badgeText").textContent=text; }
 
-function setBadge(state,text){
-  const b=$("#badge"); b.className="badge "+state; $("#badgeText").textContent=text;
+function listen(c,cb){
+  onSnapshot(c,(snap)=>{ cb(snap.docs.map(d=>({id:d.id,...d.data()}))); setBadge("on","Synced"); },
+    (err)=>{ console.error("Firestore:",err); setBadge("off","Offline – check rules"); });
 }
 
-/* ───── data layer ───── */
 if (configured) {
   try {
     const app = initializeApp(firebaseConfig);
     db = getFirestore(app);
     col = collection(db,"hubGear");
     mode = "cloud";
-    onSnapshot(col, (snap)=>{
-      items = snap.docs.map(d=>({id:d.id,...d.data()}));
-      setBadge("on","Synced"); render();
-    }, (err)=>{ console.error("Firestore:",err); setBadge("off","Offline – check rules"); });
+    listen(col,(a)=>{items=a; renderGear();});
+    listen(collection(db,"hubPassage"),(a)=>{days=a; renderPlan();});
+    listen(collection(db,"hubPulse"),(a)=>{polls=a; renderPolls(); renderHomeStats();});
+    listen(collection(db,"hubLedger"),(a)=>{ledger=a; renderMoney(); renderHomeStats();});
   } catch(e){ console.error(e); setBadge("off","Offline"); mode="local"; items=lsGet("bviHubGearLocal",[]); }
 } else {
   items = lsGet("bviHubGearLocal",[]);
@@ -413,21 +510,22 @@ if (configured) {
 }
 const saveLocal=()=>lsSet("bviHubGearLocal",items);
 
+/* ───── gear data layer ───── */
 async function addItem(obj){
   if(mode==="cloud"){ await setDoc(doc(col),obj); }
-  else { items.push({...obj,id:"l"+Date.now()}); saveLocal(); render(); }
+  else { items.push({...obj,id:"l"+Date.now()}); saveLocal(); renderGear(); }
 }
 async function claim(id,name){
   if(mode==="cloud"){ await updateDoc(doc(db,"hubGear",id),{claims:arrayUnion(name)}); }
-  else { const it=items.find(i=>i.id===id); it.claims=[...(it.claims||[]).filter(n=>n!==name),name]; saveLocal(); render(); }
+  else { const it=items.find(i=>i.id===id); it.claims=[...(it.claims||[]).filter(n=>n!==name),name]; saveLocal(); renderGear(); }
 }
 async function release(id,name){
   if(mode==="cloud"){ await updateDoc(doc(db,"hubGear",id),{claims:arrayRemove(name)}); }
-  else { const it=items.find(i=>i.id===id); it.claims=(it.claims||[]).filter(n=>n!==name); saveLocal(); render(); }
+  else { const it=items.find(i=>i.id===id); it.claims=(it.claims||[]).filter(n=>n!==name); saveLocal(); renderGear(); }
 }
 async function removeItem(id){
   if(mode==="cloud"){ await deleteDoc(doc(db,"hubGear",id)); }
-  else { items=items.filter(i=>i.id!==id); saveLocal(); render(); }
+  else { items=items.filter(i=>i.id!==id); saveLocal(); renderGear(); }
 }
 async function loadStarter(){
   const have=new Set(items.map(i=>i.id));
@@ -437,33 +535,34 @@ async function loadStarter(){
     if(mode==="cloud"){ await setDoc(doc(db,"hubGear",id),rest,{merge:true}); }
     else { items.push({...s}); }
   }
-  if(mode==="local"){ saveLocal(); render(); }
+  if(mode==="local"){ saveLocal(); renderGear(); }
 }
 
-/* ───── render ───── */
+/* ───── gear render ───── */
 const claimsOf=(i)=>Array.isArray(i.claims)?i.claims:[];
 const needOf=(i)=>Math.max(1,parseInt(i.need)||1);
 const isDone=(i)=>claimsOf(i).length>=needOf(i);
 
-function render(){
-  // summary
+function renderHomeStats(){
   const total=items.length, done=items.filter(isDone).length;
   $("#st-covered").textContent = total ? `${done}/${total}` : "–";
+  $("#st-polls").textContent = mode==="cloud" ? String(polls.filter(p=>p.status!=="decided").length) : "–";
+  const f=fundCalc();
+  $("#st-bal").textContent = f ? usd(f.bal) : "–";
+}
 
-  // starter box
+function renderGear(){
+  renderHomeStats();
   $("#seedBox").innerHTML = items.length===0
     ? `<div class="empty"><p style="margin-bottom:10px">The board is empty. Load the starter list from our trip planning, then adjust it.</p><button class="btn buoy" data-act="seed">Load starter list</button></div>`
     : "";
-
-  // filter
   document.querySelectorAll("#chips .chip").forEach(c=>c.classList.toggle("sel",c.dataset.filter===filter));
   let list=items.filter(i=>{
     if(filter==="open") return !isDone(i);
     if(filter==="done") return isDone(i);
-    if(filter==="mine") return claimsOf(i).includes(myName) && myName;
+    if(filter==="mine") return myName && claimsOf(i).includes(myName);
     return true;
   });
-
   const out=[];
   const cats=[...CATS,...new Set(list.map(i=>i.cat).filter(c=>c&&!CATS.includes(c)))];
   for(const c of cats){
@@ -471,8 +570,7 @@ function render(){
     if(!group.length) continue;
     out.push(`<h3 class="cat">${esc(c)}</h3>`);
     for(const i of group){
-      const cl=claimsOf(i), need=needOf(i), mine=myName && cl.includes(myName), full=cl.length>=need;
-      const left=need-cl.length;
+      const cl=claimsOf(i), need=needOf(i), mine=myName && cl.includes(myName), full=cl.length>=need, left=need-cl.length;
       out.push(`<div class="item">
         <div class="body">
           <div class="nm">${esc(i.name)}</div>
@@ -487,41 +585,212 @@ function render(){
     }
   }
   $("#gearList").innerHTML = out.length?out.join(""):(items.length?`<div class="empty">Nothing matches this filter.</div>`:"");
-
-  // personal list
   $("#personalList").innerHTML = `<div class="panel">`+PERSONAL.map(p=>`
     <label class="chk ${checks[p.id]?"done":""}">
       <input type="checkbox" data-chk="${p.id}" ${checks[p.id]?"checked":""}>
-      <span><span class="nm">${esc(p.name)}</span>${p.tag==="couple"?`<span class="tag cpl">per couple</span>`:""}${p.note?`<div class="n" style="font-size:13px;color:var(--ink-soft)">${esc(p.note)}</div>`:""}</span>
+      <span><span class="nm">${esc(p.name)}</span>${p.tag==="couple"?`<span class="tag cpl">per couple</span>`:""}${p.note?`<div class="small">${esc(p.note)}</div>`:""}</span>
     </label>`).join("")+`</div>`;
 }
+
+/* ───── typing guard so live updates don't wipe what someone is typing ───── */
+const dirty={plan:false,polls:false};
+function guardTyping(box,key){
+  const a=document.activeElement;
+  if(a && box.contains(a) && a.matches("input,textarea,select")){ dirty[key]=true; return true; }
+  dirty[key]=false; return false;
+}
+document.addEventListener("focusout",()=>{ setTimeout(()=>{ if(dirty.plan) renderPlan(); if(dirty.polls) renderPolls(); },0); });
+
+/* ───── plan ───── */
+function renderPlan(){
+  const box=$("#planList");
+  if(mode!=="cloud"){ box.innerHTML='<div class="empty">The plan needs sync. Add the Firebase config to hub.html.</div>'; return; }
+  if(guardTyping(box,"plan")) return;
+  if(!days.length){
+    box.innerHTML='<div class="empty"><p style="margin-bottom:10px">No plan yet. Create the eight day cards (Feb 12–19), then the skipper fills them in.</p><button class="btn buoy" data-act="seedPlan">Create the week</button></div>';
+    return;
+  }
+  const sorted=[...days].sort((a,b)=>(a.order||0)-(b.order||0));
+  box.innerHTML=sorted.map(d=>{
+    if(d.locked===true){
+      const route=(d.from||d.to)?`${esc(d.from||"?")} → ${esc(d.to||"?")}`:"Route not set yet";
+      const times=(d.depart||d.arrive)?`<div class="small">${d.depart?"Depart "+esc(d.depart):""}${d.depart&&d.arrive?" · ":""}${d.arrive?"Arrive "+esc(d.arrive):""}</div>`:"";
+      return `<div class="dayc"><div class="dh"><b>${esc(d.label)}</b><span class="lock">Locked</span></div>
+        <div class="route">${route}</div>${times}
+        ${d.notes?`<div class="small" style="margin-top:4px">${esc(d.notes)}</div>`:""}
+        <button class="btn ghost" style="margin-top:10px" data-act="unlockDay" data-id="${esc(d.id)}">Unlock to edit</button></div>`;
+    }
+    return `<div class="dayc" data-day="${esc(d.id)}"><div class="dh"><b>${esc(d.label)}</b><span class="lock openc">Editing</span></div>
+      <div class="f2"><input type="text" data-f="from" placeholder="From" value="${esc(d.from)}" maxlength="40" aria-label="From"><input type="text" data-f="to" placeholder="To" value="${esc(d.to)}" maxlength="40" aria-label="To"></div>
+      <div class="f2"><input type="text" data-f="depart" placeholder="Depart (e.g. 9:00am)" value="${esc(d.depart)}" maxlength="20" aria-label="Depart"><input type="text" data-f="arrive" placeholder="Arrive (e.g. 1:00pm)" value="${esc(d.arrive)}" maxlength="20" aria-label="Arrive"></div>
+      <textarea data-f="notes" rows="2" placeholder="Notes" maxlength="300" aria-label="Notes">${esc(d.notes)}</textarea>
+      <button class="btn" style="margin-top:10px" data-act="saveDay" data-id="${esc(d.id)}">Save and lock</button></div>`;
+  }).join("");
+}
+
+/* ───── polls ───── */
+function pollHtml(p){
+  const opts=Array.isArray(p.options)?p.options:[];
+  const resp=(p.responses&&typeof p.responses==="object")?p.responses:{};
+  const all=Object.values(resp);
+  const mine=myName?resp[keyOf(myName)]:null;
+  const isOwner=!!myName && p.by===myName;
+  const decided=p.status==="decided";
+  let h=`<div class="pollc" data-poll="${esc(p.id)}"><div class="dh"><b>${esc(p.q)}</b><span class="lock ${decided?"":"openc"}">${decided?"Decided":"Open"}</span></div>
+    <div class="small">Asked by ${esc(p.by||"someone")} · ${all.length} responded</div>`;
+  if(decided){
+    h+=`<div class="decision"><b>Decision: ${esc(p.decision)}</b>${p.rationale?`<div class="small">${esc(p.rationale)}</div>`:""}</div>`;
+  } else {
+    h+=`<div class="rankgrid">`+opts.map((o,i)=>`<label class="rk"><select data-rk="${i}" aria-label="Rank for ${esc(o)}"><option value="">–</option>${opts.map((_,r)=>`<option value="${r+1}" ${mine&&mine.ranks&&mine.ranks[i]===r+1?"selected":""}>${r+1}</option>`).join("")}</select><span>${esc(o)}</span></label>`).join("")+`</div>
+      <p class="small" style="margin-bottom:6px">1 = your first choice.</p>
+      <input type="text" data-rs placeholder="Reason (optional)" maxlength="140" value="${esc(mine?mine.reason:"")}">
+      <button class="btn" style="margin-top:8px" data-act="rank" data-id="${esc(p.id)}">${mine?"Update my ranking":"Submit ranking"}</button>`;
+  }
+  if(isOwner && !decided){
+    const scores=opts.map((o,i)=>({o,s:all.reduce((a,r)=>a+(r.ranks&&r.ranks[i]?r.ranks[i]:0),0)}));
+    h+=`<div style="margin-top:14px"><b>Responses</b><div class="small">Lowest total is the group's top pick.</div>
+      ${scores.map(x=>`<div class="resp">${esc(x.o)}: <b>${x.s}</b></div>`).join("")}
+      ${all.map(r=>`<div class="resp">${esc(r.name)}: ${opts.map((o,i)=>esc(o)+" #"+(r.ranks?r.ranks[i]:"?")).join(", ")}${r.reason?` · ${esc(r.reason)}`:""}</div>`).join("")}
+      <div class="form" style="margin-top:10px"><select data-dc aria-label="Winning option">${opts.map(o=>`<option>${esc(o)}</option>`).join("")}</select>
+      <textarea data-dr rows="2" placeholder="Why (optional)" maxlength="200"></textarea>
+      <button class="btn buoy" data-act="decide" data-id="${esc(p.id)}">Post decision</button></div></div>`;
+  }
+  if(isOwner) h+=`<button class="x" data-act="delPoll" data-id="${esc(p.id)}">Delete poll</button>`;
+  return h+`</div>`;
+}
+function renderPolls(){
+  const box=$("#pollList");
+  if(mode!=="cloud"){ box.innerHTML='<div class="empty">Polls need sync. Add the Firebase config to hub.html.</div>'; return; }
+  if(guardTyping(box,"polls")) return;
+  if(!polls.length){ box.innerHTML='<div class="empty">No polls yet. Start one above.</div>'; return; }
+  box.innerHTML=[...polls].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).map(pollHtml).join("");
+}
+
+/* ───── money ───── */
+function fundCalc(){
+  const cfg=ledger.find(e=>e.id==="config");
+  if(!cfg) return null;
+  const live=ledger.filter(e=>e.id!=="config"&&e.kind&&!e.voided);
+  const spent=live.filter(e=>e.kind==="expense").reduce((a,e)=>a+(e.amount||0),0);
+  const top=live.filter(e=>e.kind==="topup").reduce((a,e)=>a+(e.amount||0),0);
+  const total=(cfg.start||0)+top;
+  return {cfg,spent,top,total,bal:total-spent,pct:total?(total-spent)/total:0};
+}
+function renderMoney(){
+  const cfg=ledger.find(e=>e.id==="config");
+  if(mode!=="cloud"){
+    $("#fundSetup").style.display="none"; $("#entryWrap").style.display="none"; $("#fundLog").innerHTML="";
+    $("#fundSummary").innerHTML='<div class="empty">The fund needs sync. Add the Firebase config to hub.html.</div>'; return;
+  }
+  $("#fundSetup").style.display = cfg?"none":"block";
+  if(!cfg){ $("#fundSummary").innerHTML=""; $("#entryWrap").style.display="none"; $("#fundLog").innerHTML=""; $("#holderNote").textContent=""; return; }
+  const f=fundCalc();
+  const holderOk = !!myName && String(cfg.holder).toLowerCase()===myName.toLowerCase();
+  $("#entryWrap").style.display = holderOk?"block":"none";
+  $("#holderNote").textContent = holderOk?"":`Only ${cfg.holder}, the fund holder, can log entries. Enter your name above if that's you.`;
+  const low=f.pct<=(cfg.alertPct||20)/100;
+  $("#fundSummary").innerHTML=`<div class="panel pad2" style="margin-bottom:12px">
+    <div class="small">Balance</div><div class="big">${usd(f.bal)}</div>
+    <div class="bar ${low?"low":""}"><i style="width:${Math.max(0,Math.min(100,Math.round(f.pct*100)))}%"></i></div>
+    <div class="small">${usd(f.spent)} spent of ${usd(f.total)}${f.top?` (includes ${usd(f.top)} in top-ups)`:""} · held by ${esc(cfg.holder)}</div>
+    ${low?`<div class="warn" style="margin:10px 0 0">The balance is under ${cfg.alertPct||20}% of the fund. Time to pass the hat.</div>`:""}</div>`;
+  const entries=ledger.filter(e=>e.id!=="config"&&e.kind).sort((a,b)=>String(b.date).localeCompare(String(a.date))||(b.createdAt||0)-(a.createdAt||0));
+  if(!entries.length){ $("#fundLog").innerHTML='<div class="empty">No entries yet.</div>'; return; }
+  const groups={}; entries.forEach(e=>{(groups[e.date]=groups[e.date]||[]).push(e)});
+  const emoji=(c)=>(LCATS.find(x=>x[0]===c)||["","💬"])[1];
+  $("#fundLog").innerHTML=Object.keys(groups).sort().reverse().map(date=>{
+    const g=groups[date];
+    const day=g.filter(e=>e.kind==="expense"&&!e.voided).reduce((a,e)=>a+(e.amount||0),0);
+    const label=new Date(date+"T12:00:00").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
+    return `<div class="dayhead"><span>${esc(label)}</span><span>${usd(day)} spent</span></div>`+g.map(e=>{
+      const canVoid=!e.voided && myName && (holderOk || e.by===myName);
+      return `<div class="item ${e.voided?"void":""}"><div class="body"><div class="nm">${e.kind==="topup"?"💰":emoji(e.cat)} ${esc(e.note||e.cat)}</div>
+        <div class="nt">${esc(e.cat)} · logged by ${esc(e.by)}${e.voided?` · voided by ${esc(e.voidedBy||"")}`:""}</div></div>
+        <div style="text-align:right"><div class="amt ${e.kind}">${e.kind==="topup"?"+":"−"}${usd(e.amount||0)}</div>
+        ${canVoid?`<button class="x" data-act="void" data-id="${esc(e.id)}">Void</button>`:""}</div></div>`;
+    }).join("");
+  }).join("");
+}
+const todayStr=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");};
+
+function renderAll(){ renderGear(); renderPlan(); renderPolls(); renderMoney(); }
 
 /* ───── events ───── */
 document.addEventListener("click", async (e)=>{
   const t=e.target.closest("[data-tab],[data-act],[data-filter]"); if(!t) return;
   if(t.dataset.tab){ showTab(t.dataset.tab); return; }
-  if(t.dataset.filter){ filter=t.dataset.filter; render(); return; }
+  if(t.dataset.filter){ filter=t.dataset.filter; renderGear(); return; }
   const act=t.dataset.act, id=t.dataset.id;
+  const needName=()=>{ if(!myName){ $("#nameMsg").textContent="Enter your name first."; $("#myName").focus(); return true;} return false; };
   try{
     if(act==="seed"){ await loadStarter(); }
-    else if(act==="claim"){
-      if(!myName){ $("#nameMsg").textContent="Enter your name first so people can see who's bringing it."; $("#myName").focus(); return; }
-      await claim(id,myName);
-    }
+    else if(act==="claim"){ if(needName()) return; await claim(id,myName); }
     else if(act==="release"){ await release(id,myName); }
     else if(act==="remove"){ if(confirm("Remove this item from the board for everyone?")) await removeItem(id); }
+
+    else if(act==="seedPlan"){
+      for(const s of PLAN_SEEDS){ const {id:did,...rest}=s; await setDoc(doc(db,"hubPassage",did),rest,{merge:true}); }
+    }
+    else if(act==="unlockDay"){ if(confirm("Unlock this day so it can be edited?")) await updateDoc(doc(db,"hubPassage",id),{locked:false}); }
+    else if(act==="saveDay"){
+      const card=document.querySelector(`[data-day="${CSS.escape(id)}"]`);
+      const v=(f)=>card.querySelector(`[data-f="${f}"]`).value.trim();
+      await updateDoc(doc(db,"hubPassage",id),{from:v("from"),to:v("to"),depart:v("depart"),arrive:v("arrive"),notes:v("notes"),locked:true});
+    }
+
+    else if(act==="postPoll"){
+      if(needName()) return;
+      const q=$("#pq").value.trim();
+      const options=["#po1","#po2","#po3"].map(s=>$(s).value.trim()).filter(Boolean);
+      if(!q||options.length<2){ $("#pollMsg").textContent="Add a question and at least two options."; return; }
+      await setDoc(doc(collection(db,"hubPulse")),{q,options,by:myName,createdAt:Date.now(),status:"open",responses:{},decision:"",rationale:""});
+      ["#pq","#po1","#po2","#po3"].forEach(s=>$(s).value=""); $("#pollMsg").textContent="Posted."; $("#newPoll").open=false;
+    }
+    else if(act==="rank"){
+      if(needName()) return;
+      const card=document.querySelector(`[data-poll="${CSS.escape(id)}"]`);
+      const sels=[...card.querySelectorAll("[data-rk]")];
+      const ranks=sels.map(s=>parseInt(s.value)||0);
+      if(ranks.some(r=>!r)||new Set(ranks).size!==sels.length){ alert("Give each option a different rank from 1 to "+sels.length+"."); return; }
+      await updateDoc(doc(db,"hubPulse",id),{[`responses.${keyOf(myName)}`]:{name:myName,ranks,reason:card.querySelector("[data-rs]").value.trim()}});
+    }
+    else if(act==="decide"){
+      const card=document.querySelector(`[data-poll="${CSS.escape(id)}"]`);
+      await updateDoc(doc(db,"hubPulse",id),{status:"decided",decision:card.querySelector("[data-dc]").value,rationale:card.querySelector("[data-dr]").value.trim()});
+    }
+    else if(act==="delPoll"){ if(confirm("Delete this poll for everyone?")) await deleteDoc(doc(db,"hubPulse",id)); }
+
+    else if(act==="setupFund"){
+      if(needName()) return;
+      const dollars=parseFloat($("#fundStart").value);
+      if(!(dollars>0)){ $("#fundMsg").textContent="Enter the starting amount."; return; }
+      if(!confirm(`Create the fund with ${usd(Math.round(dollars*100))}? You (${myName}) will be the only person who can log entries.`)) return;
+      await setDoc(doc(db,"hubLedger","config"),{kind:"config",start:Math.round(dollars*100),holder:myName,alertPct:20,createdAt:Date.now()});
+    }
+    else if(act==="logExpense"||act==="logTopup"){
+      const dollars=parseFloat($("#exAmt").value);
+      if(!(dollars>0)){ $("#exMsg").textContent="Enter an amount."; return; }
+      const kind=act==="logTopup"?"topup":"expense";
+      await setDoc(doc(collection(db,"hubLedger")),{kind,amount:Math.round(dollars*100),cat:kind==="topup"?"Top-up":$("#exCat").value,note:$("#exNote").value.trim(),date:$("#exDate").value||todayStr(),by:myName,createdAt:Date.now(),voided:false});
+      $("#exAmt").value=""; $("#exNote").value=""; $("#exMsg").textContent=kind==="topup"?"Top-up added.":"Logged.";
+    }
+    else if(act==="void"){
+      if(confirm("Void this entry? It stays in the log, struck through, and no longer counts.")) await updateDoc(doc(db,"hubLedger",id),{voided:true,voidedBy:myName});
+    }
   }catch(err){ console.error(err); alert("That didn't save. Check your connection and try again."); }
 });
 
 document.addEventListener("change",(e)=>{
   const c=e.target.closest("[data-chk]"); if(!c) return;
-  checks[c.dataset.chk]=c.checked; lsSet("bviHubChecks",checks); render();
+  checks[c.dataset.chk]=c.checked; lsSet("bviHubChecks",checks); renderGear();
 });
 
 const nameInput=$("#myName"); nameInput.value=myName;
-nameInput.addEventListener("input",()=>{ myName=nameInput.value.trim(); lsSet("bviHubName",myName); $("#nameMsg").textContent=""; render(); });
+nameInput.addEventListener("input",()=>{ myName=nameInput.value.trim(); lsSet("bviHubName",myName); $("#nameMsg").textContent=""; renderAll(); });
 
 $("#addCat").innerHTML = CATS.map(c=>`<option>${esc(c)}</option>`).join("");
+$("#exCat").innerHTML = LCATS.map(c=>`<option>${esc(c[0])}</option>`).join("");
+$("#exDate").value = todayStr();
 
 function tokens(s){ return String(s).toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>3); }
 $("#addBtn").addEventListener("click", async ()=>{
@@ -539,15 +808,19 @@ $("#addBtn").addEventListener("click", async ()=>{
 });
 
 function showTab(name){
+  curTab=name;
   document.querySelectorAll(".tab").forEach(s=>s.classList.toggle("active",s.id==="tab-"+name));
-  document.querySelectorAll(".tabbar button").forEach(b=>b.classList.toggle("sel",b.dataset.tab===name));
+  const bar=["boat","links"].includes(name)?"info":name;
+  document.querySelectorAll(".tabbar button").forEach(b=>b.classList.toggle("sel",b.dataset.tab===bar));
+  document.querySelectorAll(".seg button").forEach(b=>b.classList.toggle("sel",b.dataset.tab===name));
+  $("#nameWrap").style.display=["gear","polls","money"].includes(name)?"block":"none";
   window.scrollTo({top:0});
 }
 
 /* ───── countdown to Feb 12 2027, 8:00 AM Atlantic Standard Time (12:00 UTC) ───── */
 const TARGET=Date.UTC(2027,1,12,12,0,0);
 function tick(){
-  let ms=TARGET-Date.now();
+  const ms=TARGET-Date.now();
   if(ms<=0){ ["d","h","m","s"].forEach(k=>$("#cd-"+k).textContent="0"); document.querySelector(".hero h1").textContent="Anchors aweigh"; return; }
   const s=Math.floor(ms/1000);
   $("#cd-d").textContent=Math.floor(s/86400);
@@ -556,7 +829,8 @@ function tick(){
   $("#cd-s").textContent=String(s%60).padStart(2,"0");
 }
 tick(); setInterval(tick,1000);
-render();
+showTab("home");
+renderAll();
 </script>
 </body>
 </html>
