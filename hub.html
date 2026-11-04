@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BVI 2027 Crew Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --water:#E4F0EE; --water-deep:#C9E2DE; --ink:#0D2B3A; --ink-soft:#3C5866; --ink-mute:#6B8590;
+    --buoy:#E8452C; --buoy-soft:#FCE3DD; --lagoon:#127C86; --lagoon-soft:#D2ECEE;
+    --paper:#FAFDFC; --line:rgba(13,43,58,.14); --ok:#1D7A4C; --ok-soft:#DDF1E6;
+    --head:'Archivo','Helvetica Neue',Arial,sans-serif; --body:'Public Sans',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:var(--body);background:var(--water);color:var(--ink);line-height:1.5;padding-bottom:84px;font-size:15px}
+  h1,h2,h3{font-family:var(--head);line-height:1.05;letter-spacing:-.01em}
+  a{color:var(--lagoon)}
+  button{font:inherit;cursor:pointer}
+  :focus-visible{outline:3px solid var(--buoy);outline-offset:2px}
+
+  .top{position:sticky;top:0;z-index:50;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top))}
+  .brand{font-family:var(--head);font-weight:800;font-stretch:110%;font-size:17px}
+  .badge{font-size:12px;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.12);display:flex;align-items:center;gap:6px}
+  .badge i{width:8px;height:8px;border-radius:50%;background:#9aa;display:block}
+  .badge.on i{background:#4ADE80}.badge.off i{background:var(--buoy)}.badge.loc i{background:#F5C451}
+
+  main{max-width:720px;margin:0 auto}
+  .tab{display:none}.tab.active{display:block}
+  .pad{padding:20px 16px}
+
+  /* hero */
+  .hero{position:relative;color:#fff;padding:34px 16px 30px;background:
+    repeating-radial-gradient(circle at 85% 120%, rgba(255,255,255,.07) 0 2px, transparent 2px 26px),
+    linear-gradient(160deg,#0D2B3A 0%,#115B6B 100%);overflow:hidden}
+  .hero h1{font-weight:900;font-stretch:118%;font-size:clamp(34px,9vw,52px);max-width:11ch}
+  .hero p.sub{margin-top:10px;color:#BFDDE3;max-width:34ch}
+  .count{display:flex;gap:10px;margin-top:26px}
+  .count div{flex:1;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);border-radius:12px;padding:12px 4px;text-align:center}
+  .count b{display:block;font-family:var(--head);font-weight:900;font-stretch:100%;font-size:clamp(30px,9vw,46px);line-height:1;font-variant-numeric:tabular-nums}
+  .count span{font-size:12px;color:#BFDDE3}
+  .hero .go{margin-top:20px;display:inline-block;background:var(--buoy);color:#fff;border:0;border-radius:10px;padding:12px 18px;font-weight:600}
+
+  h2{font-weight:800;font-stretch:108%;font-size:24px;margin:0 0 6px}
+  .lead{color:var(--ink-soft);margin-bottom:14px;max-width:60ch}
+  .block{margin-top:26px}
+
+  .row{display:flex;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+  .row:last-child{border-bottom:0}
+  .row .t{font-weight:600}
+  .row .n{font-size:13.5px;color:var(--ink-soft);margin-top:2px}
+  .panel{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:4px 16px}
+  .panel.pad2{padding:16px}
+
+  .stat{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .stat div{flex:1 1 90px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+  .stat b{font-family:var(--head);font-weight:800;font-size:22px;display:block}
+  .stat span{font-size:12.5px;color:var(--ink-soft)}
+
+  /* gear */
+  .namebar{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .namebar label{font-weight:600;font-size:14px}
+  input[type=text],input[type=number],select,textarea{font:inherit;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;color:var(--ink);width:100%}
+  .namebar input{flex:1 1 160px;width:auto}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
+  .chip{border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:6px 13px;font-size:13.5px;color:var(--ink)}
+  .chip.sel{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .cat{font-family:var(--head);font-weight:800;font-stretch:105%;font-size:17px;margin:22px 0 4px}
+  .item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+  .item .body{flex:1;min-width:0}
+  .item .nm{font-weight:600}
+  .item .nt{font-size:13.5px;color:var(--ink-soft);margin-top:2px}
+  .who{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
+  .who span{background:var(--lagoon-soft);color:#0B5159;border-radius:99px;padding:2px 10px;font-size:13px}
+  .who span.me{background:var(--ink);color:#fff}
+  .slots{font-size:12.5px;font-weight:600;margin-top:6px}
+  .slots.open{color:var(--buoy)}.slots.done{color:var(--ok)}
+  .btn{border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:9px;padding:8px 13px;font-size:14px;font-weight:600;white-space:nowrap}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.buoy{background:var(--buoy);border-color:var(--buoy)}
+  .btn[disabled]{opacity:.45;cursor:not-allowed}
+  .x{background:none;border:0;color:var(--ink-mute);font-size:13px;text-decoration:underline;padding:2px 0;margin-top:6px}
+  .form{display:grid;gap:10px;margin-top:10px}
+  .form .two{display:grid;grid-template-columns:1fr 90px;gap:10px}
+  .msg{font-size:13.5px;color:var(--ink-soft);min-height:20px}
+  .warn{background:var(--buoy-soft);border:1px solid #F3B8AA;border-radius:10px;padding:10px 12px;font-size:14px;margin-bottom:12px}
+  .empty{background:var(--paper);border:1px dashed var(--line);border-radius:12px;padding:18px;text-align:center}
+  details.panel{padding:0}
+  details summary{padding:14px 16px;font-weight:600;cursor:pointer}
+  details .inner{padding:0 16px 8px}
+  .chk{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);align-items:flex-start}
+  .chk:last-child{border:0}
+  .chk input{width:20px;height:20px;margin-top:2px;flex:none}
+  .chk.done .nm{text-decoration:line-through;color:var(--ink-mute)}
+  .tag{font-size:11.5px;border-radius:6px;padding:1px 7px;margin-left:6px;font-weight:600;vertical-align:middle}
+  .tag.boat{background:var(--ok-soft);color:var(--ok)}
+  .tag.chk2{background:var(--buoy-soft);color:#A82E19}
+  .tag.cpl{background:var(--lagoon-soft);color:#0B5159}
+
+  .grid2{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+  @media(max-width:480px){.grid2{grid-template-columns:1fr}}
+  .link{display:block;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:13px 14px}
+  .link b{display:block;color:var(--lagoon)}
+  .link span{font-size:13px;color:var(--ink-soft)}
+
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--ink);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+  .tabbar button{flex:1;background:none;border:0;color:#9FB8C0;padding:10px 2px 9px;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .tabbar button .ic{font-size:19px;line-height:1}
+  .tabbar button.sel{color:#fff;box-shadow:inset 0 3px 0 var(--buoy)}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">BVI 2027</div>
+  <div class="badge loc" id="badge"><i></i><span id="badgeText">Starting…</span></div>
+</header>
+
+<main>
+<!-- HOME -->
+<section class="tab active" id="tab-home">
+  <div class="hero">
+    <h1>Crude Escape sails Feb 12</h1>
+    <p class="sub">One catamaran, six cabins, a week in the British Virgin Islands.</p>
+    <div class="count" aria-live="off">
+      <div><b id="cd-d">--</b><span>days</span></div>
+      <div><b id="cd-h">--</b><span>hours</span></div>
+      <div><b id="cd-m">--</b><span>min</span></div>
+      <div><b id="cd-s">--</b><span>sec</span></div>
+    </div>
+    <button class="go" data-tab="gear">Claim your gear</button>
+  </div>
+  <div class="pad">
+    <div class="stat">
+      <div><b id="st-covered">–</b><span>shared items covered</span></div>
+      <div><b>6</b><span>queen cabins, 6 private heads</span></div>
+      <div><b>7</b><span>nights aboard</span></div>
+    </div>
+
+    <div class="block">
+      <h2>What we're looking forward to</h2>
+      <p class="lead">Locked-in stops are listed first. Skipper makes the final call on routing and weather.</p>
+      <div class="panel">
+        <div class="row"><div><div class="t">The Baths, Virgin Gorda</div><div class="n">Granite boulders and tide pools. We need to be on a mooring early, before the day boats arrive.</div></div></div>
+        <div class="row"><div><div class="t">Saba Rock, North Sound</div><div class="n">Tiny island, lunch and drinks. Check that it's open before we commit the day.</div></div></div>
+        <div class="row"><div><div class="t">Virgin Gorda North Sound</div><div class="n">Two days on Virgin Gorda so we're not rushing between the Baths and the Sound.</div></div></div>
+        <div class="row"><div><div class="t">Still being decided</div><div class="n">Anegada (reef-fringed, famous for lobster, needs a full day), Norman Island caves, Jost Van Dyke.</div></div></div>
+        <div class="row"><div><div class="t">On the way between stops</div><div class="n">Trolling lines out on the longer crossings. Mahi and wahoo are the target.</div></div></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2>The boat</h2>
+      <p class="lead">A 2026 Fountaine Pajot Aura 51 with air conditioning, a hydraulic swim platform, Bose speakers on the deck, and a gas grill. See the Boat tab for what's already aboard.</p>
+    </div>
+
+    <div class="block">
+      <h2>Crew app</h2>
+      <p class="lead">Ledger, passage plan and preference polls live in the original crew app.</p>
+      <a class="btn" style="display:inline-block;text-decoration:none" href="index.html">Open ledger and passage plan</a>
+    </div>
+  </div>
+</section>
+
+<!-- GEAR -->
+<section class="tab" id="tab-gear"><div class="pad">
+  <h2>Gear board</h2>
+  <p class="lead">Space on the boat is limited, so each shared item only needs to come once. Claim what you're bringing so we don't double up. Add anything missing at the bottom.</p>
+
+  <div class="namebar">
+    <label for="myName">Your name</label>
+    <input type="text" id="myName" placeholder="e.g. Sam" autocomplete="given-name" maxlength="30">
+  </div>
+  <div class="msg" id="nameMsg"></div>
+
+  <div id="seedBox"></div>
+  <div class="chips" id="chips">
+    <button class="chip sel" data-filter="all">All</button>
+    <button class="chip" data-filter="open">Needs someone</button>
+    <button class="chip" data-filter="done">Covered</button>
+    <button class="chip" data-filter="mine">Mine</button>
+  </div>
+  <div id="gearList"></div>
+
+  <div class="block">
+    <h2>Add something we're missing</h2>
+    <p class="lead">We'll warn you if something similar is already on the board.</p>
+    <div class="form panel pad2" id="addForm">
+      <input type="text" id="addName" placeholder="Item (e.g. Floating cooler)" maxlength="60" aria-label="Item name">
+      <div class="two">
+        <select id="addCat" aria-label="Category"></select>
+        <input type="number" id="addNeed" min="1" max="12" value="1" aria-label="How many we need in total">
+      </div>
+      <input type="text" id="addNote" placeholder="Note (optional)" maxlength="140" aria-label="Note">
+      <button class="btn buoy" id="addBtn" type="button">Add to the board</button>
+      <div class="msg" id="addMsg"></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h2>Everyone brings their own</h2>
+    <p class="lead">These aren't shared. Your check marks are saved on this device only.</p>
+    <div id="personalList"></div>
+  </div>
+</div></section>
+
+<!-- BOAT -->
+<section class="tab" id="tab-boat"><div class="pad">
+  <h2>Crude Escape</h2>
+  <p class="lead">2026 Fountaine Pajot Aura 51, BVI Yacht Charters, Ritter House Marina, Road Town.</p>
+  <div class="stat">
+    <div><b>51 ft</b><span>length</span></div>
+    <div><b>26.5 ft</b><span>beam</span></div>
+    <div><b>5.2 ft</b><span>draft</span></div>
+    <div><b>2 × 80 hp</b><span>engines</span></div>
+    <div><b>238 gal</b><span>fresh water</span></div>
+    <div><b>236 gal</b><span>fuel</span></div>
+  </div>
+
+  <div class="block"><h2>Already aboard</h2><p class="lead">Listed by the charter company. Don't pack these.</p>
+    <div class="panel">
+      <div class="row"><div><div class="t">Navigation</div><div class="n">Garmin chartplotter, autopilot, wind instrument, VHF, cellular phone, paper chart and cruising guide.</div></div></div>
+      <div class="row"><div><div class="t">Power</div><div class="n">Generator, solar panels, lithium batteries, air conditioning.</div></div></div>
+      <div class="row"><div><div class="t">Galley and deck</div><div class="n">3-burner stove, gas BBQ, double-drawer fridge plus a cockpit fridge, hot deck shower, sun shade, foredeck cushions.</div></div></div>
+      <div class="row"><div><div class="t">Fun</div><div class="n">Bluetooth stereo with Bose speakers, hydraulic swim platform, snorkeling gear.</div></div></div>
+      <div class="row"><div><div class="t">Safety and tender</div><div class="n">Safety gear, dinghy with outboard and hydraulic lift.</div></div></div>
+    </div>
+  </div>
+
+  <div class="block"><h2>Not guaranteed</h2>
+    <div class="warn">The charter company lists the watermaker and underwater lights as premium features. They try to have them working but don't promise it or compensate if they fail. Air conditioning is listed too, so test everything at checkout before we leave the dock.</div>
+  </div>
+
+  <div class="block"><h2>Confirm at checkout</h2>
+    <div class="panel">
+      <div class="row"><div><div class="t">Wifi</div><div class="n">We expect wifi aboard. Get the network details and a speed check on day one.</div></div></div>
+      <div class="row"><div><div class="t">Dinghy outboard</div><div class="n">Horsepower and passenger limit. We'll be making several runs with a big group.</div></div></div>
+      <div class="row"><div><div class="t">Life jackets</div><div class="n">One per person, in good condition, plus throwables.</div></div></div>
+      <div class="row"><div><div class="t">Snorkel gear</div><div class="n">Condition and sizes. Bring your own mask if fit matters to you.</div></div></div>
+      <div class="row"><div><div class="t">Watermaker, A/C, underwater lights</div><div class="n">Run each one while the charter staff are still there.</div></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- INFO -->
+<section class="tab" id="tab-info"><div class="pad">
+  <h2>Trip info</h2>
+  <div class="panel">
+    <div class="row"><div><div class="t">Charter dates</div><div class="n">Feb 12 – 19, 2027</div></div></div>
+    <div class="row"><div><div class="t">Marina</div><div class="n">BVI Yacht Charters, Ritter House Marina, Wickhams Cay 2, Road Town, Tortola</div></div></div>
+    <div class="row"><div><div class="t">Charter company</div><div class="n"><a href="tel:+12844944289">+1 284-494-4289</a> · from the US <a href="tel:+18886154006">888-615-4006</a> · <a href="mailto:charters@bviyc.com">charters@bviyc.com</a></div></div></div>
+    <div class="row"><div><div class="t">Boat page</div><div class="n"><a href="https://www.bviyachtcharters.com/yachts/crude-escape-aura-51/" target="_blank" rel="noopener">Crude Escape on BVI Yacht Charters</a></div></div></div>
+  </div>
+
+  <div class="block"><h2>Boat rules</h2>
+    <p class="lead">The captain will go over these at the briefing. Reading them first saves the first day.</p>
+    <div class="panel">
+      <div class="row"><div><div class="t">Heads</div><div class="n">Marine toilets clog easily. Follow the charter company's rule at the briefing. The safe default is nothing in the toilet except what came out of you, and paper goes in the bin.</div></div></div>
+      <div class="row"><div><div class="t">Water</div><div class="n">Short showers even with the watermaker. Nothing greasy down the galley sink.</div></div></div>
+      <div class="row"><div><div class="t">Shoes</div><div class="n">Non-slip soles, no dark soles (they mark the deck). Flip-flops with no heel strap go overboard.</div></div></div>
+      <div class="row"><div><div class="t">Dinghy</div><div class="n">Tie it with two lines. Know where the kill switch is. Make two trips rather than overloading it. Pull it up on the lift at night.</div></div></div>
+      <div class="row"><div><div class="t">Trash</div><div class="n">Nothing goes overboard. Bag it daily and drop it at marinas.</div></div></div>
+      <div class="row"><div><div class="t">Sun</div><div class="n">Reapply every two hours. Overcast days burn too. Day one is when somebody gets cooked.</div></div></div>
+      <div class="row"><div><div class="t">Quiet hours</div><div class="n">Sound carries on a catamaran. Agree on a time at the first dinner.</div></div></div>
+    </div>
+  </div>
+
+  <div class="block"><h2>Moorings</h2>
+    <div class="panel">
+      <div class="row"><div><div class="t">How they work</div><div class="n">First come, first served, roughly $30–40 a night, paid to the mooring host who comes by dinghy. Popular spots fill by early afternoon.</div></div></div>
+      <div class="row"><div><div class="t">Our routine</div><div class="n">Leave the anchorage by about 9am. Pick tomorrow's stop the night before.</div></div></div>
+      <div class="row"><div><div class="t">The Baths</div><div class="n">Be there before 9am if we can.</div></div></div>
+      <div class="row"><div><div class="t">Anegada</div><div class="n">Call ahead on VHF to the mooring host before arriving, and stay in the marked channel.</div></div></div>
+      <div class="row"><div><div class="t">Cash</div><div class="n">Bring small US bills. Mooring hosts and some beach bars take cash only.</div></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- LINKS -->
+<section class="tab" id="tab-links"><div class="pad">
+  <h2>Links</h2>
+  <p class="lead">These open in your browser. Some need their own account, noted below. Download offline charts before we leave home.</p>
+  <div class="grid2">
+    <a class="link" href="https://www.navionics.com" target="_blank" rel="noopener"><b>Navionics</b><span>Charts. Paid subscription. Download BVI offline.</span></a>
+    <a class="link" href="https://activecaptain.garmin.com" target="_blank" rel="noopener"><b>ActiveCaptain</b><span>Anchorage and hazard notes. Free Garmin account.</span></a>
+    <a class="link" href="https://www.predictwind.com" target="_blank" rel="noopener"><b>PredictWind</b><span>Forecasts and routing. Free account for basics.</span></a>
+    <a class="link" href="https://www.windy.com" target="_blank" rel="noopener"><b>Windy</b><span>Wind and waves. No login.</span></a>
+    <a class="link" href="https://www.passageweather.com" target="_blank" rel="noopener"><b>Passage Weather</b><span>Multi-day marine outlook. No login.</span></a>
+    <a class="link" href="https://www.noonsite.com" target="_blank" rel="noopener"><b>Noonsite</b><span>Entry rules and cruising info.</span></a>
+    <a class="link" href="https://bvitourism.com" target="_blank" rel="noopener"><b>BVI Tourism</b><span>Official visitor info.</span></a>
+    <a class="link" href="https://www.google.com/search?q=Riteway+Food+Markets+BVI+provisioning" target="_blank" rel="noopener"><b>Provisioning</b><span>Riteway Food Markets in Road Town.</span></a>
+    <a class="link" href="https://www.google.com/search?q=Cooper+Island+Beach+Club" target="_blank" rel="noopener"><b>Cooper Island Beach Club</b><span>Possible stop.</span></a>
+    <a class="link" href="https://www.google.com/search?q=BVI+tide+chart" target="_blank" rel="noopener"><b>BVI tides</b><span>Tide tables.</span></a>
+    <a class="link" href="index.html"><b>Crew app</b><span>Ledger, passage plan, polls, mooring notes.</span></a>
+  </div>
+  <div class="panel pad2" style="margin-top:16px"><div class="t" style="font-weight:600">VHF Channel 16</div><div class="n" style="font-size:13.5px;color:var(--ink-soft)">Distress and hailing channel monitored by the Coast Guard and other boats. Use another working channel for routine chatter.</div></div>
+</div></section>
+</main>
+
+<nav class="tabbar" aria-label="Sections">
+  <button class="sel" data-tab="home"><span class="ic">⚓</span>Home</button>
+  <button data-tab="gear"><span class="ic">🎒</span>Gear</button>
+  <button data-tab="boat"><span class="ic">⛵</span>Boat</button>
+  <button data-tab="info"><span class="ic">📋</span>Info</button>
+  <button data-tab="links"><span class="ic">🔗</span>Links</button>
+</nav>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, doc, onSnapshot, setDoc, updateDoc, deleteDoc, arrayUnion, arrayRemove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* ╔════════════════════════════════════════════════════════════╗
+   ║  PASTE YOUR FIREBASE CONFIG HERE (same one as the crew app) ║
+   ╚════════════════════════════════════════════════════════════╝ */
+const firebaseConfig = {
+  apiKey: "AIzaSyC7MdsFVLEWUSN5hfR0axQNlgEAF8rmGBU",
+  authDomain: "bvi-bareboat-charter-2027.firebaseapp.com",
+  projectId: "bvi-bareboat-charter-2027",
+  storageBucket: "bvi-bareboat-charter-2027.firebasestorage.app",
+  messagingSenderId: "613737865298",
+  appId: "1:613737865298:web:a1658bde3507462c21bf8b"
+};
+
+const CATS = ["Safety & comms","Power & tech","Medical","Fishing","Sun & comfort","Fun","Other"];
+
+/* Shared items: one of these covers the whole boat. need = how many in total. */
+const SEEDS = [
+  {id:"seed-inreach",name:"Garmin inReach Mini 2",cat:"Safety & comms",need:1,note:"Satellite texting and SOS with no cell signal. The captain carries it. About $350 plus a monthly plan."},
+  {id:"seed-vhf",name:"Handheld VHF radio",cat:"Safety & comms",need:2,note:"Dinghy-to-boat contact. Waterproof, floating model such as the Standard Horizon HX210."},
+  {id:"seed-spot",name:"Waterproof spotlight",cat:"Safety & comms",need:1,note:"For night anchoring and reading mooring numbers."},
+  {id:"seed-ipad",name:"iPad with offline Navionics charts",cat:"Safety & comms",need:1,note:"Backup to the boat's chartplotter. Download the BVI charts at home."},
+  {id:"seed-bank",name:"Large power bank (24,000 mAh)",cat:"Power & tech",need:2,note:"Anker 737 class. Shared charging for the group."},
+  {id:"seed-12v",name:"12V USB charging hub",cat:"Power & tech",need:1,note:"Plugs into the boat's DC outlet. About $25."},
+  {id:"seed-gopro",name:"GoPro with floating grip",cat:"Power & tech",need:1,note:"Bring spare batteries and a memory card."},
+  {id:"seed-firstaid",name:"Marine first aid kit",cat:"Medical",need:1,note:"Adventure Medical Kits Marine 1500 is the one we looked at. Split the cost."},
+  {id:"seed-glue",name:"Medical superglue and Leukotape",cat:"Medical",need:1,note:"For coral cuts and waterproof taping."},
+  {id:"seed-seasick",name:"Bonine or Dramamine (bulk)",cat:"Medical",need:1,note:"Backup for anyone who skips patches."},
+  {id:"seed-antidiar",name:"Imodium",cat:"Medical",need:1,note:""},
+  {id:"seed-blister",name:"Blister pads (Compeed)",cat:"Medical",need:1,note:""},
+  {id:"seed-aloe",name:"Aloe or after-sun gel",cat:"Medical",need:2,note:"Someone will burn."},
+  {id:"seed-sanit",name:"Hand sanitizer",cat:"Medical",need:1,note:""},
+  {id:"seed-fish",name:"Fishing kit (rods, lures, leader, grips, kill spike)",cat:"Fishing",need:1,note:"The fishing lead buys the rods and lures in Tortola."},
+  {id:"seed-licence",name:"BVI fishing licence",cat:"Fishing",need:1,note:"Needed for non-residents. Cheap, bought locally."},
+  {id:"seed-spf",name:"Reef-safe sunscreen, SPF 50+ (bulk)",cat:"Sun & comfort",need:3,note:"We'll go through more than we think."},
+  {id:"seed-bug",name:"Insect repellent",cat:"Sun & comfort",need:2,note:"Sand flies at dusk in some anchorages."},
+  {id:"seed-zip",name:"Zip bags, assorted sizes",cat:"Sun & comfort",need:1,note:""},
+  {id:"seed-cards",name:"Waterproof playing cards",cat:"Fun",need:1,note:""},
+  {id:"seed-float",name:"Snorkel vests or float belts",cat:"Fun",need:2,note:"For anyone less comfortable in open water."}
+];
+
+/* Everyone brings. Not stored in the cloud; check marks stay on your device. */
+const PERSONAL = [
+  {id:"p-duffel",name:"Soft duffel bag (no hard-shell luggage)",tag:"",note:"Lockers are narrow. A bag that squashes flat is best."},
+  {id:"p-passport",name:"Passport",tag:"",note:""},
+  {id:"p-cash",name:"US cash in small bills",tag:"",note:"For moorings and beach bars."},
+  {id:"p-rx",name:"Seasickness patches (prescription)",tag:"",note:"Ask your doctor early. Put one on the night before departure."},
+  {id:"p-meds",name:"Personal medications",tag:"",note:""},
+  {id:"p-mask",name:"Your own mask and snorkel",tag:"",note:"Mask fit matters more than anything else."},
+  {id:"p-rash",name:"Rash guard",tag:"",note:""},
+  {id:"p-shorts",name:"Swimsuits and quick-dry shorts",tag:"",note:"Three outfits is plenty."},
+  {id:"p-shoes",name:"Non-slip deck sandals or shoes",tag:"",note:"No dark soles. OluKai Ohana is one option."},
+  {id:"p-shore",name:"One nice outfit for dinner ashore",tag:"",note:""},
+  {id:"p-wind",name:"Light windbreaker",tag:"",note:"Evenings on deck can be breezy."},
+  {id:"p-shades",name:"Polarized sunglasses",tag:"",note:"They help us read the water for reefs."},
+  {id:"p-hat",name:"Wide-brim sun hat",tag:"",note:""},
+  {id:"p-towel",name:"Microfiber towel",tag:"",note:"Dries fast, packs flat."},
+  {id:"p-head",name:"Waterproof headlamp (USB-rechargeable)",tag:"",note:"Hands free for night dinghy runs."},
+  {id:"p-whistle",name:"Clip-on whistle",tag:"",note:""},
+  {id:"p-gloves",name:"Dock gloves",tag:"",note:"Rope burn is immediate."},
+  {id:"p-plugs",name:"Ear plugs",tag:"",note:"Halyards slap and water laps at anchor."},
+  {id:"p-case",name:"Waterproof phone case",tag:"",note:""},
+  {id:"p-cable",name:"Phone charger cables",tag:"",note:"Outlets get crowded."},
+  {id:"p-dry",name:"Small dry bag (10–20 L) for dinghy runs",tag:"couple",note:"One per couple is enough."}
+];
+
+/* ───── helpers ───── */
+const $ = (s)=>document.querySelector(s);
+const esc = (s)=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+
+let items = [];
+let mode = "local";            // "cloud" | "local"
+let db = null, col = null;
+let filter = "all";
+let myName = lsGet("bviHubName","");
+let checks = lsGet("bviHubChecks",{});
+
+const configured = !Object.values(firebaseConfig).some(v=>String(v).startsWith("PASTE"));
+
+function setBadge(state,text){
+  const b=$("#badge"); b.className="badge "+state; $("#badgeText").textContent=text;
+}
+
+/* ───── data layer ───── */
+if (configured) {
+  try {
+    const app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    col = collection(db,"hubGear");
+    mode = "cloud";
+    onSnapshot(col, (snap)=>{
+      items = snap.docs.map(d=>({id:d.id,...d.data()}));
+      setBadge("on","Synced"); render();
+    }, (err)=>{ console.error("Firestore:",err); setBadge("off","Offline – check rules"); });
+  } catch(e){ console.error(e); setBadge("off","Offline"); mode="local"; items=lsGet("bviHubGearLocal",[]); }
+} else {
+  items = lsGet("bviHubGearLocal",[]);
+  setBadge("loc","Local only – not synced");
+}
+const saveLocal=()=>lsSet("bviHubGearLocal",items);
+
+async function addItem(obj){
+  if(mode==="cloud"){ await setDoc(doc(col),obj); }
+  else { items.push({...obj,id:"l"+Date.now()}); saveLocal(); render(); }
+}
+async function claim(id,name){
+  if(mode==="cloud"){ await updateDoc(doc(db,"hubGear",id),{claims:arrayUnion(name)}); }
+  else { const it=items.find(i=>i.id===id); it.claims=[...(it.claims||[]).filter(n=>n!==name),name]; saveLocal(); render(); }
+}
+async function release(id,name){
+  if(mode==="cloud"){ await updateDoc(doc(db,"hubGear",id),{claims:arrayRemove(name)}); }
+  else { const it=items.find(i=>i.id===id); it.claims=(it.claims||[]).filter(n=>n!==name); saveLocal(); render(); }
+}
+async function removeItem(id){
+  if(mode==="cloud"){ await deleteDoc(doc(db,"hubGear",id)); }
+  else { items=items.filter(i=>i.id!==id); saveLocal(); render(); }
+}
+async function loadStarter(){
+  const have=new Set(items.map(i=>i.id));
+  for(const s of SEEDS){
+    if(have.has(s.id)) continue;
+    const {id,...rest}=s;
+    if(mode==="cloud"){ await setDoc(doc(db,"hubGear",id),rest,{merge:true}); }
+    else { items.push({...s}); }
+  }
+  if(mode==="local"){ saveLocal(); render(); }
+}
+
+/* ───── render ───── */
+const claimsOf=(i)=>Array.isArray(i.claims)?i.claims:[];
+const needOf=(i)=>Math.max(1,parseInt(i.need)||1);
+const isDone=(i)=>claimsOf(i).length>=needOf(i);
+
+function render(){
+  // summary
+  const total=items.length, done=items.filter(isDone).length;
+  $("#st-covered").textContent = total ? `${done}/${total}` : "–";
+
+  // starter box
+  $("#seedBox").innerHTML = items.length===0
+    ? `<div class="empty"><p style="margin-bottom:10px">The board is empty. Load the starter list from our trip planning, then adjust it.</p><button class="btn buoy" data-act="seed">Load starter list</button></div>`
+    : "";
+
+  // filter
+  document.querySelectorAll("#chips .chip").forEach(c=>c.classList.toggle("sel",c.dataset.filter===filter));
+  let list=items.filter(i=>{
+    if(filter==="open") return !isDone(i);
+    if(filter==="done") return isDone(i);
+    if(filter==="mine") return claimsOf(i).includes(myName) && myName;
+    return true;
+  });
+
+  const out=[];
+  const cats=[...CATS,...new Set(list.map(i=>i.cat).filter(c=>c&&!CATS.includes(c)))];
+  for(const c of cats){
+    const group=list.filter(i=>(i.cat||"Other")===c).sort((a,b)=>String(a.name).localeCompare(String(b.name)));
+    if(!group.length) continue;
+    out.push(`<h3 class="cat">${esc(c)}</h3>`);
+    for(const i of group){
+      const cl=claimsOf(i), need=needOf(i), mine=myName && cl.includes(myName), full=cl.length>=need;
+      const left=need-cl.length;
+      out.push(`<div class="item">
+        <div class="body">
+          <div class="nm">${esc(i.name)}</div>
+          ${i.note?`<div class="nt">${esc(i.note)}</div>`:""}
+          <div class="slots ${full?"done":"open"}">${full?"Covered":`Needs ${left} more`} (${cl.length} of ${need})</div>
+          ${cl.length?`<div class="who">${cl.map(n=>`<span class="${n===myName?"me":""}">${esc(n)}</span>`).join("")}</div>`:""}
+          ${i.id&&!String(i.id).startsWith("seed-")?`<button class="x" data-act="remove" data-id="${esc(i.id)}">Remove item</button>`:""}
+        </div>
+        ${mine?`<button class="btn ghost" data-act="release" data-id="${esc(i.id)}">Release</button>`
+              :`<button class="btn" data-act="claim" data-id="${esc(i.id)}" ${full?"disabled":""}>${full?"Covered":"I've got it"}</button>`}
+      </div>`);
+    }
+  }
+  $("#gearList").innerHTML = out.length?out.join(""):(items.length?`<div class="empty">Nothing matches this filter.</div>`:"");
+
+  // personal list
+  $("#personalList").innerHTML = `<div class="panel">`+PERSONAL.map(p=>`
+    <label class="chk ${checks[p.id]?"done":""}">
+      <input type="checkbox" data-chk="${p.id}" ${checks[p.id]?"checked":""}>
+      <span><span class="nm">${esc(p.name)}</span>${p.tag==="couple"?`<span class="tag cpl">per couple</span>`:""}${p.note?`<div class="n" style="font-size:13px;color:var(--ink-soft)">${esc(p.note)}</div>`:""}</span>
+    </label>`).join("")+`</div>`;
+}
+
+/* ───── events ───── */
+document.addEventListener("click", async (e)=>{
+  const t=e.target.closest("[data-tab],[data-act],[data-filter]"); if(!t) return;
+  if(t.dataset.tab){ showTab(t.dataset.tab); return; }
+  if(t.dataset.filter){ filter=t.dataset.filter; render(); return; }
+  const act=t.dataset.act, id=t.dataset.id;
+  try{
+    if(act==="seed"){ await loadStarter(); }
+    else if(act==="claim"){
+      if(!myName){ $("#nameMsg").textContent="Enter your name first so people can see who's bringing it."; $("#myName").focus(); return; }
+      await claim(id,myName);
+    }
+    else if(act==="release"){ await release(id,myName); }
+    else if(act==="remove"){ if(confirm("Remove this item from the board for everyone?")) await removeItem(id); }
+  }catch(err){ console.error(err); alert("That didn't save. Check your connection and try again."); }
+});
+
+document.addEventListener("change",(e)=>{
+  const c=e.target.closest("[data-chk]"); if(!c) return;
+  checks[c.dataset.chk]=c.checked; lsSet("bviHubChecks",checks); render();
+});
+
+const nameInput=$("#myName"); nameInput.value=myName;
+nameInput.addEventListener("input",()=>{ myName=nameInput.value.trim(); lsSet("bviHubName",myName); $("#nameMsg").textContent=""; render(); });
+
+$("#addCat").innerHTML = CATS.map(c=>`<option>${esc(c)}</option>`).join("");
+
+function tokens(s){ return String(s).toLowerCase().split(/[^a-z0-9]+/).filter(w=>w.length>3); }
+$("#addBtn").addEventListener("click", async ()=>{
+  const name=$("#addName").value.trim(), msg=$("#addMsg");
+  if(!name){ msg.textContent="Give the item a name."; return; }
+  const tk=tokens(name);
+  const similar=items.find(i=>tokens(i.name).some(w=>tk.includes(w)));
+  if(similar && !confirm(`Something similar is already on the board: "${similar.name}". Add yours anyway?`)) return;
+  const need=Math.min(12,Math.max(1,parseInt($("#addNeed").value)||1));
+  try{
+    await addItem({name,cat:$("#addCat").value,need,note:$("#addNote").value.trim(),claims:[],addedBy:myName||""});
+    $("#addName").value="";$("#addNote").value="";$("#addNeed").value="1";
+    msg.textContent="Added. Claim it if you're bringing it.";
+  }catch(err){ console.error(err); msg.textContent="That didn't save. Check your connection and try again."; }
+});
+
+function showTab(name){
+  document.querySelectorAll(".tab").forEach(s=>s.classList.toggle("active",s.id==="tab-"+name));
+  document.querySelectorAll(".tabbar button").forEach(b=>b.classList.toggle("sel",b.dataset.tab===name));
+  window.scrollTo({top:0});
+}
+
+/* ───── countdown to Feb 12 2027, 8:00 AM Atlantic Standard Time (12:00 UTC) ───── */
+const TARGET=Date.UTC(2027,1,12,12,0,0);
+function tick(){
+  let ms=TARGET-Date.now();
+  if(ms<=0){ ["d","h","m","s"].forEach(k=>$("#cd-"+k).textContent="0"); document.querySelector(".hero h1").textContent="Anchors aweigh"; return; }
+  const s=Math.floor(ms/1000);
+  $("#cd-d").textContent=Math.floor(s/86400);
+  $("#cd-h").textContent=String(Math.floor(s%86400/3600)).padStart(2,"0");
+  $("#cd-m").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");
+  $("#cd-s").textContent=String(s%60).padStart(2,"0");
+}
+tick(); setInterval(tick,1000);
+render();
+</script>
+</body>
+</html>
