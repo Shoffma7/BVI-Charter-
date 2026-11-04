@@ -168,6 +168,7 @@
   .pick{display:flex;flex-direction:column;gap:8px;margin:12px 0}
   .pick button{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-height:48px;font-weight:600;color:var(--ink)}
   .pick button small{font-weight:500;color:var(--ink-soft)}
+  .pick button.sel{border-color:var(--buoy);background:var(--buoy-soft);box-shadow:inset 0 0 0 1.5px var(--buoy)}
   .hr{display:flex;align-items:center;gap:8px;min-width:0}
   .whobtn{background:rgba(255,255,255,.14);border:0;color:#fff;border-radius:99px;padding:8px 13px;font-size:13px;font-weight:600;max-width:34vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-height:36px}
   .updbar{position:fixed;left:12px;right:12px;bottom:calc(68px + env(safe-area-inset-bottom));z-index:70;background:var(--ink);color:#fff;border:1.5px solid var(--buoy);border-radius:12px;padding:10px 12px;display:none;align-items:center;justify-content:space-between;gap:10px;font-size:14px}
@@ -257,15 +258,28 @@
 </header>
 
 <div class="overlay" id="welcome" role="dialog" aria-modal="true" aria-labelledby="welTitle"><div class="sheet">
-  <h2 id="welTitle">Who are you?</h2>
-  <p class="lead" id="welLead">Tap your name so claims, votes and expenses show up as you. You only do this once on this device.</p>
-  <div class="pick" id="welPick"></div>
-  <div class="form">
-    <input type="text" id="myName" placeholder="Not on the list? Type your full name" autocomplete="name" maxlength="40" aria-label="Your name">
-    <button class="btn buoy" type="button" data-act="nameSave">Continue</button>
-    <div class="msg" id="nameMsg"></div>
+  <div id="welList">
+    <h2 id="welTitle">Who are you?</h2>
+    <p class="lead">Tap your name if you're already on the crew list. You only do this once on this device.</p>
+    <div class="pick" id="welPick"></div>
+    <button class="btn buoy" type="button" data-act="welNew" style="width:100%">I'm new here</button>
+    <button class="x" type="button" data-act="nameCancel" id="welCancel" style="display:none">Cancel</button>
   </div>
-  <button class="x" type="button" data-act="nameCancel" id="welCancel" style="display:none">Cancel</button>
+  <div id="welNew" style="display:none">
+    <h2>Your details</h2>
+    <p class="lead">Everyone fills this in once. It saves to the crew list, and you can change it later under Info, then Crew.</p>
+    <div class="form">
+      <input type="text" id="myName" placeholder="Full name" autocomplete="name" maxlength="40" aria-label="Full name">
+      <div style="font-weight:600">Which cabin are you in?</div>
+      <div class="small" style="margin-top:-6px">Joining your partner? Pick the cabin they're already in.</div>
+      <div class="pick" id="cabinPick"></div>
+      <input type="tel" id="wPhone" placeholder="Mobile number" maxlength="20" autocomplete="tel" aria-label="Mobile number">
+      <input type="text" id="wArrive" placeholder="Getting to Tortola (optional, e.g. AA from MIA, Thu Feb 11 1:48pm)" maxlength="90" aria-label="How you are getting to Tortola">
+      <button class="btn buoy" type="button" data-act="profSave">Save and continue</button>
+      <div class="msg" id="nameMsg" role="alert"></div>
+    </div>
+    <button class="x" type="button" data-act="welBack" id="welBack">Back</button>
+  </div>
 </div></div>
 
 <div class="overlay" id="orgModal" role="dialog" aria-modal="true" aria-labelledby="orgTitle"><div class="sheet">
@@ -297,9 +311,9 @@
   </div>
   <div class="pad">
     <div class="stat">
-      <button class="statgo" type="button" data-act="mustGo"><b id="st-covered">–</b><span id="st-lbl">Gear list. Tap to open →</span></button>
-      <div><b id="st-polls">–</b><span>open polls</span></div>
-      <div><b id="st-bal">–</b><span>trip fund balance</span></div>
+      <button class="statgo" type="button" data-act="mustGo"><b id="st-covered">–</b><span id="st-lbl">Gear list →</span></button>
+      <button class="statgo" type="button" data-tab="polls"><b id="st-polls">–</b><span id="st-pl">Polls →</span></button>
+      <button class="statgo" type="button" data-tab="money"><b id="st-bal">–</b><span>trip fund. See details →</span></button>
     </div>
     <div id="todayCard"></div>
     <div id="needsCard"></div>
@@ -747,7 +761,14 @@ if (configured) {
     listen(collection(db,"hubPassage"),(a)=>{days=a; renderPlan();});
     listen(collection(db,"hubPulse"),(a)=>{polls=a; renderPolls(); renderHomeStats();});
     listen(collection(db,"hubLedger"),(a)=>{ledger=a; renderMoney(); renderHomeStats();});
-    listen(collection(db,"hubCrew"),(a)=>{crew=a; renderCrew(); renderGear();});
+    listen(collection(db,"hubCrew"),(a)=>{
+      crew=a; crewLoaded=true; renderCrew(); renderGear();
+      if($("#welcome").classList.contains("show")){
+        renderWelcomeList(); renderCabinPick();
+        if(crew.length && $("#welNew").style.display!=="none" && !$("#myName").value && !$("#myName").readOnly){ showWelView("list"); }
+      }
+      else if(myName && !myCrew() && document.documentElement.classList.contains("unlocked")) openWelcome(false,{name:myName,cabin:"",phone:"",arrive:""});
+    });
   } catch(e){ console.error(e); setBadge("off","Offline"); mode="local"; items=lsGet("bviHubGearLocal",[]); }
 } else {
   items = lsGet("bviHubGearLocal",[]);
@@ -814,8 +835,10 @@ function isMineClaim(n){ const cab=myCabin(); return !!myName && (n===myName || 
 function renderHomeStats(){
   const must=items.filter(i=>approved(i)&&mustOf(i)), open=must.filter(i=>!isDone(i)).length;
   $("#st-covered").textContent = must.length ? (open===0?"All set":String(open)) : "–";
-  $("#st-lbl").textContent = !must.length ? "Gear list. Tap to open →" : (open===0 ? "All must-haves covered. See gear →" : `must-have${open===1?"":"s"} still open. Tap to see gear →`);
-  $("#st-polls").textContent = mode==="cloud" ? String(polls.filter(p=>p.status!=="decided").length) : "–";
+  $("#st-lbl").textContent = !must.length ? "Gear list →" : (open===0 ? "must-haves covered →" : `must-have${open===1?"":"s"} open. See gear →`);
+  const np=polls.filter(p=>p.status!=="decided").length;
+  $("#st-polls").textContent = mode==="cloud" ? String(np) : "–";
+  $("#st-pl").textContent = `open poll${np===1?"":"s"}. See polls →`;
   const f=fundCalc();
   $("#st-bal").textContent = f ? usd(f.bal) : "–";
   renderToday(); renderNeeds();
@@ -960,8 +983,7 @@ function renderNeeds(){
   if(!myName) add("👋","Tell us who you are",'data-act="whoOpen"');
   else if(mode==="cloud"){
     const mc=myCrew();
-    if(!mc) add("👥","Add yourself to the crew list",'data-act="meEdit"');
-    else {
+    if(mc){
       if(!mc.cabin||mc.cabin==="Not assigned") add("🛏️","Pick your cabin",'data-act="meEdit"');
       if(!mc.phone) add("📱","Add your phone number",'data-act="meEdit"');
       if(!mc.arrive) add("✈️","Add how you're getting to Tortola",'data-act="meEdit"');
@@ -1148,16 +1170,40 @@ function renderSettings(){
 /* ───── who are you ───── */
 const firstName=(n)=>String(n||"").trim().split(/\s+/)[0]||"";
 function renderWho(){ $("#whoBtn").textContent = myName ? firstName(myName) : "Who are you?"; }
+let selCabin="", crewLoaded=false;
 function renderWelcomeList(){
   const sorted=[...crew].sort((a,b)=>String(a.name).localeCompare(String(b.name)));
   $("#welPick").innerHTML = sorted.map(c=>`<button type="button" data-act="namePick" data-id="${esc(c.id)}"><span>${esc(c.name)}</span><small>${(c.cabin&&c.cabin!=="Not assigned")?"Cabin "+esc(c.cabin):""}</small></button>`).join("");
 }
-function openWelcome(canCancel){
+function renderCabinPick(){
+  const opts=[1,2,3,4,5,6].map(n=>{
+    const w=crew.filter(c=>String(c.cabin)===String(n)).map(c=>firstName(c.name));
+    return `<button type="button" class="${String(selCabin)===String(n)?"sel":""}" data-act="cabinSel" data-n="${n}" aria-pressed="${String(selCabin)===String(n)}"><span>Cabin ${n}</span><small>${w.length?esc(w.join(", ")):"Open"}</small></button>`;
+  });
+  opts.push(`<button type="button" class="${selCabin==="Not assigned"?"sel":""}" data-act="cabinSel" data-n="Not assigned"><span>Not sure yet</span><small></small></button>`);
+  $("#cabinPick").innerHTML=opts.join("");
+}
+function showWelView(v){ $("#welList").style.display=v==="list"?"block":"none"; $("#welNew").style.display=v==="new"?"block":"none"; }
+function openNew(c){
+  selCabin=(c&&c.cabin)?String(c.cabin):"";
+  $("#myName").value=c?(c.name||""):""; $("#myName").readOnly=!!c;
+  $("#wPhone").value=c?(c.phone||""):""; $("#wArrive").value=c?(c.arrive||""):"";
+  renderCabinPick(); showWelView("new");
+}
+function openWelcome(canCancel,prefill){
   renderWelcomeList(); $("#welCancel").style.display=canCancel?"inline-flex":"none"; $("#nameMsg").textContent="";
+  const has=crew.length>0;
+  if(prefill||!has) openNew(prefill||null); else showWelView("list");
+  $("#welBack").style.display=(has&&!prefill)?"inline-flex":"none";
   $("#welcome").classList.add("show");
 }
+function promptWho(){
+  if(myName) return;
+  const go=()=>{ if(!myName && !$("#welcome").classList.contains("show")) openWelcome(false); };
+  if(crewLoaded||mode!=="cloud") go(); else setTimeout(go,1200);
+}
 function setName(v){
-  myName=v; lsSet("bviHubName",myName); $("#welcome").classList.remove("show"); $("#myName").value="";
+  myName=v; lsSet("bviHubName",myName); $("#welcome").classList.remove("show"); $("#myName").value=""; $("#myName").readOnly=false;
   renderAll();
 }
 function tryOrg(codeSel,msgSel){
@@ -1190,8 +1236,26 @@ document.addEventListener("click", async (e)=>{
   try{
     if(act==="whoOpen"){ openWelcome(!!myName); }
     else if(act==="nameCancel"){ $("#welcome").classList.remove("show"); }
-    else if(act==="nameSave"){ const v=$("#myName").value.trim(); if(!v){ $("#nameMsg").textContent="Type your name, or tap it in the list above."; return; } setName(v); }
-    else if(act==="namePick"){ const c=crew.find(x=>x.id===id); if(c) setName(c.name); }
+    else if(act==="welNew"){ openNew(null); $("#welBack").style.display="inline-flex"; }
+    else if(act==="welBack"){ showWelView("list"); }
+    else if(act==="cabinSel"){ selCabin=t.dataset.n; renderCabinPick(); }
+    else if(act==="namePick"){
+      const c=crew.find(x=>x.id===id); if(!c) return;
+      if(!c.cabin||c.cabin==="Not assigned"||!c.phone){ openNew(c); $("#welBack").style.display="inline-flex"; $("#nameMsg").textContent="Add your cabin and number so the crew can find you."; }
+      else setName(c.name);
+    }
+    else if(act==="profSave"){
+      const name=$("#myName").value.trim().replace(/\s+/g," "), phone=$("#wPhone").value.trim(), msg=$("#nameMsg");
+      if(name.length<2){ msg.textContent="Enter your full name."; return; }
+      if(!selCabin){ msg.textContent="Pick your cabin, or Not sure yet."; return; }
+      if(phone.replace(/\D/g,"").length<7){ msg.textContent="Enter your mobile number."; return; }
+      const existing=crew.find(c=>String(c.name||"").toLowerCase()===name.toLowerCase());
+      if(existing && !$("#myName").readOnly){ msg.textContent="That name is already on the crew list. Tap Back and pick it."; return; }
+      if(mode==="cloud"){
+        await setDoc(doc(db,"hubCrew",keyOf(name.toLowerCase())),{name,role:(existing&&existing.role)||"Crew",cabin:selCabin,phone,arrive:$("#wArrive").value.trim()||(existing&&existing.arrive)||"",stay:(existing&&existing.stay)||"",by:name,updatedAt:Date.now()},{merge:true});
+      }
+      setName(name);
+    }
     else if(act==="orgModal"){ $("#orgModal").classList.add("show"); $("#orgMsg2").textContent=""; setTimeout(()=>{ try{$("#orgCode2").focus()}catch(e){} },30); }
     else if(act==="orgClose"){ $("#orgModal").classList.remove("show"); }
     else if(act==="orgOn2"){ tryOrg("#orgCode2","#orgMsg2"); }
@@ -1331,7 +1395,6 @@ document.addEventListener("change",(e)=>{
   checks[c.dataset.chk]=c.checked; lsSet("bviHubChecks",checks); renderGear();
 });
 
-$("#myName").addEventListener("keydown",(e)=>{ if(e.key==="Enter"){ e.preventDefault(); $("#myName").blur(); const v=$("#myName").value.trim(); if(v) setName(v); } });
 
 $("#addCat").innerHTML = CATS.map(c=>`<option>${esc(c)}</option>`).join("");
 $("#exCat").innerHTML = LCATS.map(c=>`<option>${esc(c[0])}</option>`).join("");
@@ -1389,7 +1452,7 @@ if(TABS.includes(initialTab)) showTab(initialTab);
 
 /* ───── PIN gate (a courtesy lock for the crew, not security) ───── */
 const PIN="0212";
-const BUILD="r1";   // bumped on every release so open copies know a newer one exists
+const BUILD="r2";   // bumped on every release so open copies know a newer one exists
 function tryPin(){
   const v=$("#pin").value.replace(/\D/g,"");
   if(v.length<4) return;
@@ -1397,13 +1460,13 @@ function tryPin(){
     try{localStorage.setItem("bviHubPin","ok")}catch(e){}
     document.documentElement.classList.add("unlocked");
     $("#pinMsg").textContent="";
-    if(!myName) openWelcome(false);
+    promptWho();
   } else { $("#pinMsg").textContent="That PIN isn't right. Try again."; $("#pin").value=""; }
 }
 $("#pinForm").addEventListener("submit",(e)=>{ e.preventDefault(); tryPin(); });
 $("#pin").addEventListener("input",()=>{ $("#pinMsg").textContent=""; if($("#pin").value.length>=4) tryPin(); });
 if(!document.documentElement.classList.contains("unlocked")) $("#pin").focus();
-else if(!myName) openWelcome(false);
+else promptWho();
 
 /* new version banner: ask the service worker to look for a newer hub.html now and whenever the app comes back to the screen */
 if("serviceWorker" in navigator){
