@@ -223,6 +223,61 @@
   .gatecard input{display:block;width:11rem;max-width:100%;min-width:0;box-sizing:border-box;margin:0 auto;text-align:center;text-indent:.5em;font-size:28px;letter-spacing:.5em;padding:10px 8px;border:1.5px solid #9DB3BC;border-radius:12px;background:#fff}
   .gatecard .btn{width:100%;margin-top:12px;padding:12px}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  /* ===== readability pass: bigger type, bigger targets, cards ===== */
+  body{font-size:17px;line-height:1.5}
+  h2{font-size:28px;margin-bottom:8px}
+  .lead{font-size:17px;line-height:1.5;margin-bottom:16px}
+  .small,.msg{font-size:15px}
+  .row .t{font-size:17px}
+  .row .n{font-size:15.5px}
+  .item .nm{font-size:17px}
+  .item .nt{font-size:15px}
+  .cat{font-size:21px}
+  .btn{font-size:16px;min-height:48px;padding:12px 18px}
+  .x{font-size:15px;min-height:40px}
+  .chip{font-size:15px;min-height:44px;padding:8px 15px}
+  .tag{font-size:12.5px}
+  .slots{font-size:14.5px}
+  .who span{font-size:14.5px}
+  .seg button,.seg2 button{font-size:15px;min-height:46px}
+  .tabbar button{font-size:12.5px;padding:9px 0 8px}
+  .tabbar button .ic{font-size:23px}
+  input[type=text],input[type=number],input[type=date],input[type=datetime-local],input[type=search],input[type=tel],input[type=password],input[type=url],select{font-size:16px;min-height:48px}
+  textarea{font-size:16px}
+  .stat span,.statgo span{font-size:14.5px;line-height:1.3}
+  .stat b,.statgo b{font-size:26px}
+  .resp{font-size:15px}
+  .deadline{font-size:15px}
+  .warn{font-size:15.5px}
+  .count span{font-size:13px}
+  .whobtn{font-size:14px;min-height:40px}
+  .badge{font-size:13px}
+  .need{font-size:17px;min-height:56px}
+  .needs h3{font-size:18px}
+  .today b.d{font-size:22px}
+  .dayc .route,.today .route{font-size:17px}
+  details summary{font-size:17.5px;min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:10px;list-style:none}
+  details summary::-webkit-details-marker{display:none}
+  details summary::after{content:"";flex:none;width:10px;height:10px;border-right:2.5px solid var(--ink-mute);border-bottom:2.5px solid var(--ink-mute);transform:rotate(45deg);margin:-4px 4px 0 6px;transition:transform .15s}
+  details[open]>summary::after{transform:rotate(-135deg);margin-top:4px}
+  details.panel>.inner,details.dayc>.inner,details.pollc>.inner{padding:0 16px 16px}
+  details.panel .inner .panel{border:0;padding:0;background:none}
+  details.dayc,details.pollc{padding:0}
+  .dsum{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+  .dsum b{font-size:18px}
+  .dsum .rt{font-size:15px;color:var(--ink-soft);font-weight:500}
+  .pill{align-self:flex-start;font-size:13.5px;font-weight:700;background:var(--lagoon-soft);color:var(--ink);border-radius:999px;padding:2px 10px;margin-top:2px;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  details.catc{margin-bottom:12px}
+  .nt.clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+  .tile{display:flex;flex-direction:column;align-items:flex-start;gap:4px;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:16px;min-height:112px;color:var(--ink);font:inherit;cursor:pointer;box-shadow:0 1px 0 rgba(10,61,68,.05)}
+  .tile .ti{font-size:30px;line-height:1;margin-bottom:2px}
+  .tile b{font-family:var(--head);font-weight:800;font-size:19px}
+  .tile span.sub{font-size:15px;color:var(--ink-soft);line-height:1.3}
+  .tile:active{background:var(--buoy-soft)}
+  .homebtns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+.stat b small{font-size:13px;font-weight:700;margin-left:3px;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -328,7 +383,7 @@
 <section class="tab active" id="tab-home">
   <div class="hero">
     <h1>BVI Yacht Charter&nbsp;· <span style="white-space:nowrap">Feb 12–19</span></h1>
-    <p class="sub">One catamaran, six cabins, a week in the British Virgin Islands.</p>
+    <p class="sub">One catamaran, six cabins, one week.</p>
     <div class="count" aria-live="off">
       <div><b id="cd-d">--</b><span>days</span></div>
       <div><b id="cd-h">--</b><span>hours</span></div>
@@ -338,58 +393,58 @@
   </div>
   <div class="pad">
     <div class="stat">
-      <button class="statgo" type="button" data-act="mustGo"><b id="st-covered">–</b><span id="st-lbl">Gear list →</span></button>
-      <button class="statgo" type="button" data-tab="polls"><b id="st-polls">–</b><span id="st-pl">Polls →</span></button>
-      <button class="statgo" type="button" data-tab="money"><b id="st-bal">–</b><span>trip fund. See details →</span></button>
+      <button class="statgo" type="button" data-act="mustGo"><b id="st-covered">–</b><span id="st-lbl">gear list ›</span></button>
+      <button class="statgo" type="button" data-tab="polls"><b id="st-polls">–</b><span id="st-pl">polls ›</span></button>
+      <button class="statgo" type="button" data-tab="money"><b id="st-bal">–</b><span>trip fund ›</span></button>
     </div>
     <div id="todayCard"></div>
     <div id="needsCard"></div>
 
-    <div class="block">
-      <h2>What we're looking forward to</h2>
-      <p class="lead">Locked-in stops are listed first. The skipper makes the final call on routing and weather.</p>
-      <div class="panel">
-        <div class="row"><div><div class="t">The Baths, Virgin Gorda</div><div class="n">Granite boulders and tide pools. We need to be on a mooring early, before the day boats arrive.</div></div></div>
-        <div class="row"><div><div class="t">Saba Rock, North Sound</div><div class="n">Tiny island, lunch and drinks. Check that it's open before we commit the day.</div></div></div>
-        <div class="row"><div><div class="t">Virgin Gorda North Sound</div><div class="n">Two days on Virgin Gorda so we're not rushing between the Baths and the Sound.</div></div></div>
-        <div class="row"><div><div class="t">Still being decided</div><div class="n">Anegada (reef-fringed, famous for lobster, needs a full day), Norman Island caves, Jost Van Dyke.</div></div></div>
-        <div class="row"><div><div class="t">On the way between stops</div><div class="n">Trolling lines out on the longer crossings. Mahi and wahoo are the target.</div></div></div>
-      </div>
+    <div class="tiles" id="tiles">
+      <button class="tile" type="button" data-tab="plan"><span class="ti" aria-hidden="true">🧭</span><b>Plan</b><span class="sub">Day by day</span></button>
+      <button class="tile" type="button" data-tab="crew"><span class="ti" aria-hidden="true">👥</span><b>Crew</b><span class="sub" id="tl-crew">Who is who</span></button>
+      <button class="tile" type="button" data-tab="boat"><span class="ti" aria-hidden="true">⛵</span><b>Boat</b><span class="sub">What is aboard</span></button>
+      <button class="tile" type="button" data-tab="stops"><span class="ti" aria-hidden="true">📍</span><b>Stops</b><span class="sub">Anchorage guide</span></button>
+      <button class="tile" type="button" data-tab="info"><span class="ti" aria-hidden="true">📋</span><b>Trip info</b><span class="sub">Dates, rules, emergency</span></button>
+      <button class="tile" type="button" data-tab="links"><span class="ti" aria-hidden="true">🌤️</span><b>Links</b><span class="sub">Weather and charts</span></button>
     </div>
 
-    <div class="block">
-      <h2>The boat</h2>
-      <p class="lead">A 2026 Fountaine Pajot Aura 51 with air conditioning, a hydraulic swim platform, Bose speakers on the deck, and a gas grill. See Info, then Boat, for what's already aboard.</p>
-    </div>
+    <details class="panel" data-k="home-highlights">
+      <summary>Trip highlights</summary>
+      <div class="inner">
+        <div class="row"><div><div class="t">The Baths, Virgin Gorda</div><div class="n">Be on a mooring early, before the day boats.</div></div></div>
+        <div class="row"><div><div class="t">Saba Rock, North Sound</div><div class="n">Lunch and drinks. Check that it's open.</div></div></div>
+        <div class="row"><div><div class="t">Two days on Virgin Gorda</div><div class="n">North Sound, with no rushing.</div></div></div>
+        <div class="row"><div><div class="t">Still open</div><div class="n">Anegada, Norman Island caves, Jost Van Dyke.</div></div></div>
+        <div class="row"><div><div class="t">Between stops</div><div class="n">Trolling lines out for mahi and wahoo.</div></div></div>
+      </div>
+    </details>
 
-    <div class="block">
-      <h2>Everything in one place</h2>
-      <p class="lead">Plan has the day-by-day route. Gear stops us bringing duplicates. Polls settle group decisions. Money is the trip fund and daily expenses.</p>
-      <div class="two2" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <button class="btn" data-tab="plan">See the plan</button>
-        <button class="btn ghost" data-act="invite">Invite the crew</button>
-      </div>
-      <div class="two2" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
-        <button class="btn ghost" type="button" data-tab="stops">Stop-by-stop guide</button>
-        <button class="btn ghost" type="button" data-act="tour">Take the tour</button>
-      </div>
-      <div class="msg" id="inviteMsg" role="status"></div>
-      <details class="panel" style="margin-top:10px"><summary>Put it on your phone's home screen</summary><div class="inner small">
-        <p style="margin-bottom:6px"><b>iPhone:</b> open the link in Safari, tap the Share button, then Add to Home Screen.</p>
-        <p style="margin-bottom:6px"><b>Android:</b> in Chrome, tap the menu, then Add to Home screen or Install app.</p>
-        <p>Open the icon once with internet. It asks for the PIN and your name again, because an installed icon keeps its own saved data. After that it opens without a signal.</p>
-      </div></details>
-      <div style="margin-top:10px"><button class="x" data-act="lock">Lock this device</button></div>
+    <div class="homebtns">
+      <button class="btn" type="button" data-act="invite">Invite the crew</button>
+      <button class="btn ghost" type="button" data-act="tour">Take the tour</button>
     </div>
+    <div class="msg" id="inviteMsg" role="status"></div>
+    <details class="panel" data-k="home-a2hs"><summary>Add it to your Home Screen</summary><div class="inner">
+      <p style="margin-bottom:8px"><b>iPhone:</b> in Safari, tap Share, then Add to Home Screen.</p>
+      <p style="margin-bottom:8px"><b>Android:</b> in Chrome, tap the menu, then Add to Home screen.</p>
+      <p class="small">Open the icon once with internet. It asks for the PIN and your name again, because an installed icon keeps its own data. After that it works without a signal.</p>
+    </div></details>
+    <div style="margin-top:14px"><button class="x" data-act="lock">Lock this device</button></div>
   </div>
 </section>
 
 <!-- PLAN -->
 <section class="tab" id="tab-plan"><div class="pad">
   <h2>Week plan</h2>
-  <p class="lead">The day-by-day route. Organizers fill it in as weather and the crew's votes settle the plan. During the trip, today's card also shows on Home.</p>
-  <div class="panel pad2" style="margin-bottom:14px"><b>Already on the list:</b> The Baths, Saba Rock and Virgin Gorda North Sound (two days on Virgin Gorda). Anegada is still open.</div>
-  <div class="panel pad2" style="margin-bottom:14px;border-color:var(--buoy)"><b>Mooring reminder:</b> reservable moorings in the BoatyBall app typically open around 7 a.m. Set up the account and payment the night before. <a href="https://www.boatyball.com" target="_blank" rel="noopener">boatyball.com</a></div>
+  <details class="panel" data-k="plan-notes">
+    <summary>Plan notes</summary>
+    <div class="inner">
+      <p style="margin-bottom:10px"><b>Already on the list:</b> The Baths, Saba Rock and North Sound (two days on Virgin Gorda). Anegada is still open.</p>
+      <p><b>Mooring reminder:</b> BoatyBall moorings open around 7 a.m. Set up the account and payment the night before. <a href="https://www.boatyball.com" target="_blank" rel="noopener">boatyball.com</a></p>
+    </div>
+  </details>
+  <div style="height:12px"></div>
   <div id="planOrg"></div>
   <div id="planList"></div>
 </div></section>
@@ -400,7 +455,7 @@
   <div class="seg2" id="gearSeg"><button data-gs="boat" class="sel">Boat gear</button><button data-gs="own">Every couple brings</button></div>
 
   <div id="gs-boat">
-    <p class="lead">Shared items for the whole boat. Tap "We've got it" on anything your couple will bring. Items marked must-have need an owner before we leave.</p>
+    <p class="lead">Tap “We've got it” on anything your couple will bring. Must-haves need an owner before we leave.</p>
     <div class="deadline" id="gearDeadline"></div>
     <div id="cabinHint" class="small" style="margin-bottom:8px"></div>
     <div id="seedBox"></div>
@@ -418,20 +473,22 @@
       <div id="suggestList"></div>
     </div>
 
-    <div class="block">
-      <h2 id="addTitle">Suggest something we're missing</h2>
-      <p class="lead" id="addLead">The organizers approve suggestions before they join the list, so it stays short.</p>
-      <div class="form panel pad2" id="addForm">
-        <input type="text" id="addName" placeholder="Item (e.g. Floating cooler)" maxlength="60" aria-label="Item name">
-        <div class="two">
-          <select id="addCat" aria-label="Category"></select>
-          <input type="number" id="addNeed" min="1" max="12" value="1" aria-label="How many we need in total">
+    <details class="panel" id="addWrap" data-k="gear-add" style="margin-top:14px">
+      <summary id="addTitle">Suggest something we're missing</summary>
+      <div class="inner">
+        <p class="small" id="addLead" style="margin-bottom:10px">The organizers approve suggestions first, so the list stays short.</p>
+        <div class="form" id="addForm">
+          <input type="text" id="addName" placeholder="Item (e.g. Floating cooler)" maxlength="60" aria-label="Item name">
+          <div class="two">
+            <select id="addCat" aria-label="Category"></select>
+            <input type="number" id="addNeed" min="1" max="12" value="1" aria-label="How many we need in total">
+          </div>
+          <input type="text" id="addNote" placeholder="Note (optional)" maxlength="140" aria-label="Note">
+          <button class="btn buoy" id="addBtn" type="button">Suggest this item</button>
+          <div class="msg" id="addMsg"></div>
         </div>
-        <input type="text" id="addNote" placeholder="Note (optional)" maxlength="140" aria-label="Note">
-        <button class="btn buoy" id="addBtn" type="button">Suggest this item</button>
-        <div class="msg" id="addMsg"></div>
       </div>
-    </div>
+    </details>
 
     <div class="block">
       <details class="panel" id="orgPanel"><summary id="orgSummary">Organizer tools</summary><div class="inner">
@@ -459,7 +516,7 @@
 <!-- POLLS -->
 <section class="tab" id="tab-polls"><div class="pad">
   <h2>Polls</h2>
-  <p class="lead">Anyone can ask the crew to weigh in. Rank the options, and whoever posted the poll makes the final call.</p>
+  <p class="lead">Rank the options. Whoever posted the poll makes the final call.</p>
   <details class="panel" id="newPoll"><summary>Start a poll</summary><div class="inner"><div class="form">
     <input type="text" id="pq" placeholder="Question (e.g. Anegada or skip it?)" maxlength="120" aria-label="Poll question">
     <input type="text" id="po1" placeholder="Option 1" maxlength="60" aria-label="Option 1">
@@ -474,7 +531,6 @@
 <!-- MONEY -->
 <section class="tab" id="tab-money"><div class="pad">
   <h2>Trip fund</h2>
-  <p class="lead">One pooled fund. The holder pays from the pot and logs every expense here, so everyone sees the balance and each day's spend.</p>
 
   <div id="fundSetup" style="display:none" class="panel pad2">
     <div style="font-weight:600">Set up the fund</div>
@@ -487,13 +543,13 @@
   </div>
 
   <div id="fundSummary"></div>
-  <div class="msg" id="holderNote"></div>
+  <div class="msg" id="holderNote" style="margin:10px 0"></div>
   <div id="requests"></div>
   <div id="paidIn"></div>
 
-  <div id="entryWrap" style="display:none" class="panel pad2">
-    <div style="font-weight:600;margin-bottom:6px">Log an entry</div>
-    <div class="form" style="margin-top:0">
+  <details id="entryWrap" class="panel" data-k="money-log" open style="display:none">
+    <summary>Log an entry</summary>
+    <div class="inner"><div class="form" style="margin-top:0">
       <div class="two2">
         <input type="number" id="exAmt" min="0.01" step="0.01" placeholder="Amount ($)" aria-label="Amount in dollars">
         <input type="date" id="exDate" aria-label="Date">
@@ -505,11 +561,11 @@
         <button class="btn ghost" type="button" data-act="logTopup">Add top-up</button>
       </div>
       <div class="msg" id="exMsg"></div>
-    </div>
-  </div>
+    </div></div>
+  </details>
 
-  <details class="panel" id="reqWrap" style="display:none;margin-top:14px"><summary>Paid for something? Ask to be reimbursed</summary><div class="inner">
-    <p class="small" style="margin-bottom:8px">The fund holder will approve it. Once approved, it's logged against the fund.</p>
+  <details class="panel" id="reqWrap" data-k="money-req" style="display:none;margin-top:14px"><summary>Paid for something? Get reimbursed</summary><div class="inner">
+    <p class="small" style="margin-bottom:8px">The fund holder approves it, then it is logged against the fund.</p>
     <div class="form" style="margin-top:0">
       <div class="two2"><input type="number" id="rqAmt" min="0.01" step="0.01" placeholder="Amount ($)" aria-label="Amount you paid"><select id="rqCat" aria-label="Category"></select></div>
       <input type="text" id="rqNote" placeholder="What was it?" maxlength="100" aria-label="What you paid for">
@@ -526,48 +582,57 @@
 <section class="tab" id="tab-crew"><div class="pad">
   <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="stops">Stops</button><button data-tab="links">Links</button></div>
   <h2>The crew</h2>
-  <p class="lead">Add yourself so we can find each other on the boat and ashore. Saving a name that's already listed updates that entry.</p>
-  <div id="cabinMap"></div>
-  <h3 class="cat" style="margin-top:6px">Arrivals</h3>
-  <p class="small" style="margin-bottom:8px">How everyone is getting to Tortola, so we can meet up on Feb 11.</p>
-  <div id="arrivals"></div>
-  <div id="rideBox"></div>
-  <h3 class="cat">Everyone</h3>
-  <div id="crewList"></div>
-  <div class="block">
-    <h2>Add or update</h2>
-    <div class="form panel pad2" id="crewForm">
-      <input type="text" id="cwName" placeholder="Name" maxlength="40" aria-label="Name">
-      <div class="two2">
-        <select id="cwRole" aria-label="Role"></select>
-        <select id="cwCabin" aria-label="Cabin"></select>
-      </div>
-      <input type="tel" id="cwPhone" placeholder="Phone number" maxlength="20" aria-label="Phone number">
-      <input type="text" id="cwArrive" placeholder="Getting there (e.g. AA from MIA)" maxlength="90" aria-label="How you are getting to Tortola">
-      <label class="small" for="cwLands" style="display:block;margin:6px 0 2px">When you arrive in Tortola (helps match taxi shares)</label>
-      <input type="datetime-local" id="cwLands" aria-label="When you arrive in Tortola">
-      <input type="text" id="cwStay" placeholder="Where you're sleeping the night of Feb 11" maxlength="70" aria-label="Where you are sleeping Feb 11">
-      <button class="btn buoy" type="button" data-act="saveCrew">Save</button>
-      <div class="msg" id="cwMsg"></div>
+  <details class="panel" data-k="crew-cabins" open>
+    <summary>Cabins</summary>
+    <div class="inner"><div id="cabinMap"></div></div>
+  </details>
+  <details class="panel" data-k="crew-arrivals" style="margin-top:12px">
+    <summary><span class="dsum"><b>Arrivals and rides</b><span class="rt">Meet up on Feb 11</span></span></summary>
+    <div class="inner">
+      <div id="arrivals"></div>
+      <div id="rideBox"></div>
     </div>
-  </div>
+  </details>
+  <details class="panel" data-k="crew-all" style="margin-top:12px">
+    <summary><span class="dsum"><b>Everyone</b><span class="rt" id="crewCount"></span></span></summary>
+    <div class="inner"><div id="crewList"></div></div>
+  </details>
+  <details class="panel" data-k="crew-add" id="crewAdd" style="margin-top:12px">
+    <summary>Add or update someone</summary>
+    <div class="inner">
+      <div class="form" id="crewForm">
+        <input type="text" id="cwName" placeholder="Name" maxlength="40" aria-label="Name">
+        <div class="two2">
+          <select id="cwRole" aria-label="Role"></select>
+          <select id="cwCabin" aria-label="Cabin"></select>
+        </div>
+        <input type="tel" id="cwPhone" placeholder="Phone number" maxlength="20" aria-label="Phone number">
+        <input type="text" id="cwArrive" placeholder="Getting there (e.g. AA from MIA)" maxlength="90" aria-label="How you are getting to Tortola">
+        <label class="small" for="cwLands" style="display:block;margin:6px 0 2px">When you arrive in Tortola (helps match taxi shares)</label>
+        <input type="datetime-local" id="cwLands" aria-label="When you arrive in Tortola">
+        <input type="text" id="cwStay" placeholder="Where you're sleeping the night of Feb 11" maxlength="70" aria-label="Where you are sleeping Feb 11">
+        <button class="btn buoy" type="button" data-act="saveCrew">Save</button>
+        <div class="msg" id="cwMsg"></div>
+      </div>
+    </div>
+  </details>
 </div></section>
 
 <!-- BOAT -->
 <section class="tab" id="tab-boat"><div class="pad">
   <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="stops">Stops</button><button data-tab="links">Links</button></div>
   <h2>Crude Escape</h2>
-  <p class="lead">2026 Fountaine Pajot Aura 51, BVI Yacht Charters, Ritter House Marina, Road Town.</p>
+  <p class="lead">2026 Fountaine Pajot Aura 51 · BVI Yacht Charters, Road Town</p>
   <div class="stat">
-    <div><b>51 ft</b><span>length</span></div>
-    <div><b>26.5 ft</b><span>beam</span></div>
-    <div><b>5.2 ft</b><span>draft</span></div>
-    <div><b>2 × 80 hp</b><span>engines</span></div>
-    <div><b>238 gal</b><span>fresh water</span></div>
-    <div><b>236 gal</b><span>fuel</span></div>
+    <div><b>51<small>ft</small></b><span>length</span></div>
+    <div><b>26.5<small>ft</small></b><span>beam</span></div>
+    <div><b>5.2<small>ft</small></b><span>draft</span></div>
+    <div><b>2×80<small>hp</small></b><span>engines</span></div>
+    <div><b>238<small>gal</small></b><span>fresh water</span></div>
+    <div><b>236<small>gal</small></b><span>fuel</span></div>
   </div>
 
-  <div class="block"><h2>Already aboard</h2><p class="lead">Listed by the charter company. Don't pack these.</p>
+  <div class="block acc-block" data-open="1"><h2>Already aboard</h2><p class="small" style="margin-bottom:8px">Listed by the charter company. Don't pack these.</p>
     <div class="panel">
       <div class="row"><div><div class="t">Navigation</div><div class="n">Garmin chartplotter, autopilot, wind instrument, VHF, cellular phone, paper chart and cruising guide.</div></div></div>
       <div class="row"><div><div class="t">Power</div><div class="n">Generator, solar panels, lithium batteries, air conditioning.</div></div></div>
@@ -581,7 +646,7 @@
     <div class="warn">The charter company lists the watermaker and underwater lights as premium features. They try to have them working but don't promise it or compensate if they fail. Air conditioning is listed too, so test everything at checkout before we leave the dock.</div>
   </div>
 
-  <div class="block"><h2>Confirm at checkout</h2>
+  <div class="block acc-block"><h2>Confirm at checkout</h2>
     <div class="panel">
       <div class="row"><div><div class="t">Wifi</div><div class="n">We expect wifi aboard. Get the network details and a speed check on day one.</div></div></div>
       <div class="row"><div><div class="t">Dinghy outboard</div><div class="n">Horsepower and passenger limit. We'll be making several runs with a big group.</div></div></div>
@@ -603,7 +668,7 @@
     <div class="row"><div><div class="t">Boat page</div><div class="n"><a href="https://www.bviyachtcharters.com/yachts/crude-escape-aura-51/" target="_blank" rel="noopener">Crude Escape on BVI Yacht Charters</a></div></div></div>
   </div>
 
-  <div class="block"><h2>Key dates</h2>
+  <div class="block acc-block" data-open="1"><h2>Key dates</h2>
     <div class="panel">
       <div class="row"><div><div class="t">Thu, Feb 11</div><div class="n">Travel day. Get to Tortola the day before, close to Road Town.</div></div></div>
       <div class="row"><div><div class="t">Fri, Feb 12</div><div class="n">Charter starts. Confirm the check-in time with BVI Yacht Charters.</div></div></div>
@@ -612,12 +677,12 @@
     </div>
   </div>
 
-  <div class="block"><h2>Emergency</h2>
+  <div class="block acc-block" data-open="1"><h2>Emergency</h2>
     <div id="emerg"></div>
   </div>
 
-  <div class="block"><h2>Boat rules</h2>
-    <p class="lead">The captain will go over these at the briefing. Reading them first saves the first day.</p>
+  <div class="block acc-block"><h2>Boat rules</h2>
+    <p class="small" style="margin-bottom:8px">The captain covers these at the briefing. Reading them first saves day one.</p>
     <div class="panel">
       <div class="row"><div><div class="t">Heads</div><div class="n">Marine toilets clog easily. Follow the charter company's rule at the briefing. The safe default is nothing in the toilet except what came out of you, and paper goes in the bin.</div></div></div>
       <div class="row"><div><div class="t">Water</div><div class="n">Short showers even with the watermaker. Nothing greasy down the galley sink.</div></div></div>
@@ -629,7 +694,7 @@
     </div>
   </div>
 
-  <div class="block"><h2>Moorings</h2>
+  <div class="block acc-block"><h2>Moorings</h2>
     <div class="panel">
       <div class="row"><div><div class="t">Reservable balls</div><div class="n">Booked ahead in the BoatyBall app for one night, about $55. They typically open around 7 a.m., and you have roughly 4 minutes to pay. Stops it covers include Cooper Island, Saba Rock, Jost Van Dyke, Cane Garden Bay, Soper's Hole, Scrub Island, Marina Cay and Anegada. Check boatyball.com for the current list.</div></div></div>
       <div class="row"><div><div class="t">First come, first served</div><div class="n">Roughly $30–40 a night. Tie up, then pay in the app or to the mooring host. Some balls belong to local bars. Popular spots fill by early afternoon.</div></div></div>
@@ -784,6 +849,9 @@ const $ = (s)=>document.querySelector(s);
 const esc = (s)=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}};
 const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const OPEN=(()=>{try{const v=JSON.parse(localStorage.getItem("bviOpen")||"{}");return v&&typeof v==="object"?v:{};}catch(e){return {};}})();
+const isOpen=(k,def)=>Object.prototype.hasOwnProperty.call(OPEN,k)?!!OPEN[k]:!!def;
+document.addEventListener("click",(e)=>{ const s=e.target.closest&&e.target.closest("summary"); if(!s) return; const d=s.parentElement; if(d&&d.tagName==="DETAILS"&&d.dataset&&d.dataset.k){ OPEN[d.dataset.k]=!d.open; try{localStorage.setItem("bviOpen",JSON.stringify(OPEN));}catch(x){} } },true);
 const usd=(c)=>(c/100).toLocaleString("en-US",{style:"currency",currency:"USD"});
 const keyOf=(n)=>"u_"+String(n).replace(/[^A-Za-z0-9_-]/g,"_");
 
@@ -900,10 +968,10 @@ function isMineClaim(n){ const cab=myCabin(); return !!myName && (sameName(n,myN
 function renderHomeStats(){
   const must=items.filter(i=>approved(i)&&mustOf(i)), open=must.filter(i=>!isDone(i)).length;
   $("#st-covered").textContent = must.length ? (open===0?"All set":String(open)) : "–";
-  $("#st-lbl").textContent = !must.length ? "Gear list →" : (open===0 ? "must-haves covered →" : `must-have${open===1?"":"s"} open. See gear →`);
+  $("#st-lbl").textContent = !must.length ? "gear list ›" : (open===0 ? "must-haves covered ›" : `must-have${open===1?"":"s"} open ›`);
   const np=polls.filter(p=>p.status!=="decided").length;
   $("#st-polls").textContent = mode==="cloud" ? String(np) : "–";
-  $("#st-pl").textContent = `open poll${np===1?"":"s"}. See polls →`;
+  $("#st-pl").textContent = `open poll${np===1?"":"s"} ›`;
   const f=fundCalc();
   $("#st-bal").textContent = f ? usd(f.bal) : "–";
   renderToday(); renderNeeds();
@@ -922,7 +990,7 @@ function renderGear(){
   $("#orgOpen").style.display   = isOrg?"block":"none";
   $("#orgSummary").textContent  = isOrg?"Organizer tools (on)":"Organizer tools";
   $("#addTitle").textContent = isOrg?"Add an item":"Suggest something we're missing";
-  $("#addLead").textContent  = isOrg?"Organizer mode: this goes straight onto the list.":"The organizers approve suggestions before they join the list, so it stays short.";
+  $("#addLead").textContent  = isOrg?"Organizer mode: this goes straight onto the list.":"The organizers approve suggestions first, so the list stays short.";
   $("#addBtn").textContent   = isOrg?"Add to the list":"Suggest this item";
 
   const live=items.filter(approved), sugg=items.filter(i=>!approved(i));
@@ -938,25 +1006,33 @@ function renderGear(){
     return true;
   });
   const out=[];
-  const cats=[...CATS,...new Set(list.map(i=>i.cat).filter(c=>c&&!CATS.includes(c)))];
-  for(const c of cats){
-    const group=list.filter(i=>(i.cat||"Other")===c).sort((a,b)=>(mustOf(b)-mustOf(a))||String(a.name).localeCompare(String(b.name)));
-    if(!group.length) continue;
-    out.push(`<h3 class="cat">${esc(c)}</h3>`);
-    for(const i of group){
-      const cl=claimsOf(i), need=needOf(i), mine=cl.some(isMineClaim), full=cl.length>=need, left=need-cl.length, must=mustOf(i);
-      out.push(`<div class="item">
+  const itemHtml=(i)=>{
+    const cl=claimsOf(i), need=needOf(i), mine=cl.some(isMineClaim), full=cl.length>=need, left=need-cl.length, must=mustOf(i);
+    const st=full?"Covered":(past?"Unclaimed. Organizers will assign.":(cl.length?`${cl.length} of ${need} · needs ${left} more`:(need===1?"Needs someone":`Needs ${need} people`)));
+    return `<div class="item">
         <div class="body">
-          <div class="nm">${esc(i.name)}${must?`<span class="tag must">Must-have</span>`:""}</div>
-          ${i.note?`<div class="nt">${esc(i.note)}</div>`:""}
-          <div class="slots ${full?"done":"open"}">${full?"Covered":(past?"Unclaimed. Organizers will assign.":`Needs ${left} more`)} (${cl.length} of ${need})</div>
+          <div class="nm">${esc(i.name)}</div>
+          <div class="slots ${full?"done":"open"}">${esc(st)}</div>
+          ${i.note?`<div class="nt clamp" data-act="noteTog">${esc(i.note)}</div>`:""}
           ${cl.length?`<div class="who">${cl.map(n=>`<span class="${isMineClaim(n)?"me":""}">${esc(n)}</span>`).join("")}</div>`:""}
           ${isOrg?`<div class="orgbar"><button class="x" data-act="toggleMust" data-id="${esc(i.id)}">${must?"Remove must-have":"Make must-have"}</button><button class="x" data-act="remove" data-id="${esc(i.id)}">Remove item</button></div>`:""}
         </div>
         ${mine?`<button class="btn ghost" data-act="release" data-id="${esc(i.id)}">Release</button>`
               :`<button class="btn" data-act="claim" data-id="${esc(i.id)}" ${full?"disabled":""}>${full?"Covered":"We've got it"}</button>`}
-      </div>`);
-    }
+      </div>`;
+  };
+  const defOpen=filter!=="all";
+  const card=(k,title,group,def)=>{
+    const cov=group.filter(isDone).length;
+    return `<details class="panel catc" data-k="${esc(k)}" ${isOpen(k,def)?"open":""}><summary><span class="dsum"><b>${esc(title)}</b><span class="rt">${cov===group.length?"All covered":`${cov} of ${group.length} covered`}</span></span></summary><div class="inner">${group.map(itemHtml).join("")}</div></details>`;
+  };
+  const byName=(a,b)=>String(a.name).localeCompare(String(b.name));
+  const musts=list.filter(mustOf).sort(byName), rest=list.filter(i=>!mustOf(i));
+  if(musts.length) out.push(card("gear-must","Must-haves",musts,true));
+  const cats=[...CATS,...new Set(rest.map(i=>i.cat).filter(c=>c&&!CATS.includes(c)))];
+  for(const c of cats){
+    const group=rest.filter(i=>(i.cat||"Other")===c).sort(byName);
+    if(group.length) out.push(card("gearcat-"+c,c,group,defOpen));
   }
   $("#gearList").innerHTML = out.length?out.join(""):(live.length?`<div class="empty">Nothing matches this filter.</div>`:"");
 
@@ -1018,11 +1094,11 @@ function renderPlan(){
       const has=(d.from||d.to);
       const route=has?`${esc(d.from||"?")} → ${esc(d.to||"?")}`:"Route not set yet";
       const times=(d.depart||d.arrive)?`<div class="small">${d.depart?"Depart "+esc(d.depart):""}${d.depart&&d.arrive?" · ":""}${d.arrive?"Arrive "+esc(d.arrive):""}</div>`:"";
-      return `<div class="dayc ${istoday?"istoday":""}"><div class="dh"><b>${esc(d.label)}${istoday?'<span class="daytag">Today</span>':""}</b></div>
-        <div class="route"${has?"":' style="color:var(--ink-mute);font-weight:500"'}>${route}</div>${times}
-        ${d.moor?`<div class="small">Mooring: ${esc(d.moor)}</div>`:""}${guideLink(d)}
-        ${d.notes?`<div class="small" style="margin-top:4px">${esc(d.notes)}</div>`:""}
-        ${isOrg?`<button class="btn ghost" style="margin-top:10px" data-act="editDay" data-id="${esc(d.id)}">Edit</button>`:""}</div>`;
+      const k="day-"+d.id;
+      return `<details class="dayc ${istoday?"istoday":""}" data-k="${esc(k)}" ${isOpen(k,istoday)?"open":""}><summary><span class="dsum"><b>${esc(d.label)}${istoday?'<span class="daytag">Today</span>':""}</b><span class="rt"${has?"":' style="color:var(--ink-mute)"'}>${route}</span>${d.moor?`<span class="pill">${esc(d.moor)}</span>`:""}</span></summary>
+        <div class="inner">${times}${d.moor?`<div class="small">Mooring: ${esc(d.moor)}</div>`:""}${guideLink(d)}
+        ${d.notes?`<div style="margin-top:6px">${esc(d.notes)}</div>`:""}
+        ${isOrg?`<button class="btn ghost" style="margin-top:10px" data-act="editDay" data-id="${esc(d.id)}">Edit</button>`:""}</div></details>`;
     }).join("");
   });
 }
@@ -1072,8 +1148,9 @@ function pollHtml(p){
   const mine=myName?resp[respKey(resp)]:null;
   const isOwner=!!myName && sameName(p.by,myName);
   const decided=p.status==="decided";
-  let h=`<div class="pollc" data-poll="${esc(p.id)}"><div class="dh"><b>${esc(p.q)}</b><span class="lock ${decided?"":"openc"}">${decided?"Decided":"Open"}</span></div>
-    <div class="small">Asked by ${esc(p.by||"someone")} · ${all.length} responded</div>`;
+  const pk="poll-"+p.id;
+  let h=`<details class="pollc" data-poll="${esc(p.id)}" data-k="${esc(pk)}" ${isOpen(pk,!decided&&!mine)?"open":""}><summary><span class="dsum"><b>${esc(p.q)}</b><span class="rt">${decided?"Decided: "+esc(p.decision):all.length+" responded"+(mine?" · you voted":"")}</span></span><span class="lock ${decided?"":"openc"}">${decided?"Decided":"Open"}</span></summary><div class="inner">
+    <div class="small" style="margin-bottom:8px">Asked by ${esc(p.by||"someone")}</div>`;
   if(decided){
     h+=`<div class="decision"><b>Decision: ${esc(p.decision)}</b>${p.rationale?`<div class="small">${esc(p.rationale)}</div>`:""}</div>`;
   } else {
@@ -1092,7 +1169,7 @@ function pollHtml(p){
       <button class="btn buoy" data-act="decide" data-id="${esc(p.id)}">Post decision</button></div></div>`;
   }
   if(isOwner) h+=`<button class="x" data-act="delPoll" data-id="${esc(p.id)}">Delete poll</button>`;
-  return h+`</div>`;
+  return h+`</div></details>`;
 }
 function renderPolls(){
   const box=$("#pollList");
@@ -1146,13 +1223,15 @@ function renderMoney(){
       return `<div class="row paidrow"><div><div class="t">Cabin ${c.n} · ${esc(c.names.join(" & "))}</div><div class="n">${share>0?`${usd(paid)} of ${usd(share)}`:`${usd(paid)} paid in`}</div></div>${status}</div>`;
     }).join("");
     const recent=paidEntries.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,6).map(e=>`<div class="row paidrow"><div class="small">${esc(e.date||"")} · ${esc(e.note||"Cabin "+e.who)} · ${usd(e.amount||0)}</div>${holderOk?`<button class="x" data-act="void" data-id="${esc(e.id)}">Void</button>`:""}</div>`).join("");
-    pbox.innerHTML=`<h3 class="cat">Paid in</h3><div class="panel">${rowsHtml}</div>`+
+    const nPaid=couples.filter(c=>share>0&&paidEntries.filter(e=>String(e.who)===String(c.n)).reduce((a,e)=>a+(e.amount||0),0)>=share).length;
+    const totPaid=paidEntries.reduce((a,e)=>a+(e.amount||0),0);
+    pbox.innerHTML=`<details class="panel" data-k="money-paid" ${isOpen("money-paid",false)?"open":""} style="margin-top:14px"><summary><span class="dsum"><b>Paid in</b><span class="rt">${share>0?`${nPaid} of ${couples.length} couples paid`:`${usd(totPaid)} so far`}</span></span></summary><div class="inner"><div class="panel">${rowsHtml}</div>`+
       (holderOk?`<div class="panel pad2" style="margin-top:10px"><div style="font-weight:600;margin-bottom:6px">Record a payment</div><div class="form" style="margin-top:0">
         <div class="two2"><select id="pdCabin" aria-label="Which cabin paid">${couples.map(c=>`<option value="${c.n}">Cabin ${c.n} · ${esc(c.names.join(" & "))}</option>`).join("")}</select><input type="number" id="pdAmt" min="0.01" step="0.01" placeholder="Amount ($)" aria-label="Amount paid in"></div>
         <button class="btn buoy" type="button" data-act="recordPaid">Record payment</button>
         <div class="two2" style="margin-top:6px"><input type="number" id="pdShare" min="0" step="0.01" placeholder="Each couple's share ($)" value="${share?(share/100):""}" aria-label="Each couple's share in dollars"><button class="btn ghost" type="button" data-act="setShare">Set share</button></div>
         <div class="msg" id="pdMsg"></div></div></div>`:"")+
-      (recent?`<div style="margin-top:8px">${recent}</div>`:"");
+      (recent?`<div style="margin-top:8px">${recent}</div>`:"")+`</div></details>`;
   });
   const low=f.pct<=(cfg.alertPct||20)/100;
   $("#fundSummary").innerHTML=`<div class="panel pad2" style="margin-bottom:12px">
@@ -1164,7 +1243,7 @@ function renderMoney(){
   if(!entries.length){ $("#fundLog").innerHTML='<div class="empty">No entries yet.</div>'; return; }
   const groups={}; entries.forEach(e=>{(groups[e.date]=groups[e.date]||[]).push(e)});
   const emoji=(c)=>(LCATS.find(x=>x[0]===c)||["","💬"])[1];
-  $("#fundLog").innerHTML=Object.keys(groups).sort().reverse().map(date=>{
+  const logHtml=Object.keys(groups).sort().reverse().map(date=>{
     const g=groups[date];
     const day=g.filter(e=>e.kind==="expense"&&!e.voided).reduce((a,e)=>a+(e.amount||0),0);
     const label=new Date(date+"T12:00:00").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
@@ -1176,16 +1255,19 @@ function renderMoney(){
         ${canVoid?`<button class="x" data-act="void" data-id="${esc(e.id)}">Void</button>`:""}</div></div>`;
     }).join("");
   }).join("");
+  $("#fundLog").innerHTML=`<details class="panel" data-k="money-ledger" ${isOpen("money-ledger",true)?"open":""} style="margin-top:14px"><summary><span class="dsum"><b>Ledger</b><span class="rt">${entries.length} entr${entries.length===1?"y":"ies"}</span></span></summary><div class="inner">${logHtml}</div></details>`;
 }
 
 /* ───── crew ───── */
 const ROLES=["Crew","Skipper","First mate"];
 function renderCrew(){
   const box=$("#crewList"), map=$("#cabinMap");
+  try{ renderMoney(); }catch(e){}
   if(mode!=="cloud"){ box.innerHTML='<div class="empty">The crew list needs sync. Add the Firebase config to hub.html.</div>'; map.innerHTML=""; return; }
   const sorted=[...crew].sort((a,b)=>String(a.name).localeCompare(String(b.name)));
   renderHomeStats();
   renderRides(sorted);
+  { const cc=$("#crewCount"); if(cc) cc.textContent=sorted.length+" on the list"; const tc=$("#tl-crew"); if(tc) tc.textContent=sorted.length?sorted.length+" on the list":"Who is who"; }
   $("#arrivals").innerHTML = sorted.length ? '<div class="panel" style="margin-bottom:6px">'+sorted.map(c=>`<div class="row"><div><div class="t">${esc(c.name)}</div><div class="n">${(c.arrive||landsText(c))?esc([landsText(c),c.arrive].filter(Boolean).join(" · ")):'<span style="color:var(--ink-mute)">Not entered yet</span>'}${c.stay?` · Night before: ${esc(c.stay)}`:""}</div></div></div>`).join("")+'</div>' : '<div class="empty">Nobody yet.</div>';
   map.innerHTML='<div class="panel" style="margin-bottom:14px">'+[1,2,3,4,5,6].map(n=>{
     const who=sorted.filter(c=>String(c.cabin)===String(n)).map(c=>esc(c.name));
@@ -1486,6 +1568,18 @@ function tourPlace(){
 window.addEventListener("resize",()=>{ if(tourOn) tourPlace(); });
 document.addEventListener("keydown",(e)=>{ if(!tourOn) return; if(e.key==="Escape") endTour(); else if(e.key==="ArrowRight"){ tourI++; if(tourI>=tourSteps.length) endTour(); else tourShow(); } else if(e.key==="ArrowLeft"&&tourI>0){ tourI--; tourShow(); } });
 
+/* ───── accordions for static sections ───── */
+document.querySelectorAll(".acc-block").forEach((b)=>{
+  const hd=b.querySelector("h2"); if(!hd) return;
+  const k="acc-"+hd.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g,"-");
+  const d=document.createElement("details"); d.className="panel acc"; d.dataset.k=k; d.style.marginTop="14px";
+  const s=document.createElement("summary"); s.textContent=hd.textContent;
+  const inner=document.createElement("div"); inner.className="inner";
+  hd.remove(); while(b.firstChild) inner.appendChild(b.firstChild);
+  d.append(s,inner); d.open=isOpen(k,b.dataset.open==="1"); b.replaceWith(d);
+});
+document.querySelectorAll("details[data-k]").forEach((d)=>{ d.open=isOpen(d.dataset.k,d.hasAttribute("open")); });
+
 /* ───── events ───── */
 document.addEventListener("input",(e)=>{ if(e.target&&e.target.id==="stopQ") renderStops(); });
 document.addEventListener("click", async (e)=>{
@@ -1536,7 +1630,7 @@ document.addEventListener("click", async (e)=>{
     else if(act==="meEdit"){
       showTab("crew"); const c=myCrew();
       if(c) fillCrewForm(c); else { $("#cwName").value=myName; $("#cwMsg").textContent="Pick your cabin, add your phone and how you're arriving, then tap Save."; }
-      { const f=$("#crewForm"); if(f.scrollIntoView) f.scrollIntoView({behavior:"smooth",block:"center"}); }
+      { const w=$("#crewAdd"); if(w) w.open=true; const f=$("#crewForm"); if(f.scrollIntoView) f.scrollIntoView({behavior:"smooth",block:"center"}); }
     }
     else if(act==="sendReq"){
       if(needName()) return;
@@ -1571,6 +1665,7 @@ document.addEventListener("click", async (e)=>{
     else if(act==="tourSkip"){ endTour(); }
     else if(act==="openStop"){ openStop(t.dataset.id); }
     else if(act==="stopF"){ stopF=t.dataset.f; renderStops(); }
+    else if(act==="noteTog"){ t.classList.toggle("clamp"); }
     else if(act==="mustGo"){ gearView="boat"; filter=items.some(i=>approved(i)&&mustOf(i)&&!isDone(i))?"must":"all"; showTab("gear"); renderGear(); if(window.scrollTo) window.scrollTo({top:0}); }
     else if(act==="seed"){ await loadStarter(); }
     else if(act==="claim"){ if(needName()) return; await claim(id,myLabel()); }
@@ -1642,7 +1737,7 @@ document.addEventListener("click", async (e)=>{
     else if(act==="editCrew"){
       const c=crew.find(x=>x.id===id); if(!c) return;
       fillCrewForm(c);
-      { const f=$("#crewForm"); if(f.scrollIntoView) f.scrollIntoView({behavior:"smooth",block:"center"}); }
+      { const w=$("#crewAdd"); if(w) w.open=true; const f=$("#crewForm"); if(f.scrollIntoView) f.scrollIntoView({behavior:"smooth",block:"center"}); }
     }
     else if(act==="delCrew"){
       const c=crew.find(x=>x.id===id);
@@ -1720,7 +1815,7 @@ if(TABS.includes(initialTab)) showTab(initialTab);
 
 /* ───── PIN gate (a courtesy lock for the crew, not security) ───── */
 const PIN="0212";
-const BUILD="r7";   // bumped on every release so open copies know a newer one exists
+const BUILD="r8";   // bumped on every release so open copies know a newer one exists
 function tryPin(){
   const v=$("#pin").value.replace(/\D/g,"");
   if(v.length<4) return;
