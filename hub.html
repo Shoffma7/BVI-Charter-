@@ -1427,9 +1427,12 @@ const TOUR=[
  {tab:"boat",sel:'.tab.active .seg button[data-tab="boat"]',t:"Boat",p:"What is already on the boat, so we don't pack duplicates."},
  {tab:"stops",sel:'.tab.active .seg button[data-tab="stops"]',t:"Stops",p:"A guide to each likely anchorage: moorings, food, snorkeling. It works with no signal."},
  {tab:"links",sel:'.tab.active .seg button[data-tab="links"]',t:"Links",p:"Weather, charts and mooring reservations. Download offline charts before we leave home."},
+ {mid:true,tab:"home",id:"a2hs",skipIf:()=>isInstalled(),t:"Add it to your Home Screen",p:()=>isIOS()?"On iPhone, tap the Share button at the bottom of Safari, then Add to Home Screen. It keeps you signed in and opens like any other app.":"Open your browser's menu and choose Add to Home Screen or Install app. It keeps you signed in and opens like any other app."},
  {mid:true,tab:"home",t:"You're all set",p:"Start with the Needs you list on Home. You can replay this tour anytime with Take the tour on Home."}
 ];
-let tourI=-1, tourOn=false, tourPending=false;
+let tourI=-1, tourOn=false, tourPending=false, tourSteps=TOUR;
+const isInstalled=()=>{ try{ return window.navigator.standalone===true || (window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches); }catch(e){ return false; } };
+const isIOS=()=>/iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform==="MacIntel" && navigator.maxTouchPoints>1);
 const tourSeen=()=>{ try{return localStorage.getItem(TOUR_KEY)==="1";}catch(e){return false;} };
 function tourMark(){ try{localStorage.setItem(TOUR_KEY,"1");}catch(e){} }
 function maybeTour(){
@@ -1444,22 +1447,22 @@ function maybeTour(){
   };
   setTimeout(wait,400);
 }
-function startTour(force){ if(tourOn) return; tourOn=true; tourI=0; $("#tour").classList.add("on"); document.body.style.overflow="hidden"; tourShow(); }
+function startTour(force){ if(tourOn) return; tourOn=true; tourI=0; tourSteps=TOUR.filter(s=>!(s.skipIf&&s.skipIf())); $("#tour").classList.add("on"); document.body.style.overflow="hidden"; tourShow(); }
 function endTour(){
   tourOn=false; $("#tour").classList.remove("on"); document.body.style.overflow=""; tourMark(); showTab("home");
 }
 function tourShow(){
-  const s=TOUR[tourI]; if(!s) return endTour();
+  const s=tourSteps[tourI]; if(!s) return endTour();
   if(s.tab) showTab(s.tab);
   $("#tourT").textContent=s.t; $("#tourP").textContent=typeof s.p==="function"?s.p():s.p;
-  $("#tourC").textContent=(tourI+1)+" of "+TOUR.length;
+  $("#tourC").textContent=(tourI+1)+" of "+tourSteps.length;
   $("#tourB").style.visibility=tourI===0?"hidden":"visible";
-  $("#tourN").textContent=tourI===TOUR.length-1?"Done":(tourI===0?"Start":"Next");
+  $("#tourN").textContent=tourI===tourSteps.length-1?"Done":(tourI===0?"Start":"Next");
   requestAnimationFrame(()=>requestAnimationFrame(tourPlace));
 }
 function tourPlace(){
   if(!tourOn) return;
-  const s=TOUR[tourI], hole=$("#tourHole"), tip=$("#tourTip");
+  const s=tourSteps[tourI], hole=$("#tourHole"), tip=$("#tourTip");
   const el=s.sel?document.querySelector(s.sel):null;
   const vw=window.innerWidth, vh=window.innerHeight, M=12;
   tip.classList.remove("above","below","mid");
@@ -1481,7 +1484,7 @@ function tourPlace(){
   tip.focus({preventScroll:true});
 }
 window.addEventListener("resize",()=>{ if(tourOn) tourPlace(); });
-document.addEventListener("keydown",(e)=>{ if(!tourOn) return; if(e.key==="Escape") endTour(); else if(e.key==="ArrowRight"){ tourI++; if(tourI>=TOUR.length) endTour(); else tourShow(); } else if(e.key==="ArrowLeft"&&tourI>0){ tourI--; tourShow(); } });
+document.addEventListener("keydown",(e)=>{ if(!tourOn) return; if(e.key==="Escape") endTour(); else if(e.key==="ArrowRight"){ tourI++; if(tourI>=tourSteps.length) endTour(); else tourShow(); } else if(e.key==="ArrowLeft"&&tourI>0){ tourI--; tourShow(); } });
 
 /* ───── events ───── */
 document.addEventListener("input",(e)=>{ if(e.target&&e.target.id==="stopQ") renderStops(); });
@@ -1563,7 +1566,7 @@ document.addEventListener("click", async (e)=>{
       await setDoc(doc(db,"hubPassage","settings"),{album:a,playlist:pl},{merge:true}); $("#slMsg").textContent="Saved.";
     }
     else if(act==="tour"){ startTour(true); }
-    else if(act==="tourNext"){ tourI++; if(tourI>=TOUR.length) endTour(); else tourShow(); }
+    else if(act==="tourNext"){ tourI++; if(tourI>=tourSteps.length) endTour(); else tourShow(); }
     else if(act==="tourBack"){ if(tourI>0){ tourI--; tourShow(); } }
     else if(act==="tourSkip"){ endTour(); }
     else if(act==="openStop"){ openStop(t.dataset.id); }
@@ -1717,7 +1720,7 @@ if(TABS.includes(initialTab)) showTab(initialTab);
 
 /* ───── PIN gate (a courtesy lock for the crew, not security) ───── */
 const PIN="0212";
-const BUILD="r6";   // bumped on every release so open copies know a newer one exists
+const BUILD="r7";   // bumped on every release so open copies know a newer one exists
 function tryPin(){
   const v=$("#pin").value.replace(/\D/g,"");
   if(v.length<4) return;
