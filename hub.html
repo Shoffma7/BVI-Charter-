@@ -73,8 +73,33 @@
   .stat span{font-size:12.5px;color:var(--ink-soft)}
 
   .seg{display:flex;gap:6px;margin-bottom:16px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:4px}
-  .seg button{flex:1;border:0;background:none;border-radius:9px;padding:8px 4px;font-weight:600;color:var(--ink-soft)}
+  .seg button{flex:1;border:0;background:none;border-radius:9px;padding:8px 2px;font-weight:600;font-size:14px;white-space:nowrap;color:var(--ink-soft)}
   .seg button.sel{background:var(--ink);color:#fff}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px}
+  .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;min-height:40px;font-weight:600;color:var(--ink-soft)}
+  .chip.sel{background:var(--buoy-soft);border-color:var(--buoy);color:var(--ink)}
+  .stop summary{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center}
+  /* guided tour */
+  #tour{position:fixed;inset:0;z-index:300;display:none}
+  #tour.on{display:block}
+  #tourHole{position:fixed;border-radius:14px;box-shadow:0 0 0 100vmax rgba(10,61,68,.80);outline:3px solid var(--buoy);outline-offset:0;pointer-events:none;transition:all .25s ease}
+  #tourHole.none{box-shadow:none;outline:none;inset:0;width:100%;height:100%;background:rgba(10,61,68,.80);border-radius:0}
+  #tourTip{position:fixed;width:min(320px,calc(100vw - 24px));background:#fff;color:var(--ink);border-radius:14px;padding:14px 16px 12px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+  #tourTip h3{margin:0 0 4px;font-size:17px}
+  #tourTip p{margin:0;font-size:14.5px;line-height:1.45;color:var(--ink-soft)}
+  #tourTip .tr{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:12px}
+  #tourTip .cnt{font-size:12.5px;color:var(--ink-mute);font-weight:600}
+  #tourTip .tb{display:flex;gap:8px}
+  #tourTip .tb button{min-height:40px;border-radius:10px;padding:0 14px;font-weight:700;border:1px solid var(--line);background:#fff;color:var(--ink)}
+  #tourTip .tb button.go{background:var(--buoy);border-color:var(--buoy);color:#2A1D00}
+  #tourTip .skip{background:none;border:0;color:var(--ink-mute);font-weight:600;text-decoration:underline;min-height:40px;padding:0 4px}
+  #tourTip::after{content:"";position:absolute;width:16px;height:16px;background:#fff;transform:rotate(45deg);left:var(--ax,50%);margin-left:-8px}
+  #tourTip.below::after{top:-8px}
+  #tourTip.above::after{bottom:-8px}
+  #tourTip.mid::after{display:none}
+  .badge{font-size:11.5px;font-weight:700;border-radius:999px;padding:3px 9px;background:var(--lagoon-soft);color:var(--ink)}
+  .badge.d{background:var(--buoy-soft)}
+  .stop dl{margin:0}.stop dt{font-weight:700;margin-top:8px}.stop dd{margin:2px 0 0;color:var(--ink-soft)}
   .seg2{display:flex;gap:6px;margin:12px 0 14px;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:4px}
   .seg2 button{flex:1;border:0;background:none;border-radius:9px;padding:9px 4px;font-weight:600;color:var(--ink-soft)}
   .seg2 button.sel{background:var(--ink);color:#fff}
@@ -84,7 +109,7 @@
 
   .namebar{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .namebar label{font-weight:600;font-size:14px}
-  input[type=text],input[type=number],input[type=date],input[type=tel],input[type=password],input[type=url],select,textarea{font:inherit;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;color:var(--ink);width:100%}
+  input[type=text],input[type=number],input[type=date],input[type=datetime-local],input[type=search],input[type=tel],input[type=password],input[type=url],select,textarea{font:inherit;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 12px;color:var(--ink);width:100%}
   .namebar input{flex:1 1 160px;width:auto}
   .chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
   .chip{border:1px solid var(--line);background:var(--paper);border-radius:99px;padding:6px 13px;font-size:13.5px;color:var(--ink)}
@@ -274,7 +299,9 @@
       <div class="small" style="margin-top:-6px">Joining your partner? Pick the cabin they're already in.</div>
       <div class="pick" id="cabinPick"></div>
       <input type="tel" id="wPhone" placeholder="Mobile number" maxlength="20" autocomplete="tel" aria-label="Mobile number">
-      <input type="text" id="wArrive" placeholder="Getting to Tortola (optional, e.g. AA from MIA, Thu Feb 11 1:48pm)" maxlength="90" aria-label="How you are getting to Tortola">
+      <input type="text" id="wArrive" placeholder="Getting to Tortola (optional, e.g. AA from MIA)" maxlength="90" aria-label="How you are getting to Tortola">
+      <label class="small" for="wLands" style="display:block;margin:6px 0 2px">When do you arrive in Tortola? (optional, helps match taxi shares)</label>
+      <input type="datetime-local" id="wLands" aria-label="When you arrive in Tortola">
       <button class="btn buoy" type="button" data-act="profSave">Save and continue</button>
       <div class="msg" id="nameMsg" role="alert"></div>
     </div>
@@ -341,6 +368,10 @@
       <div class="two2" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <button class="btn" data-tab="plan">See the plan</button>
         <button class="btn ghost" data-act="invite">Invite the crew</button>
+      </div>
+      <div class="two2" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+        <button class="btn ghost" type="button" data-tab="stops">Stop-by-stop guide</button>
+        <button class="btn ghost" type="button" data-act="tour">Take the tour</button>
       </div>
       <div class="msg" id="inviteMsg" role="status"></div>
       <details class="panel" style="margin-top:10px"><summary>Put it on your phone's home screen</summary><div class="inner small">
@@ -493,13 +524,14 @@
 
 <!-- CREW -->
 <section class="tab" id="tab-crew"><div class="pad">
-  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
+  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="stops">Stops</button><button data-tab="links">Links</button></div>
   <h2>The crew</h2>
   <p class="lead">Add yourself so we can find each other on the boat and ashore. Saving a name that's already listed updates that entry.</p>
   <div id="cabinMap"></div>
   <h3 class="cat" style="margin-top:6px">Arrivals</h3>
   <p class="small" style="margin-bottom:8px">How everyone is getting to Tortola, so we can meet up on Feb 11.</p>
   <div id="arrivals"></div>
+  <div id="rideBox"></div>
   <h3 class="cat">Everyone</h3>
   <div id="crewList"></div>
   <div class="block">
@@ -511,7 +543,9 @@
         <select id="cwCabin" aria-label="Cabin"></select>
       </div>
       <input type="tel" id="cwPhone" placeholder="Phone number" maxlength="20" aria-label="Phone number">
-      <input type="text" id="cwArrive" placeholder="Getting there (e.g. AA from MIA, lands Thu Feb 11, 1:48pm)" maxlength="90" aria-label="How you are getting to Tortola">
+      <input type="text" id="cwArrive" placeholder="Getting there (e.g. AA from MIA)" maxlength="90" aria-label="How you are getting to Tortola">
+      <label class="small" for="cwLands" style="display:block;margin:6px 0 2px">When you arrive in Tortola (helps match taxi shares)</label>
+      <input type="datetime-local" id="cwLands" aria-label="When you arrive in Tortola">
       <input type="text" id="cwStay" placeholder="Where you're sleeping the night of Feb 11" maxlength="70" aria-label="Where you are sleeping Feb 11">
       <button class="btn buoy" type="button" data-act="saveCrew">Save</button>
       <div class="msg" id="cwMsg"></div>
@@ -521,7 +555,7 @@
 
 <!-- BOAT -->
 <section class="tab" id="tab-boat"><div class="pad">
-  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
+  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="stops">Stops</button><button data-tab="links">Links</button></div>
   <h2>Crude Escape</h2>
   <p class="lead">2026 Fountaine Pajot Aura 51, BVI Yacht Charters, Ritter House Marina, Road Town.</p>
   <div class="stat">
@@ -560,7 +594,7 @@
 
 <!-- INFO -->
 <section class="tab" id="tab-info"><div class="pad">
-  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
+  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="stops">Stops</button><button data-tab="links">Links</button></div>
   <h2>Trip info</h2>
   <div class="panel">
     <div class="row"><div><div class="t">Charter dates</div><div class="n">Feb 12 – 19, 2027</div></div></div>
@@ -609,8 +643,30 @@
 </div></section>
 
 <!-- LINKS -->
+<!-- STOPS -->
+<section class="tab" id="tab-stops"><div class="pad">
+  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="stops">Stops</button><button data-tab="links">Links</button></div>
+  <h2>Stop guide</h2>
+  <p class="lead">What to expect at each likely stop. It's saved in the app, so it works with no signal.</p>
+  <input type="search" id="stopQ" placeholder="Search stops, bars, snorkeling…" aria-label="Search stops" style="margin-bottom:10px">
+  <div class="chips" id="stopChips" role="group" aria-label="Filter stops">
+    <button type="button" class="chip sel" data-act="stopF" data-f="all">All</button>
+    <button type="button" class="chip" data-act="stopF" data-f="overnight">Overnight</button>
+    <button type="button" class="chip" data-act="stopF" data-f="day">Day stops</button>
+    <button type="button" class="chip" data-act="stopF" data-f="food">Food and drink</button>
+  </div>
+  <details class="panel" id="stop-customs" style="margin-bottom:12px"><summary>Clearing customs in the BVI</summary><div class="inner small">
+    <p style="margin-bottom:6px">Boats clear in with BVI Customs and Immigration on arrival, with passports for everyone and the boat's papers. Confirm at the charter briefing who handles this for our boat.</p>
+    <p style="margin-bottom:6px"><b>Ports of entry for yachts:</b> Road Town, West End (Soper's Hole), Great Harbour on Jost Van Dyke, and St. Thomas Bay on Virgin Gorda. Hours differ by port and the last two close at 4:30pm, so don't plan to clear late in the day.</p>
+    <p style="margin-bottom:6px">If we visit the US Virgin Islands, we clear in again at Cruz Bay (St. John) or Charlotte Amalie (St. Thomas), then clear back into the BVI at a BVI port.</p>
+    <p>Source: BVI Tourist Board. Hours and the online SailClear process change, so check <a href="https://www.bvitourism.com/travel/arriving-by-sea" target="_blank" rel="noopener">the official page</a> before the trip.</p>
+  </div></details>
+  <div id="stopList"></div>
+  <p class="small" style="margin-top:14px">Compiled from public cruising guides. Conditions, prices and opening hours change, and a north swell can close some anchorages. Confirm mooring availability on BoatyBall and the day's plan with the skipper.</p>
+</div></section>
+
 <section class="tab" id="tab-links"><div class="pad">
-  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="links">Links</button></div>
+  <div class="seg"><button data-tab="info">Trip info</button><button data-tab="crew">Crew</button><button data-tab="boat">Boat</button><button data-tab="stops">Stops</button><button data-tab="links">Links</button></div>
   <h2>Links</h2>
   <p class="lead">These open in your browser. Some need their own account, noted below. Download offline charts before we leave home.</p>
   <div id="sharedLinks"></div>
@@ -640,6 +696,15 @@
   <button data-tab="money"><span class="ic">💵</span>Money</button>
   <button data-tab="info"><span class="ic">📋</span>Info</button>
 </nav>
+
+<div id="tour" role="dialog" aria-modal="true" aria-label="Quick tour of the app">
+  <div id="tourHole"></div>
+  <div id="tourTip" tabindex="-1" aria-live="polite">
+    <h3 id="tourT"></h3><p id="tourP"></p>
+    <div class="tr"><button type="button" class="skip" data-act="tourSkip">Skip tour</button><span class="cnt" id="tourC"></span>
+      <div class="tb"><button type="button" data-act="tourBack" id="tourB">Back</button><button type="button" class="go" data-act="tourNext" id="tourN">Next</button></div></div>
+  </div>
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -830,7 +895,7 @@ function myLabel(){
   const mates=crew.filter(c=>c.cabin===cab).map(c=>String(c.name||"").split(" ")[0]).filter(Boolean).sort();
   return `Cabin ${cab} · ${mates.join(" & ")||myName}`;
 }
-function isMineClaim(n){ const cab=myCabin(); return !!myName && (n===myName || (cab && String(n).startsWith(`Cabin ${cab} ·`))); }
+function isMineClaim(n){ const cab=myCabin(); return !!myName && (sameName(n,myName) || (cab && String(n).startsWith(`Cabin ${cab} ·`))); }
 
 function renderHomeStats(){
   const must=items.filter(i=>approved(i)&&mustOf(i)), open=must.filter(i=>!isDone(i)).length;
@@ -955,7 +1020,7 @@ function renderPlan(){
       const times=(d.depart||d.arrive)?`<div class="small">${d.depart?"Depart "+esc(d.depart):""}${d.depart&&d.arrive?" · ":""}${d.arrive?"Arrive "+esc(d.arrive):""}</div>`:"";
       return `<div class="dayc ${istoday?"istoday":""}"><div class="dh"><b>${esc(d.label)}${istoday?'<span class="daytag">Today</span>':""}</b></div>
         <div class="route"${has?"":' style="color:var(--ink-mute);font-weight:500"'}>${route}</div>${times}
-        ${d.moor?`<div class="small">Mooring: ${esc(d.moor)}</div>`:""}
+        ${d.moor?`<div class="small">Mooring: ${esc(d.moor)}</div>`:""}${guideLink(d)}
         ${d.notes?`<div class="small" style="margin-top:4px">${esc(d.notes)}</div>`:""}
         ${isOrg?`<button class="btn ghost" style="margin-top:10px" data-act="editDay" data-id="${esc(d.id)}">Edit</button>`:""}</div>`;
     }).join("");
@@ -975,7 +1040,7 @@ function renderToday(){
   const d=days.find(x=>x.id==="day-"+(i+1))||{label:(i<7?"Day "+(i+1):"Return day")+" · "+fmtDay(i)};
   const route=(d.from||d.to)?`${esc(d.from||"?")} → ${esc(d.to||"?")}`:"Route not set yet. Ask the skipper.";
   const times=(d.depart||d.arrive)?`<div class="small">${d.depart?"Depart "+esc(d.depart):""}${d.depart&&d.arrive?" · ":""}${d.arrive?"Arrive "+esc(d.arrive):""}</div>`:"";
-  box.innerHTML=`<div class="today"><div class="small" style="font-weight:700">TODAY</div><b class="d">${esc(d.label)}</b><div class="route">${route}</div>${times}${d.moor?`<div class="small">Mooring: ${esc(d.moor)}</div>`:""}${d.notes?`<div class="small" style="margin-top:4px">${esc(d.notes)}</div>`:""}<button class="btn" style="margin-top:10px" data-tab="plan">Open the plan</button></div>`;
+  box.innerHTML=`<div class="today"><div class="small" style="font-weight:700">TODAY</div><b class="d">${esc(d.label)}</b><div class="route">${route}</div>${times}${d.moor?`<div class="small">Mooring: ${esc(d.moor)}</div>`:""}${guideLink(d)}${d.notes?`<div class="small" style="margin-top:4px">${esc(d.notes)}</div>`:""}<button class="btn" style="margin-top:10px" data-tab="plan">Open the plan</button></div>`;
 }
 function renderNeeds(){
   const box=$("#needsCard"); if(!box) return;
@@ -986,11 +1051,11 @@ function renderNeeds(){
     if(mc){
       if(!mc.cabin||mc.cabin==="Not assigned") add("🛏️","Pick your cabin",'data-act="meEdit"');
       if(!mc.phone) add("📱","Add your phone number",'data-act="meEdit"');
-      if(!mc.arrive) add("✈️","Add how you're getting to Tortola",'data-act="meEdit"');
+      if(!mc.arrive&&!mc.lands) add("✈️","Add when you arrive in Tortola",'data-act="meEdit"');
     }
-    polls.filter(p=>p.status!=="decided" && !(p.responses&&p.responses[keyOf(myName)])).forEach(p=>add("🗳️","Vote: "+p.q,'data-tab="polls"'));
+    polls.filter(p=>p.status!=="decided" && !(p.responses&&p.responses[respKey(p.responses)])).forEach(p=>add("🗳️","Vote: "+p.q,'data-tab="polls"'));
     const cfg=ledger.find(e=>e.id==="config");
-    if(cfg && String(cfg.holder).toLowerCase()===myName.toLowerCase()){
+    if(cfg && isHolderName(cfg)){
       const n=ledger.filter(e=>e.kind==="request"&&!e.voided).length;
       if(n) add("💵",`${n} expense${n===1?"":"s"} waiting for your OK`,'data-tab="money"');
     }
@@ -1004,8 +1069,8 @@ function pollHtml(p){
   const opts=Array.isArray(p.options)?p.options:[];
   const resp=(p.responses&&typeof p.responses==="object")?p.responses:{};
   const all=Object.values(resp);
-  const mine=myName?resp[keyOf(myName)]:null;
-  const isOwner=!!myName && p.by===myName;
+  const mine=myName?resp[respKey(resp)]:null;
+  const isOwner=!!myName && sameName(p.by,myName);
   const decided=p.status==="decided";
   let h=`<div class="pollc" data-poll="${esc(p.id)}"><div class="dh"><b>${esc(p.q)}</b><span class="lock ${decided?"":"openc"}">${decided?"Decided":"Open"}</span></div>
     <div class="small">Asked by ${esc(p.by||"someone")} · ${all.length} responded</div>`;
@@ -1059,12 +1124,12 @@ function renderMoney(){
   $("#fundSetup").style.display = cfg?"none":"block";
   if(!cfg){ $("#fundSummary").innerHTML=""; $("#entryWrap").style.display="none"; $("#fundLog").innerHTML=""; $("#holderNote").textContent=""; return; }
   const f=fundCalc();
-  const holderOk = !!myName && String(cfg.holder).toLowerCase()===myName.toLowerCase();
+  const holderOk = !!myName && isHolderName(cfg);
   $("#entryWrap").style.display = holderOk?"block":"none";
   $("#holderNote").textContent = holderOk?"":`Only ${cfg.holder}, the fund holder, can log entries. Tap your name at the top if that's you.`;
   $("#reqWrap").style.display = (!holderOk && myName) ? "block" : "none";
   // waiting for approval
-  const reqs=ledger.filter(e=>e.kind==="request"&&!e.voided).filter(e=>holderOk||e.by===myName).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
+  const reqs=ledger.filter(e=>e.kind==="request"&&!e.voided).filter(e=>holderOk||sameName(e.by,myName)).sort((a,b)=>(a.createdAt||0)-(b.createdAt||0));
   if(reqs.length){
     $("#requests").innerHTML=`<h3 class="cat">Waiting for approval</h3><div class="panel">`+reqs.map(e=>`<div class="row"><div style="flex:1"><div class="t">${esc(e.note||e.cat)}</div><div class="n">${esc(e.cat)} · asked by ${esc(e.by)}</div></div><div style="text-align:right"><div class="amt">${usd(e.amount||0)}</div>${holderOk?`<div class="mini"><button class="btn" data-act="approveReq" data-id="${esc(e.id)}">Approve</button><button class="x" data-act="declineReq" data-id="${esc(e.id)}">Decline</button></div>`:`<div class="small">Waiting</div>`}</div></div>`).join("")+`</div>`;
   }
@@ -1104,7 +1169,7 @@ function renderMoney(){
     const day=g.filter(e=>e.kind==="expense"&&!e.voided).reduce((a,e)=>a+(e.amount||0),0);
     const label=new Date(date+"T12:00:00").toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"});
     return `<div class="dayhead"><span>${esc(label)}</span><span>${usd(day)} spent</span></div>`+g.map(e=>{
-      const canVoid=!e.voided && myName && (holderOk || e.by===myName);
+      const canVoid=!e.voided && myName && (holderOk || sameName(e.by,myName));
       return `<div class="item ${e.voided?"void":""}"><div class="body"><div class="nm">${e.kind==="topup"?"💰":emoji(e.cat)} ${esc(e.note||e.cat)}</div>
         <div class="nt">${esc(e.cat)} · logged by ${esc(e.by)}${e.voided?` · voided by ${esc(e.voidedBy||"")}`:""}</div></div>
         <div style="text-align:right"><div class="amt ${e.kind}">${e.kind==="topup"?"+":"−"}${usd(e.amount||0)}</div>
@@ -1120,7 +1185,8 @@ function renderCrew(){
   if(mode!=="cloud"){ box.innerHTML='<div class="empty">The crew list needs sync. Add the Firebase config to hub.html.</div>'; map.innerHTML=""; return; }
   const sorted=[...crew].sort((a,b)=>String(a.name).localeCompare(String(b.name)));
   renderHomeStats();
-  $("#arrivals").innerHTML = sorted.length ? '<div class="panel" style="margin-bottom:6px">'+sorted.map(c=>`<div class="row"><div><div class="t">${esc(c.name)}</div><div class="n">${c.arrive?esc(c.arrive):'<span style="color:var(--ink-mute)">Not entered yet</span>'}${c.stay?` · Night before: ${esc(c.stay)}`:""}</div></div></div>`).join("")+'</div>' : '<div class="empty">Nobody yet.</div>';
+  renderRides(sorted);
+  $("#arrivals").innerHTML = sorted.length ? '<div class="panel" style="margin-bottom:6px">'+sorted.map(c=>`<div class="row"><div><div class="t">${esc(c.name)}</div><div class="n">${(c.arrive||landsText(c))?esc([landsText(c),c.arrive].filter(Boolean).join(" · ")):'<span style="color:var(--ink-mute)">Not entered yet</span>'}${c.stay?` · Night before: ${esc(c.stay)}`:""}</div></div></div>`).join("")+'</div>' : '<div class="empty">Nobody yet.</div>';
   map.innerHTML='<div class="panel" style="margin-bottom:14px">'+[1,2,3,4,5,6].map(n=>{
     const who=sorted.filter(c=>String(c.cabin)===String(n)).map(c=>esc(c.name));
     return `<div class="row"><div><div class="t">Cabin ${n}</div><div class="n">${who.length?who.join(", "):"Open"}</div></div></div>`;
@@ -1138,14 +1204,50 @@ function renderCrew(){
   }).join("")+'</div>';
 }
 
+
+/* ───── arrival matcher ───── */
+const LANDS_RE=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/;
+function validLands(s){ return LANDS_RE.test(String(s||""))?String(s):""; }
+function parseLands(s){ const m=LANDS_RE.exec(String(s||"")); return m?new Date(+m[1],+m[2]-1,+m[3],+m[4],+m[5]):null; }
+function fmtLands(d){ return d.toLocaleDateString("en-US",{weekday:"short",month:"short",day:"numeric"})+", "+d.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}); }
+function landsText(c){ const d=parseLands(c&&c.lands); return d?"Arrives "+fmtLands(d):""; }
+const partyOf=(c)=>(c.cabin&&c.cabin!=="Not assigned"&&c.cabin!=="Not sure yet")?"cab"+c.cabin:"p"+c.id;
+function rideGroups(list){
+  const xs=list.map(c=>({c,t:parseLands(c.lands)})).filter(x=>x.t).sort((a,b)=>a.t-b.t);
+  const groups=[]; let cur=[];
+  for(const x of xs){ if(cur.length && x.t-cur[cur.length-1].t>90*60000){ groups.push(cur); cur=[]; } cur.push(x); }
+  if(cur.length) groups.push(cur);
+  return {withTimes:xs.length, matches:groups.filter(g=>new Set(g.map(x=>partyOf(x.c))).size>1)};
+}
+function renderRides(sorted){
+  const box=$("#rideBox"); if(!box) return;
+  const r=rideGroups(sorted);
+  const telOf=(c)=>String(c.phone||"").replace(/[^0-9+]/g,"");
+  let h="";
+  if(r.matches.length){
+    h+='<h3 class="cat" style="margin-top:6px">Share a ride</h3><p class="small" style="margin-bottom:8px">These people arrive within 90 minutes of each other. Text them to split a taxi or ferry.</p><div class="panel" style="margin-bottom:14px">'+
+      r.matches.map(g=>{
+        const a=g[0].t,b=g[g.length-1].t;
+        const when=fmtLands(a)+(b-a>=60000?" to "+b.toLocaleTimeString("en-US",{hour:"numeric",minute:"2-digit"}):"");
+        const who=g.map(x=>{const t=telOf(x.c); const nm=esc(x.c.name)+(partyOf(x.c).startsWith("cab")?" (Cabin "+esc(x.c.cabin)+")":""); return t?`<a href="sms:${esc(t)}">${nm}</a>`:nm;}).join(" · ");
+        return `<div class="row"><div><div class="t">${esc(when)}</div><div class="n">${who}</div></div></div>`;
+      }).join("")+'</div>';
+  } else if(r.withTimes>0){
+    h='<p class="small" style="margin:6px 0 12px">No one else lands within 90 minutes of anyone yet. Matches appear here as more people add their arrival time.</p>';
+  } else {
+    h='<p class="small" style="margin:6px 0 12px">Add your arrival time below and we\'ll match you with people landing around the same time, so you can share a taxi or ferry.</p>';
+  }
+  box.innerHTML=h;
+}
+
 function fillCrewForm(c){
   $("#cwName").value=c.name||""; $("#cwRole").value=c.role||"Crew"; $("#cwCabin").value=c.cabin||"Not assigned"; $("#cwPhone").value=c.phone||"";
-  $("#cwArrive").value=c.arrive||""; $("#cwStay").value=c.stay||"";
+  $("#cwArrive").value=c.arrive||""; $("#cwLands").value=c.lands||""; $("#cwStay").value=c.stay||"";
   $("#cwMsg").textContent="Editing "+c.name+". Change what you need and tap Save.";
 }
 const todayStr=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");};
 
-function renderAll(){ renderWho(); renderGear(); renderPlan(); renderPolls(); renderMoney(); renderCrew(); renderSettings(); }
+function renderAll(){ renderStops(); renderWho(); renderGear(); renderPlan(); renderPolls(); renderMoney(); renderCrew(); renderSettings(); }
 
 /* ───── settings: emergency card and shared links ───── */
 const safeUrl=(u)=>/^https:\/\//i.test(String(u||""))?String(u):"";
@@ -1187,7 +1289,7 @@ function showWelView(v){ $("#welList").style.display=v==="list"?"block":"none"; 
 function openNew(c){
   selCabin=(c&&c.cabin)?String(c.cabin):"";
   $("#myName").value=c?(c.name||""):""; $("#myName").readOnly=!!c;
-  $("#wPhone").value=c?(c.phone||""):""; $("#wArrive").value=c?(c.arrive||""):"";
+  $("#wPhone").value=c?(c.phone||""):""; $("#wArrive").value=c?(c.arrive||""):""; $("#wLands").value=c?(c.lands||""):"";
   renderCabinPick(); showWelView("new");
 }
 function openWelcome(canCancel,prefill){
@@ -1198,13 +1300,25 @@ function openWelcome(canCancel,prefill){
   $("#welcome").classList.add("show");
 }
 function promptWho(){
-  if(myName) return;
+  if(myName){ maybeTour(); return; }
   const go=()=>{ if(!myName && !$("#welcome").classList.contains("show")) openWelcome(false); };
   if(crewLoaded||mode!=="cloud") go(); else setTimeout(go,1200);
 }
+function sameName(a,b){
+  a=String(a||"").trim().toLowerCase(); b=String(b||"").trim().toLowerCase();
+  if(!a||!b) return false; if(a===b) return true;
+  const fa=a.split(/\s+/), fb=b.split(/\s+/);
+  return (fa.length===1&&fa[0]===fb[0])||(fb.length===1&&fb[0]===fa[0]);
+}
+function respKey(resp){ const ks=Object.keys(resp||{}); const k=ks.find(x=>sameName(resp[x]&&resp[x].name,myName)); return k||keyOf(myName); }
+function isHolderName(cfg){
+  if(!myName||!cfg) return false;
+  const a=String(cfg.holder||"").trim().toLowerCase(), b=myName.trim().toLowerCase();
+  return a===b || a===b.split(/\s+/)[0] || a.split(/\s+/)[0]===b;
+}
 function setName(v){
   myName=v; lsSet("bviHubName",myName); $("#welcome").classList.remove("show"); $("#myName").value=""; $("#myName").readOnly=false;
-  renderAll();
+  renderAll(); maybeTour();
 }
 function tryOrg(codeSel,msgSel){
   if($(codeSel).value.trim()===ORG_CODE){ isOrg=true; try{localStorage.setItem("bviHubOrg","1")}catch(e){} $(codeSel).value=""; $(msgSel).textContent=""; $("#orgModal").classList.remove("show"); renderAll(); return true; }
@@ -1225,7 +1339,152 @@ function ledgerCsv(){
   return rows.map(r=>r.map(csvCell).join(",")).join("\n");
 }
 
+/* ───── stop guide (static, works offline) ───── */
+const STOPS=[
+ {id:"norman",name:"Norman Island · The Bight",kind:"overnight",bb:false,keys:["norman","bight","willy"],
+  moor:"Large, well-protected mooring field. Day-use balls sit just west of Treasure Point, and Kelly Cove to the east has a smaller field with snorkeling around Water Point.",
+  ashore:"Quick dinghy ride to Pirate's Bight beach, with lounge chairs for paying customers. Snorkel off the beach or hike the trails to Soldier Bay, Benures Bay and Spyglass Hill, which looks over to St. John and St. Thomas. The Caves west of the Bight are for more experienced snorkelers.",
+  eat:"Pirate's Bight restaurant and the Willy T floating bar. These are the only places to eat on the island.",
+  tips:"Bring plenty of water, bug spray and sun protection if you hike."},
+ {id:"indians",name:"The Indians",kind:"day",bb:false,keys:["indians"],
+  moor:"Day-use balls only, plus a dinghy line.",ashore:"Snorkeling only, and some of the best in the BVI.",eat:"",
+  tips:"Can be rough and crowded with day-trip boats. Go early in the morning or late in the afternoon."},
+ {id:"salt",name:"Salt Island · Wreck of the Rhone",kind:"day",bb:false,keys:["salt island","rhone"],
+  moor:"Day-use ball. Dinghy to shore.",ashore:"Walk to the old salt ponds. Dinghy to Lee Bay for the Rhone wreck. Part of it lies in about 20 feet of water, so it can be seen from the surface.",eat:"",tips:"A popular dive site, so expect dive boats."},
+ {id:"cooper",name:"Cooper Island",kind:"overnight",bb:true,keys:["cooper"],
+  moor:"Overnight mooring field over seagrass where sea turtles feed.",ashore:"Snorkel Cistern Point at the south end of the field, where turtles and rays are common. The resort is solar powered and has a beach bar, restaurant, ice cream and coffee shop, dive shop, rum bar and brewery.",
+  eat:"Cooper Island Resort. Dinner leans Caribbean and Asian. The homemade cakes and Painkillers are recommended.",tips:"Reserve a mooring on BoatyBall."},
+ {id:"peter",name:"Peter Island · Great Harbour",kind:"overnight",bb:false,keys:["peter island"],
+  moor:"A quiet anchorage.",ashore:"Beach and harbor.",eat:"Ocean's 7 restaurant and beach bar, in the southwest corner of the harbor.",tips:"Call ahead before you plan on a meal."},
+ {id:"baths",name:"The Baths · Virgin Gorda",kind:"day",bb:false,keys:["baths"],
+  moor:"Very few day-use balls, with a 90-minute limit that many boaters ignore. Leave early to get one. Fallbacks are anchoring in St. Thomas Bay, a slip at Virgin Gorda Yacht Harbor, or a Leverick Bay mooring plus a taxi or rental car.",
+  ashore:"A 7-acre national park with granite boulders, tidal pools and a marked trail, plus excellent snorkeling. Dinghy to the buoyed swim area, tie to the line and swim in.",eat:"",
+  tips:"Strong currents can make the swim and climbing back into the dinghy hard. Plan how everyone gets aboard before you jump in."},
+ {id:"leverick",name:"Leverick Bay · Virgin Gorda",kind:"overnight",bb:true,keys:["leverick"],
+  moor:"36 mooring balls and 25 slips.",ashore:"Fuel, water, ice, showers, laundry and a provisioning store. There's also a day spa, two gift shops and a beach bar with a pool. Hike Virgin Gorda Peak, visit the Cornish Copper Mine, or go to Savannah Bay beach.",
+  eat:"A Caribbean restaurant upstairs, a casual one downstairs with happy-hour entertainment, and Hog Heaven for ribs with a big view.",tips:"Getting around the island needs a rental car or a private tour."},
+ {id:"northsound",name:"North Sound · Bitter End and Saba Rock",kind:"overnight",bb:true,keys:["north sound","bitter end","saba","gorda sound"],
+  moor:"Mooring balls and slips are available.",ashore:"Bitter End Yacht Club was rebuilt and works for lunch or an evening. Saba Rock is a tiny island for lunch and drinks.",eat:"Bitter End Yacht Club and Saba Rock.",tips:"Check that Saba Rock is open before we plan a day around it."},
+ {id:"anegada",name:"Anegada",kind:"overnight",bb:true,keys:["anegada"],
+  moor:"Reserve on BoatyBall, especially for the first night, because the field fills quickly. Anchoring is limited by coral heads.",
+  ashore:"Cow Wreck Beach has a bar, restaurant and chairs. Bones Bay has Anegada Beach Club. Loblolly Beach has snorkeling from the beach. Dinghy docks are at Potter's, Anegada Reef Hotel, Lobster Trap, Wonky Dog and Neptune's Treasure. Fuel is at Kenneth's gas station by the ferry dock.",
+  eat:"Tipsy's at Cow Wreck Beach, Anegada Beach Club, Big Bamboo and Flash of Beauty. Wood-grilled lobster is the island's signature dinner.",
+  tips:"It's an 11.5 nautical mile sail from North Sound, so go in settled conditions. Stay strictly inside the marked channel into Setting Point. Bring reef-friendly sunscreen and a dry bag."},
+ {id:"cgb",name:"Cane Garden Bay · Tortola",kind:"overnight",bb:true,keys:["cane garden"],
+  moor:"Large mooring field. Public docks sell fuel, water and ice.",ashore:"Callwood Rum Distillery is up the road. Shops and a grocery store sit behind the beach. Sunsets are good, and you can see St. Thomas lit up at night.",
+  eat:"Myett's Garden & Grille and Quito's, which has Caribbean food and steel drums.",tips:"North swells make this anchorage uncomfortable, so it's best in calm seas."},
+ {id:"whitebay",name:"White Bay · Jost Van Dyke",kind:"overnight",bb:true,keys:["white bay","soggy"],
+  moor:"Small mooring field east of the reef. The anchorage off the main beach is often crowded.",ashore:"There's no dinghy dock, so you swim ashore. Soggy Dollar, Ivan's Peace and Love and the floating Ocean Spa are all here.",
+  eat:"Soggy Dollar (the Painkiller was invented here, per the guides), and Hendo's Hideout for pulled pork sandwiches and conch fritters.",tips:"Bring a dry bag for phones and cash."},
+ {id:"diamond",name:"Diamond Cay and Little Jost Van Dyke",kind:"overnight",bb:true,keys:["diamond","little jost","little harbor","taboo","b-line","bubbly"],
+  moor:"Unprotected. Uncomfortable in high seas or a north swell. Little Harbor is the suggested alternative.",ashore:"Explore Sandy Cay and Sandy Spit, or hike to Bubbly Pool, a natural rock pool.",
+  eat:"Foxy's Taboo and B-Line Beach Bar.",tips:"Check the swell forecast first."},
+ {id:"jvd",name:"Great Harbour · Jost Van Dyke",kind:"overnight",bb:true,keys:["jost","jvd","foxy","corsairs"],
+  moor:"Large mooring field with room to anchor.",ashore:"Fuel, water, ice, trash disposal and a small provisioning store. White Bay is about a mile over the hill, and people usually take a taxi back. It's also a BVI port of entry for customs.",
+  eat:"Foxy's for drinks, music and food, with a beach BBQ buffet on Friday and Saturday nights. Corsairs for pizza.",tips:"Customs here closes at 4:30pm."},
+ {id:"soper",name:"Soper's Hole · West End, Tortola",kind:"overnight",bb:true,keys:["soper","west end","omar","pusser"],
+  moor:"Mooring field and marina.",ashore:"A good lunch stop. West End is also a BVI port of entry for customs.",eat:"Omar's or Pusser's.",tips:"Last stop before heading to Jost Van Dyke or the US Virgin Islands."},
+ {id:"dogs",name:"The Dogs",kind:"day",bb:false,keys:["the dogs"],
+  moor:"Day-use balls at four tiny islands.",ashore:"Outstanding snorkeling.",eat:"",tips:"Day-use only, so be back on an overnight mooring by evening."},
+ {id:"guana",name:"Guana Island and Scrub Island",kind:"overnight",bb:true,keys:["guana","scrub"],
+  moor:"Guana's White Bay has a small mooring field, quiet and lightly developed. Scrub Island Resort offers overnight slips.",
+  ashore:"Guana is private, but the beach is public. Snorkel Monkey Point at the southeast corner of White Bay. It's known for stargazing. Scrub Island Resort has restaurants, beaches, a spa and a pool.",eat:"At Scrub Island Resort.",tips:"You can't walk around Guana, only use the beach."}
+];
+let stopF="all";
+function stopFor(text){ const t=String(text||"").toLowerCase(); if(!t) return null; return STOPS.find(s=>s.keys.some(k=>t.includes(k)))||null; }
+function renderStops(){
+  const box=$("#stopList"); if(!box) return;
+  const q=($("#stopQ").value||"").trim().toLowerCase();
+  const list=STOPS.filter(s=>{
+    if(stopF==="overnight"&&s.kind!=="overnight") return false;
+    if(stopF==="day"&&s.kind!=="day") return false;
+    if(stopF==="food"&&!s.eat) return false;
+    if(q && !(s.name+" "+s.moor+" "+s.ashore+" "+s.eat+" "+s.tips).toLowerCase().includes(q)) return false;
+    return true;
+  });
+  document.querySelectorAll("#stopChips .chip").forEach(b=>b.classList.toggle("sel",b.dataset.f===stopF));
+  if(!list.length){ box.innerHTML='<div class="empty">No stops match. Clear the search or pick All.</div>'; return; }
+  const row=(l,v)=>v?`<dt>${l}</dt><dd>${esc(v)}</dd>`:"";
+  box.innerHTML=list.map(s=>`<details class="panel stop" id="stop-${esc(s.id)}"><summary><b>${esc(s.name)}</b><span class="badge${s.kind==="day"?" d":""}">${s.kind==="day"?"Day use only":"Overnight"}</span>${s.bb?'<span class="badge">BoatyBall</span>':""}</summary><div class="inner small"><dl>${row("Mooring",s.moor)}${row("Ashore",s.ashore)}${row("Eat and drink",s.eat)}${row("Tips",s.tips)}</dl></div></details>`).join("");
+}
+function openStop(id){
+  stopF="all"; $("#stopQ").value=""; showTab("stops"); renderStops();
+  const el=document.getElementById("stop-"+id); if(el){ el.open=true; el.scrollIntoView({block:"start"}); }
+}
+function guideLink(d){ const s=stopFor((d.to||"")+" "+(d.moor||"")); return s?`<button class="x" type="button" data-act="openStop" data-id="${esc(s.id)}" style="margin-top:6px">Guide: ${esc(s.name)} →</button>`:""; }
+
+/* ───── guided tour (first login, replay from Home) ───── */
+const TOUR_KEY="bviHubTour";
+const TOUR=[
+ {mid:true,t:"Welcome aboard",p:()=>`A one-minute tour${myName?", "+myName.split(" ")[0]:""}. Each page has one job, and knowing the job means you'll know where to go.`},
+ {tab:"home",sel:'.tabbar button[data-tab="home"]',t:"Home",p:"Your daily check-in. See the countdown, today's plan, and a short list of things only you need to do."},
+ {tab:"plan",sel:'.tabbar button[data-tab="plan"]',t:"Plan",p:"The day-by-day route: where we sleep, mooring status and notes. Tap a day to see details."},
+ {tab:"gear",sel:'.tabbar button[data-tab="gear"]',t:"Gear",p:"Stops us all packing the same cooler. Tap an item to volunteer to bring it, or suggest something new."},
+ {tab:"polls",sel:'.tabbar button[data-tab="polls"]',t:"Polls",p:"Group decisions live here, like Anegada or skip it. Rank the options and add a reason if you want."},
+ {tab:"money",sel:'.tabbar button[data-tab="money"]',t:"Money",p:"The trip fund balance, what each cabin has paid in, and a way to be reimbursed if you pay for something."},
+ {tab:"info",sel:'.tabbar button[data-tab="info"]',t:"Info",p:"The essentials in one place: key dates, the emergency card and trip reminders. It has four more pages across the top."},
+ {tab:"crew",sel:'.tab.active .seg button[data-tab="crew"]',t:"Crew",p:"Who is in each cabin, everyone's phone number, and when each person arrives. Add your arrival time to find a taxi share."},
+ {tab:"boat",sel:'.tab.active .seg button[data-tab="boat"]',t:"Boat",p:"What is already on the boat, so we don't pack duplicates."},
+ {tab:"stops",sel:'.tab.active .seg button[data-tab="stops"]',t:"Stops",p:"A guide to each likely anchorage: moorings, food, snorkeling. It works with no signal."},
+ {tab:"links",sel:'.tab.active .seg button[data-tab="links"]',t:"Links",p:"Weather, charts and mooring reservations. Download offline charts before we leave home."},
+ {mid:true,tab:"home",t:"You're all set",p:"Start with the Needs you list on Home. You can replay this tour anytime with Take the tour on Home."}
+];
+let tourI=-1, tourOn=false, tourPending=false;
+const tourSeen=()=>{ try{return localStorage.getItem(TOUR_KEY)==="1";}catch(e){return false;} };
+function tourMark(){ try{localStorage.setItem(TOUR_KEY,"1");}catch(e){} }
+function maybeTour(){
+  if(tourSeen()||tourOn||tourPending) return;
+  tourPending=true; let tries=0;
+  const wait=()=>{
+    tries++;
+    const ready=document.documentElement.classList.contains("unlocked") && myName && !$("#welcome").classList.contains("show") && !$("#orgModal").classList.contains("show") && (crewLoaded||mode!=="cloud"||tries>6);
+    if(ready){ tourPending=false; startTour(false); }
+    else if(tries>40){ tourPending=false; }
+    else setTimeout(wait,500);
+  };
+  setTimeout(wait,400);
+}
+function startTour(force){ if(tourOn) return; tourOn=true; tourI=0; $("#tour").classList.add("on"); document.body.style.overflow="hidden"; tourShow(); }
+function endTour(){
+  tourOn=false; $("#tour").classList.remove("on"); document.body.style.overflow=""; tourMark(); showTab("home");
+}
+function tourShow(){
+  const s=TOUR[tourI]; if(!s) return endTour();
+  if(s.tab) showTab(s.tab);
+  $("#tourT").textContent=s.t; $("#tourP").textContent=typeof s.p==="function"?s.p():s.p;
+  $("#tourC").textContent=(tourI+1)+" of "+TOUR.length;
+  $("#tourB").style.visibility=tourI===0?"hidden":"visible";
+  $("#tourN").textContent=tourI===TOUR.length-1?"Done":(tourI===0?"Start":"Next");
+  requestAnimationFrame(()=>requestAnimationFrame(tourPlace));
+}
+function tourPlace(){
+  if(!tourOn) return;
+  const s=TOUR[tourI], hole=$("#tourHole"), tip=$("#tourTip");
+  const el=s.sel?document.querySelector(s.sel):null;
+  const vw=window.innerWidth, vh=window.innerHeight, M=12;
+  tip.classList.remove("above","below","mid");
+  if(!el||s.mid){
+    hole.classList.add("none"); tip.classList.add("mid");
+    tip.style.left=Math.max(M,(vw-tip.offsetWidth)/2)+"px"; tip.style.top=Math.max(M,(vh-tip.offsetHeight)/2)+"px";
+  } else {
+    hole.classList.remove("none");
+    const r=el.getBoundingClientRect(), pad=4;
+    hole.style.left=(r.left-pad)+"px"; hole.style.top=(r.top-pad)+"px"; hole.style.width=(r.width+pad*2)+"px"; hole.style.height=(r.height+pad*2)+"px";
+    const tw=tip.offsetWidth, th=tip.offsetHeight, cx=r.left+r.width/2;
+    let left=Math.min(Math.max(M,cx-tw/2),vw-tw-M);
+    const below=(r.top+r.height/2)<vh/2;
+    tip.classList.add(below?"below":"above");
+    tip.style.left=left+"px";
+    tip.style.top=(below? r.bottom+pad+14 : r.top-pad-14-th)+"px";
+    tip.style.setProperty("--ax",Math.min(Math.max(22,cx-left),tw-22)+"px");
+  }
+  tip.focus({preventScroll:true});
+}
+window.addEventListener("resize",()=>{ if(tourOn) tourPlace(); });
+document.addEventListener("keydown",(e)=>{ if(!tourOn) return; if(e.key==="Escape") endTour(); else if(e.key==="ArrowRight"){ tourI++; if(tourI>=TOUR.length) endTour(); else tourShow(); } else if(e.key==="ArrowLeft"&&tourI>0){ tourI--; tourShow(); } });
+
 /* ───── events ───── */
+document.addEventListener("input",(e)=>{ if(e.target&&e.target.id==="stopQ") renderStops(); });
 document.addEventListener("click", async (e)=>{
   const gs=e.target.closest("[data-gs]"); if(gs){ gearView=gs.dataset.gs; renderGear(); return; }
   const t=e.target.closest("[data-tab],[data-act],[data-filter]"); if(!t) return;
@@ -1252,7 +1511,7 @@ document.addEventListener("click", async (e)=>{
       const existing=crew.find(c=>String(c.name||"").toLowerCase()===name.toLowerCase());
       if(existing && !$("#myName").readOnly){ msg.textContent="That name is already on the crew list. Tap Back and pick it."; return; }
       if(mode==="cloud"){
-        await setDoc(doc(db,"hubCrew",keyOf(name.toLowerCase())),{name,role:(existing&&existing.role)||"Crew",cabin:selCabin,phone,arrive:$("#wArrive").value.trim()||(existing&&existing.arrive)||"",stay:(existing&&existing.stay)||"",by:name,updatedAt:Date.now()},{merge:true});
+        await setDoc(doc(db,"hubCrew",keyOf(name.toLowerCase())),{name,role:(existing&&existing.role)||"Crew",cabin:selCabin,phone,arrive:$("#wArrive").value.trim()||(existing&&existing.arrive)||"",lands:validLands($("#wLands").value)||(existing&&existing.lands)||"",stay:(existing&&existing.stay)||"",by:name,updatedAt:Date.now()},{merge:true});
       }
       setName(name);
     }
@@ -1303,6 +1562,12 @@ document.addEventListener("click", async (e)=>{
       if((a&&!safeUrl(a))||(pl&&!safeUrl(pl))){ $("#slMsg").textContent="Links must start with https://"; return; }
       await setDoc(doc(db,"hubPassage","settings"),{album:a,playlist:pl},{merge:true}); $("#slMsg").textContent="Saved.";
     }
+    else if(act==="tour"){ startTour(true); }
+    else if(act==="tourNext"){ tourI++; if(tourI>=TOUR.length) endTour(); else tourShow(); }
+    else if(act==="tourBack"){ if(tourI>0){ tourI--; tourShow(); } }
+    else if(act==="tourSkip"){ endTour(); }
+    else if(act==="openStop"){ openStop(t.dataset.id); }
+    else if(act==="stopF"){ stopF=t.dataset.f; renderStops(); }
     else if(act==="mustGo"){ gearView="boat"; filter=items.some(i=>approved(i)&&mustOf(i)&&!isDone(i))?"must":"all"; showTab("gear"); renderGear(); if(window.scrollTo) window.scrollTo({top:0}); }
     else if(act==="seed"){ await loadStarter(); }
     else if(act==="claim"){ if(needName()) return; await claim(id,myLabel()); }
@@ -1341,7 +1606,7 @@ document.addEventListener("click", async (e)=>{
       const sels=[...card.querySelectorAll("[data-rk]")];
       const ranks=sels.map(s=>parseInt(s.value)||0);
       if(ranks.some(r=>!r)||new Set(ranks).size!==sels.length){ alert("Give each option a different rank from 1 to "+sels.length+"."); return; }
-      await updateDoc(doc(db,"hubPulse",id),{[`responses.${keyOf(myName)}`]:{name:myName,ranks,reason:card.querySelector("[data-rs]").value.trim()}});
+      await updateDoc(doc(db,"hubPulse",id),{[`responses.${respKey((polls.find(x=>x.id===id)||{}).responses)}`]:{name:myName,ranks,reason:card.querySelector("[data-rs]").value.trim()}});
     }
     else if(act==="decide"){
       const card=document.querySelector(`[data-poll="${CSS.escape(id)}"]`);
@@ -1367,8 +1632,8 @@ document.addEventListener("click", async (e)=>{
     else if(act==="saveCrew"){
       const name=$("#cwName").value.trim();
       if(!name){ $("#cwMsg").textContent="Enter a name."; return; }
-      await setDoc(doc(db,"hubCrew",keyOf(name.toLowerCase())),{name,role:$("#cwRole").value,cabin:$("#cwCabin").value,phone:$("#cwPhone").value.trim(),arrive:$("#cwArrive").value.trim(),stay:$("#cwStay").value.trim(),by:myName||"",updatedAt:Date.now()});
-      ["#cwName","#cwPhone","#cwArrive","#cwStay"].forEach(s=>$(s).value=""); $("#cwCabin").value="Not assigned"; $("#cwRole").value="Crew";
+      await setDoc(doc(db,"hubCrew",keyOf(name.toLowerCase())),{name,role:$("#cwRole").value,cabin:$("#cwCabin").value,phone:$("#cwPhone").value.trim(),arrive:$("#cwArrive").value.trim(),lands:validLands($("#cwLands").value),stay:$("#cwStay").value.trim(),by:myName||"",updatedAt:Date.now()});
+      ["#cwName","#cwPhone","#cwArrive","#cwLands","#cwStay"].forEach(s=>$(s).value=""); $("#cwCabin").value="Not assigned"; $("#cwRole").value="Crew";
       $("#cwMsg").textContent="Saved.";
     }
     else if(act==="editCrew"){
@@ -1423,13 +1688,13 @@ $("#addBtn").addEventListener("click", async ()=>{
 function showTab(name){
   curTab=name;
   document.querySelectorAll(".tab").forEach(s=>s.classList.toggle("active",s.id==="tab-"+name));
-  const bar=["boat","links","crew"].includes(name)?"info":name;
+  const bar=["boat","links","crew","stops"].includes(name)?"info":name;
   document.querySelectorAll(".tabbar button").forEach(b=>b.classList.toggle("sel",b.dataset.tab===bar));
   document.querySelectorAll(".seg button").forEach(b=>b.classList.toggle("sel",b.dataset.tab===name));
   try{ history.replaceState(null,"","#"+name); }catch(e){}
   window.scrollTo({top:0});
 }
-const TABS=["home","plan","gear","polls","money","info","crew","boat","links"];
+const TABS=["home","plan","gear","polls","money","info","crew","boat","links","stops"];
 function routeFromHash(){ const t=(location.hash||"").replace("#",""); if(TABS.includes(t)) showTab(t); }
 window.addEventListener("hashchange",routeFromHash);
 
@@ -1452,7 +1717,7 @@ if(TABS.includes(initialTab)) showTab(initialTab);
 
 /* ───── PIN gate (a courtesy lock for the crew, not security) ───── */
 const PIN="0212";
-const BUILD="r2";   // bumped on every release so open copies know a newer one exists
+const BUILD="r6";   // bumped on every release so open copies know a newer one exists
 function tryPin(){
   const v=$("#pin").value.replace(/\D/g,"");
   if(v.length<4) return;
