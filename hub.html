@@ -930,6 +930,8 @@ if (configured) {
         if(crew.length && $("#welNew").style.display!=="none" && !$("#myName").value && !$("#myName").readOnly){ showWelView("list"); }
       }
       else if(myName && !myCrew() && document.documentElement.classList.contains("unlocked")) openWelcome(false,{name:myName,cabin:"",phone:"",arrive:""});
+
+      if(myCrew()) registerPush();
     });
   } catch(e){ console.error(e); setBadge("off","Offline"); mode="local"; items=lsGet("bviHubGearLocal",[]); }
 } else {
@@ -1615,6 +1617,28 @@ document.querySelectorAll(".gal[data-g]").forEach(g=>{
   const k=g.dataset.g,n=+g.dataset.n||3;
   for(let i=1;i<=n;i++){ const im=new Image(); im.loading="lazy"; im.alt=""; im.src="img/"+k+"-"+i+".jpg"; im.onerror=()=>im.remove(); g.appendChild(im); }
 });
+
+/* ───── native push (Capacitor iOS app only; no-op in the browser) ───── */
+let pushDone=false;
+async function registerPush(){
+  try{
+    const C=window.Capacitor; if(pushDone||!C||!C.isNativePlatform||!C.isNativePlatform()||!db||!myName) return;
+    const P=(C.registerPlugin?C.registerPlugin("PushNotifications"):(C.Plugins&&C.Plugins.PushNotifications)); if(!P) return;
+    pushDone=true;
+    P.addListener("registration",async(t)=>{
+      try{
+        const tok=String(t.value||""); if(!tok) return;
+        let h=0; for(const ch of tok) h=(h*31+ch.charCodeAt(0))|0;
+        await setDoc(doc(db,"hubDevices",keyOf(myName.toLowerCase())+"_"+(h>>>0).toString(36)),{name:myName,token:tok,platform:"ios",updatedAt:Date.now()},{merge:true});
+      }catch(e){ console.warn("push token save:",e&&e.message); }
+    });
+    P.addListener("registrationError",(e)=>console.warn("push reg:",e));
+    P.addListener("pushNotificationActionPerformed",(n)=>{ const tab=n&&n.notification&&n.notification.data&&n.notification.data.tab; if(tab&&document.querySelector('[data-tab="'+tab+'"]')) location.hash="#"+tab; });
+    let perm=await P.checkPermissions();
+    if(perm.receive==="prompt") perm=await P.requestPermissions();
+    if(perm.receive==="granted") await P.register();
+  }catch(e){ console.warn("push:",e&&e.message); }
+}
 /* ───── events ───── */
 document.addEventListener("input",(e)=>{ if(e.target&&e.target.id==="stopQ") renderStops(); });
 document.addEventListener("click", async (e)=>{
@@ -1850,7 +1874,7 @@ if(TABS.includes(initialTab)) showTab(initialTab);
 
 /* ───── PIN gate (a courtesy lock for the crew, not security) ───── */
 const PIN="0212";
-const BUILD="r10";   // bumped on every release so open copies know a newer one exists
+const BUILD="r11";   // bumped on every release so open copies know a newer one exists
 function tryPin(){
   const v=$("#pin").value.replace(/\D/g,"");
   if(v.length<4) return;

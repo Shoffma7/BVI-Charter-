@@ -1,0 +1,7 @@
+{
+  "appId": "com.sanklpa.bvicrew",
+  "appName": "BVI Crew",
+  "webDir": "www",
+  "ios": { "contentInset": "always", "backgroundColor": "#0A3D44" },
+  "plugins": { "PushNotifications": { "presentationOptions": ["badge", "sound", "banner"] } }
+}
