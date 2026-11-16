@@ -911,6 +911,14 @@ if (configured) {
     catch(e){ console.warn("No offline cache:",e); db = getFirestore(app); }
     col = collection(db,"hubGear");
     mode = "cloud";
+    /* Anonymous sign-in gives every device a Firebase identity, so Firestore rules can require auth.
+       Never blocks the app: if it fails or is slow, we still attach listeners (works while rules are open). */
+    try{
+      const A = await Promise.race([ import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"), new Promise((_,rj)=>setTimeout(()=>rj(new Error("auth load timeout")),4000)) ]);
+      const auth = A.getAuth(app);
+      if(!auth.currentUser){ await Promise.race([ A.signInAnonymously(auth), new Promise((_,rj)=>setTimeout(()=>rj(new Error("sign-in timeout")),4000)) ]); }
+      window.__uid = auth.currentUser && auth.currentUser.uid;
+    }catch(e){ console.warn("Anonymous sign-in skipped:",e && e.message); }
     listen(col,(a)=>{items=a; renderGear();});
     listen(collection(db,"hubPassage"),(a)=>{days=a; renderPlan();});
     listen(collection(db,"hubPulse"),(a)=>{polls=a; renderPolls(); renderHomeStats();});
@@ -1842,7 +1850,7 @@ if(TABS.includes(initialTab)) showTab(initialTab);
 
 /* ───── PIN gate (a courtesy lock for the crew, not security) ───── */
 const PIN="0212";
-const BUILD="r9";   // bumped on every release so open copies know a newer one exists
+const BUILD="r10";   // bumped on every release so open copies know a newer one exists
 function tryPin(){
   const v=$("#pin").value.replace(/\D/g,"");
   if(v.length<4) return;
