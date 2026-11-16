@@ -43,8 +43,11 @@
   html,body{overflow-x:hidden}
   .hero{position:relative;isolation:isolate;color:#fff;padding:34px 16px 30px;clip-path:inset(0 -100vw)}
   .hero::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:-100vw;right:-100vw;background:
+    linear-gradient(180deg,rgba(6,38,44,.55) 0%,rgba(6,38,44,.35) 45%,rgba(6,38,44,.8) 100%),
+    url(img/boat.jpg) center/cover no-repeat,
     repeating-radial-gradient(circle at 70% 120%, rgba(255,255,255,.07) 0 2px, transparent 2px 26px),
     linear-gradient(160deg,#0A3D44 0%,#14565F 100%)}
+  .hero{min-height:230px}
   .hero h1{font-weight:900;font-stretch:118%;font-size:clamp(32px,8.5vw,48px);max-width:none;text-wrap:balance}
   .hero p.sub{margin-top:10px;color:#BFDDE3;max-width:34ch}
   .count{display:flex;gap:10px;margin-top:26px}
@@ -278,6 +281,17 @@
   .tile:active{background:var(--buoy-soft)}
   .homebtns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
 .stat b small{font-size:13px;font-weight:700;margin-left:3px;white-space:nowrap}
+  /* stop cards + photo strips */
+  .hls{display:grid;gap:10px;padding-top:4px}
+  details.hl{border:1px solid #d9e3e0;border-radius:14px;background:#fff;overflow:hidden}
+  details.hl>summary{padding:14px 16px}
+  details.hl .dsum b{display:block;font-size:17px}
+  details.hl .dsum .n{display:block;font-size:14.5px;opacity:.75;margin-top:2px}
+  details.hl .inner{padding:0 0 14px}
+  details.hl .inner>p{padding:10px 16px 0}
+  .gal{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 16px}
+  .gal:empty{display:none}
+  .gal img{flex:0 0 82%;max-width:340px;height:190px;object-fit:cover;border-radius:12px;scroll-snap-align:start;background:#dfeceb}
 </style>
 </head>
 <body>
@@ -409,14 +423,21 @@
       <button class="tile" type="button" data-tab="links"><span class="ti" aria-hidden="true">🌤️</span><b>Links</b><span class="sub">Weather and charts</span></button>
     </div>
 
-    <details class="panel" data-k="home-highlights">
-      <summary>Trip highlights</summary>
-      <div class="inner">
-        <div class="row"><div><div class="t">The Baths, Virgin Gorda</div><div class="n">Be on a mooring early, before the day boats.</div></div></div>
-        <div class="row"><div><div class="t">Saba Rock, North Sound</div><div class="n">Lunch and drinks. Check that it's open.</div></div></div>
-        <div class="row"><div><div class="t">Two days on Virgin Gorda</div><div class="n">North Sound, with no rushing.</div></div></div>
-        <div class="row"><div><div class="t">Still open</div><div class="n">Anegada, Norman Island caves, Jost Van Dyke.</div></div></div>
-        <div class="row"><div><div class="t">Between stops</div><div class="n">Trolling lines out for mahi and wahoo.</div></div></div>
+    <details class="panel" data-k="home-highlights" open>
+      <summary>What we're looking forward to</summary>
+      <div class="inner hls">
+        <details class="hl" data-k="hl-baths"><summary><span class="dsum"><b>The Baths, Virgin Gorda</b><span class="n">Giant boulders, grottoes and shallow pools</span></span></summary>
+          <div class="inner"><div class="gal" data-g="baths" data-n="3"></div><p class="small">Be on a mooring early, before the day boats arrive. Bring water shoes and a snorkel.</p></div></details>
+        <details class="hl" data-k="hl-saba"><summary><span class="dsum"><b>Saba Rock, North Sound</b><span class="n">Lunch and drinks on a tiny island</span></span></summary>
+          <div class="inner"><div class="gal" data-g="saba" data-n="3"></div><p class="small">A short dinghy ride from the North Sound moorings. Check that it is open before planning around it.</p></div></details>
+        <details class="hl" data-k="hl-vg"><summary><span class="dsum"><b>Two days on Virgin Gorda</b><span class="n">North Sound, with no rushing</span></span></summary>
+          <div class="inner"><div class="gal" data-g="vg" data-n="3"></div><p class="small">Time for the beach and a slow evening on the boat.</p></div></details>
+        <details class="hl" data-k="hl-anegada"><summary><span class="dsum"><b>Anegada</b><span class="n">Flat coral island, famous for lobster</span></span></summary>
+          <div class="inner"><div class="gal" data-g="anegada" data-n="3"></div><p class="small">Still open on the plan. It is a long sail from the main chain, so it costs us a day.</p></div></details>
+        <details class="hl" data-k="hl-norman"><summary><span class="dsum"><b>Norman Island caves</b><span class="n">Snorkeling near the Bight</span></span></summary>
+          <div class="inner"><div class="gal" data-g="norman" data-n="3"></div><p class="small">Still open. Pair it with The Indians and the Willy T.</p></div></details>
+        <details class="hl" data-k="hl-jvd"><summary><span class="dsum"><b>Jost Van Dyke</b><span class="n">White Bay and the beach bars</span></span></summary>
+          <div class="inner"><div class="gal" data-g="jvd" data-n="3"></div><p class="small">Still open. Great Harbour for customs, and Foxy's.</p></div></details>
       </div>
     </details>
 
@@ -1580,6 +1601,12 @@ document.querySelectorAll(".acc-block").forEach((b)=>{
 });
 document.querySelectorAll("details[data-k]").forEach((d)=>{ d.open=isOpen(d.dataset.k,d.hasAttribute("open")); });
 
+
+/* stop photo strips: img/<key>-1.jpg ... ; missing files are removed */
+document.querySelectorAll(".gal[data-g]").forEach(g=>{
+  const k=g.dataset.g,n=+g.dataset.n||3;
+  for(let i=1;i<=n;i++){ const im=new Image(); im.loading="lazy"; im.alt=""; im.src="img/"+k+"-"+i+".jpg"; im.onerror=()=>im.remove(); g.appendChild(im); }
+});
 /* ───── events ───── */
 document.addEventListener("input",(e)=>{ if(e.target&&e.target.id==="stopQ") renderStops(); });
 document.addEventListener("click", async (e)=>{
@@ -1815,7 +1842,7 @@ if(TABS.includes(initialTab)) showTab(initialTab);
 
 /* ───── PIN gate (a courtesy lock for the crew, not security) ───── */
 const PIN="0212";
-const BUILD="r8";   // bumped on every release so open copies know a newer one exists
+const BUILD="r9";   // bumped on every release so open copies know a newer one exists
 function tryPin(){
   const v=$("#pin").value.replace(/\D/g,"");
   if(v.length<4) return;
