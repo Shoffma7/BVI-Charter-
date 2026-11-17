@@ -1,0 +1,46 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+
+    match /hubGear/{itemId} {
+      allow read: if signedIn();
+      allow create, update: if signedIn()
+                            && request.resource.data.keys().size() < 12
+                            && request.resource.data.name is string
+                            && request.resource.data.name.size() < 80;
+      allow delete: if signedIn();
+    }
+    match /hubPassage/{dayId} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && request.resource.data.keys().size() < 14;
+      allow delete: if false;
+    }
+    match /hubPulse/{pollId} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && request.resource.data.keys().size() < 14;
+      allow delete: if signedIn();
+    }
+    match /hubLedger/{entryId} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && request.resource.data.keys().size() < 14;
+      allow delete: if false;
+    }
+    match /hubCrew/{memberId} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && request.resource.data.keys().size() < 14;
+      allow delete: if signedIn();
+    }
+    // Notification tokens: devices may write, nobody can read them from the client.
+    match /hubDevices/{deviceId} {
+      allow read: if false;
+      allow create, update: if signedIn()
+                            && request.resource.data.keys().size() < 7
+                            && request.resource.data.token is string
+                            && request.resource.data.token.size() < 400
+                            && request.resource.data.name is string
+                            && request.resource.data.name.size() < 80;
+      allow delete: if false;
+    }
+  }
+}
